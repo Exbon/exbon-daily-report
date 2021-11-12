@@ -45,8 +45,6 @@ import DeleteForeverIcon from "@material-ui/icons/DeleteForever";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
 import Checkbox from "@material-ui/core/Checkbox";
 
-import Autocomplete from "react-autocomplete";
-
 import AddCircleIcon from "@material-ui/icons/AddCircle";
 
 import ArrowRightIcon from "@material-ui/icons/ArrowRight";
