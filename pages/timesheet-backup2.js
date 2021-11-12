@@ -70,17 +70,6 @@ const convertInputToTime = time => {
   return match[0].time;
 };
 
-// const customStylesModal = {
-//   content: {
-//     top: "40%",
-//     left: "50%",
-//     right: "auto",
-//     bottom: "auto",
-//     marginRight: "-50%",
-//     transform: "translate(-50%, -50%)",
-//   },
-// };
-
 const Timesheet = () => {
   const router = useRouter();
   const [projectState, setProjectState] = useState(undefined);
