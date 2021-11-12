@@ -1,7 +1,6 @@
 import "../styles.css";
 
 import { createMuiTheme, ThemeProvider } from "@material-ui/core/styles";
-import CssBaseline from "@material-ui/core/CssBaseline";
 import { useEffect } from "react";
 import { Provider } from "react-redux";
 import { useStore } from "../store";
