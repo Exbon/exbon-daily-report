@@ -8,8 +8,8 @@ import theme from '../src/theme';
 import Modal from 'react-modal';
 import React from 'react';
 
-// import '@fullcalendar/common/main.css';
-// import '@fullcalendar/daygrid/main.css';
+import '@fullcalendar/common/main.css';
+import '@fullcalendar/daygrid/main.css';
 
 Modal.setAppElement('#modalForTasksTab');
 
