@@ -1393,6 +1393,8 @@ const Task = () => {
           content="minimum-scale=1, initial-scale=1, width=device-width"
         />
       </Head>
+      {console.log('promiseInProgress', promiseInProgress)}
+        {console.log('projectState', projectState)}
       {status.cookies.username === undefined ||
       status.cookies.employeeid === undefined ? (
         <Login signin={signin} />
