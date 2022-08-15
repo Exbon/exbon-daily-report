@@ -2,7 +2,7 @@ const mssql = require("mssql");
 const dbserver = require("../../../dbConfig.js");
 
 const getDailyReport = (req, res) => {
-  const { method, body } = req;
+  const { method, query } = req;
   return new Promise(resolve => {
     switch (method) {
       case "GET":
@@ -13,12 +13,12 @@ const getDailyReport = (req, res) => {
           }
           const request = new mssql.Request();
 
-          const query = `EXEC [Exbon].[dbo].[usp_dailyreport_Select_DailyReport]
-                        @projectID = ${body.ProjectID},
-                        @date = ${body.date}
+          const sqlquery = `EXEC [Exbon].[dbo].[usp_dailyreport_Select_DailyReport]
+                        @projectID = ${query.pid},
+                        @date = '${query.date}'
                         `;
 
-          request.query(query, (err, recordset) => {
+          request.query(sqlquery, (err, recordset) => {
             if (err) {
               console.error(err);
               return resolve();
