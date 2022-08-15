@@ -132,9 +132,13 @@ body {
 
 // RECORD 
 #record {
+  td {
+    background-color: white;
+    padding: 0;
+  }
   th {
+    background-color: white;
     font-size: 14px;
-    
   }
   .sub-heading {
     font-size: 12px;
@@ -142,5 +146,14 @@ body {
   .heading {
     font-size: 14px;
     font-weight: 500;
+  }
+input {
+  border-radius: 0;
+  border: 0;
+  padding: 2px;
+}
+  .fit {
+    white-space: nowrap;
+    width: 1%;
   }
 }

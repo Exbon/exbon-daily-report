@@ -10,11 +10,11 @@ import Login from '../components/MainTab/login.js';
 import Head from 'next/head';
 import { useMediaQuery } from 'react-responsive';
 import { Container, Row, Col, Table } from 'react-bootstrap';
-import DateFnsUtils from "@date-io/date-fns";
-import { DatePicker, MuiPickersUtilsProvider } from "@material-ui/pickers";
+import DateFnsUtils from '@date-io/date-fns';
+import { DatePicker, MuiPickersUtilsProvider } from '@material-ui/pickers';
 
 import styles from './record.module.css';
-
+import { formatDate } from '../lib/utils';
 const Record = () => {
 	const resolution1008 = useMediaQuery({
 		maxWidth: '1009px',
@@ -42,14 +42,20 @@ const Record = () => {
 	const [stateNoAssigned, setStateNoAssigned] = useState([]);
 	const { promiseInProgress } = usePromiseTracker();
 	const now = new Date().toLocaleString({
-		timeZone: "America/Los_Angeles",
-	  });
+		timeZone: 'America/Los_Angeles',
+	});
 	const [selectedDate, setSelectedDate] = useState(now);
-
-	const handleDateChange = date => {
+	const [data, setData] = useState();
+	const [paramPID, setParamPID] = useState(router.query.pid);
+	const [contractors, setContractors] = useState([]);
+	const [equipments, setEquipments] = useState([]);
+	const [inspections, setInspections] = useState([]);
+	const [correctionals, setCorrectionals] = useState([]);
+	const [notes, setNotes] = useState([]);
+	const handleDateChange = (date) => {
 		setSelectedDate(date);
 	};
-	
+
 	useEffect(() => {
 		if (!router.isReady) return;
 
@@ -124,17 +130,25 @@ const Record = () => {
 
 			if (status.permission === true && projectState !== undefined) {
 				router.push(`?pid=${projectState}`);
-
-				// axios get
-				// setData(....)
+				const res = await axios.get(
+					`/api/record/daily-report?pid=${router.query.pid}&date=${
+						selectedDate.split(',')[0]
+					}`,
+				);
+				setContractors(res.data.result[0]);
+				setEquipments(res.data.result[1]);
+				setInspections(res.data.result[2]);
+				setCorrectionals(res.data.result[3]);
+				setNotes(res.data.result[4]);
+				console.log(res.data.result);
 			} else {
-				// setData('')
+				setData('');
 			}
 		};
 
 		promises.push(fetchData());
 		trackPromise(Promise.all(promises).then(() => {}));
-	}, [selectedDate, projectState, status, router.isReady]);
+	}, [selectedDate, projectState, status, router.isReady, router.query.pid]);
 
 	useEffect(() => {
 		if (typeof stateAssignedProject[0] == 'undefined') {
@@ -200,6 +214,98 @@ const Record = () => {
 		}));
 	};
 
+	const addRowHandler = (type) => {
+		if (type === 'contractors') {
+			setContractors((prevState) => [
+				...prevState,
+				{
+					ContractorID: '',
+					Location: '',
+					NumSuper: '',
+					NumWorker: '',
+					WorkHours: '',
+					Task: '',
+				},
+			]);
+		} else if (type === 'equipments') {
+			setEquipments((prevState) => [
+				...prevState,
+				{
+					EquipmentID: '',
+					Location: '',
+					Num: '',
+					Task: '',
+				},
+			]);
+		} else if (type === 'inspections') {
+			setInspections((prevState) => [
+				...prevState,
+				{
+					InspectionID: '',
+					Agency: '',
+					NuLocation: '',
+					Task: '',
+					Result: '',
+				},
+			]);
+		} else if (type === 'correctionals') {
+			setCorrectionals((prevState) => [
+				...prevState,
+				{
+					CorrectionalID: '',
+					Location: '',
+					Num: '',
+					Task: '',
+				},
+			]);
+		} else if (type === 'notes') {
+			setNotes((prevState) => [
+				...prevState,
+				{
+					NoteID: '',
+					Note: '',
+				},
+			]);
+		}
+	};
+
+	const handleChange = (e, type, index) => {
+		e.persist();
+
+		if (type === 'contractors') {
+			setContractors((prevState) => {
+				const newState = [...prevState];
+				console.log('newState', newState);
+				console.log('e.target.name', e);
+				newState[index][e.target.name] = e.target.value;
+				return newState;
+			});
+		} else if (type === 'equipments') {
+			setEquipments((prevState) => {
+				const newState = [...prevState];
+				newState[index][e.target.name] = e.target.value;
+				return newState;
+			});
+		} else if (type === 'inspections') {
+			setInspections((prevState) => {
+				const newState = [...prevState];
+				newState[index][e.target.name] = e.target.value;
+				return newState;
+			});
+		} else if (type === 'correctionals') {
+			setCorrectionals((prevState) => {
+				const newState = [...prevState];
+				newState[index][e.target.name] = e.target.value;
+				return newState;
+			});
+		} else if (type === 'notes') {
+			setNotes((prevState) => {
+				const newState = [...prevState];
+				newState[index][e.target.name] = e.target.value;
+				return newState;
+			});
+		}
+	};
 	return (
 		<>
 			<Head>
@@ -245,7 +351,7 @@ const Record = () => {
 							<>
 								<h1 className={styles['title']}>Record</h1>
 								<div className={styles['header']}>
-									<div className={styles["header__left"]}>
+									<div className={styles['header__left']}>
 										<select
 											value={projectState}
 											onChange={(e) => setProjectState(e.target.value)}
@@ -284,22 +390,22 @@ const Record = () => {
 											})}
 										</select>
 										<MuiPickersUtilsProvider utils={DateFnsUtils}>
-                                       		<DatePicker
-                                       		  margin="normal"
-                                       		  id="datePickerDialog"
-                                       		  format="MM/dd/yyyy"
-                                       		  value={selectedDate}
-                                       		  onChange={handleDateChange}
-                                       		  className={styles["header__right__date-picker"]}
-                                       		  autoOk={true}
-                                       		  okLabel=""
-                                       		/>
-                                     	</MuiPickersUtilsProvider>
+											<DatePicker
+												margin="normal"
+												id="datePickerDialog"
+												format="MM/dd/yyyy"
+												value={selectedDate}
+												onChange={handleDateChange}
+												className={styles['header__right__date-picker']}
+												autoOk={true}
+												okLabel=""
+											/>
+										</MuiPickersUtilsProvider>
 									</div>
 								</div>
 								<Row>
 									<Col>
-										<Table striped hover className="">
+										<Table striped hover>
 											<thead>
 												<tr>
 													<th
@@ -327,58 +433,134 @@ const Record = () => {
 														TASK
 													</th>
 
-													<th className="border-top-0" rowSpan={2}></th>
+													<th className="border-0 fit" rowSpan={2}></th>
 												</tr>
 												<tr>
 													<th className="text-center align-middle sub-heading border border-dark">
-														TOTAL
+														NO. OF SUPER
 													</th>
 													<th className="text-center align-middle sub-heading border border-dark">
-														ACTIVE
+														NO. OF WORKERS
 													</th>
 													<th className="text-center align-middle sub-heading border border-dark">
-														INACTIVE
+														WORK HOURS
 													</th>
 												</tr>
 											</thead>
-											<tbody className="border border-dark">
-												<tr>
-													<td></td>
-													<td></td>
-													<td></td>
-													<td></td>
-													<td></td>
-													<td></td>
-												</tr>
-												<tr>
-													<td></td>
-													<td></td>
-													<td></td>
-													<td></td>
-													<td></td>
-													<td></td>
-												</tr>
-												<tr>
-													<td></td>
-													<td></td>
-													<td></td>
-													<td></td>
-													<td></td>
-													<td></td>
-												</tr>
+											<tbody>
+												{contractors.map((contractor, i) => {
+													return (
+														<tr key={i}>
+															<td className="border border-dark">
+																<input
+																	className="w-100"
+																	type="text"
+																	value={contractor.Contractor}
+																	name="Contractor"
+																	onChange={(e) =>
+																		handleChange(e, 'contractors', i)
+																	}
+																/>
+															</td>
+															<td className="border border-dark">
+																<input
+																	className="w-100"
+																	type="text"
+																	value={contractor.Location}
+																	name="Location"
+																	onChange={(e) =>
+																		handleChange(e, 'contractors', i)
+																	}
+																/>
+															</td>
+															<td className="border border-dark">
+																<input
+																	className="w-100"
+																	type="number"
+																	value={contractor.NumSuper}
+																	name="NumSuper"
+																	onChange={(e) =>
+																		handleChange(e, 'contractors', i)
+																	}
+																/>
+															</td>
+															<td className="border border-dark">
+																<input
+																	className="w-100"
+																	type="number"
+																	value={contractor.NumWorker}
+																	name="NumWorker"
+																	onChange={(e) =>
+																		handleChange(e, 'contractors', i)
+																	}
+																/>
+															</td>
+															<td className="border border-dark">
+																<input
+																	className="w-100"
+																	type="number"
+																	value={contractor.WorkHours}
+																	name="WorkHours"
+																	onChange={(e) =>
+																		handleChange(e, 'contractors', i)
+																	}
+																/>
+															</td>
+															<td className="border border-dark">
+																<input
+																	className="w-100"
+																	type="text"
+																	value={contractor.Task}
+																	name="Task"
+																	onChange={(e) =>
+																		handleChange(e, 'contractors', i)
+																	}
+																/>
+															</td>
+															{contractors.length === i + 1 ? (
+																<td
+																	className="padding-0 fit"
+																	style={{ backgroundColor: 'transparent' }}
+																>
+																	<button
+																		onClick={() => addRowHandler('contractors')}
+																		className="border-0 bg-transparent"
+																	>
+																		Add Row
+																	</button>
+																</td>
+															) : null}
+														</tr>
+													);
+												})}
 											</tbody>
 											<tfoot>
 												<tr>
 													<td
-														className="text-center align-middle heading"
+														className="text-center align-middle heading border border-dark"
 														colSpan={2}
 													>
 														TOTAL
 													</td>
-													<td className="text-center align-middle"></td>
-													<td className="text-center align-middle"></td>
-													<td className="text-center align-middle"></td>
-													<td></td>
+													<td className="text-center align-middle border border-dark">
+														{contractors.reduce(
+															(prev, curr) => prev + Number(curr.NumSuper),
+															0,
+														)}
+													</td>
+													<td className="text-center align-middle border border-dark">
+														{contractors.reduce(
+															(prev, curr) => prev + Number(curr.NumWorker),
+															0,
+														)}
+													</td>
+													<td className="text-center align-middle border border-dark">
+														{contractors.reduce(
+															(prev, curr) => prev + Number(curr.WorkHours),
+															0,
+														)}
+													</td>
+													<td className="text-center align-middle border border-dark"></td>
 												</tr>
 											</tfoot>
 										</Table>
@@ -401,15 +583,84 @@ const Record = () => {
 													<th className="text-center align-middle">MOVE IN</th>
 													<th className="text-center align-middle">MOVE OUT</th>
 													<th className="text-center align-middle">NOTE</th>
+													<th className="border-0 fit"></th>
 												</tr>
 											</thead>
 											<tbody>
-												<tr>
-													<td></td>
-													<td></td>
-													<td></td>
-													<td></td> <td></td>
-												</tr>
+												{equipments.map((equipment, i) => {
+													return (
+														<tr key={i}>
+															<td className="text-center align-middle">
+																<input
+																	className="w-100"
+																	type="text"
+																	value={equipment.Equipment}
+																	name={equipment.Equipment}
+																	onChange={(e) =>
+																		handleChange(e, 'equipments', i)
+																	}
+																/>
+															</td>
+															<td className="text-center align-middle">
+																<input
+																	className="w-100"
+																	type="text"
+																	value={equipment.Vendor}
+																	name={equipment.Vendor}
+																	onChange={(e) =>
+																		handleChange(e, 'equipments', i)
+																	}
+																/>
+															</td>
+															<td className="text-center align-middle">
+																<input
+																	className="w-100"
+																	type="date"
+																	value={formatDate(equipment.MoveIn)}
+																	name={'MoveIn'}
+																	onChange={(e) =>
+																		handleChange(e, 'equipments', i)
+																	}
+																/>
+															</td>
+															<td className="text-center align-middle">
+																<input
+																	className="w-100"
+																	type={'date'}
+																	value={formatDate(equipment.MoveOut)}
+																	name={'MoveOut'}
+																	onChange={(e) =>
+																		handleChange(e, 'equipments', i)
+																	}
+																/>
+															</td>
+															<td className="text-center align-middle">
+																<input
+																	className="w-100"
+																	type="text"
+																	value={equipment.Note}
+																	name={equipment.Note}
+																	onChange={(e) =>
+																		handleChange(e, 'equipments', i)
+																	}
+																/>
+															</td>
+															{equipments.length === i + 1 ? (
+																<td
+																	className="padding-0 fit"
+																	style={{ backgroundColor: 'transparent' }}
+																>
+																	<button
+																		onClick={() => addRowHandler('equipments')}
+																		className="border-0 bg-transparent"
+																	>
+																		Add Row
+																	</button>
+																</td>
+															) : null}
+														</tr>
+													);
+												})}
 											</tbody>
 										</Table>
 									</Col>
@@ -424,7 +675,9 @@ const Record = () => {
 											hover
 										>
 											<thead>
-												<tr colSpan={5}>Inspection</tr>
+												<tr>
+													<th colSpan={5}>Inspection</th>
+												</tr>
 												<tr>
 													<th className="text-center align-middle">
 														Name of Inspector
@@ -433,16 +686,84 @@ const Record = () => {
 													<th className="text-center align-middle">Location</th>
 													<th className="text-center align-middle">Task</th>
 													<th className="text-center align-middle">Result</th>
+													<th></th>
 												</tr>
 											</thead>
 											<tbody>
-												<tr>
-													<td></td>
-													<td></td>
-													<td></td>
-													<td></td>
-													<td></td>
-												</tr>
+												{inspections.map((inspection, i) => {
+													return (
+														<tr key={i}>
+															<td className="text-center align-middle">
+																<input
+																	className="w-100"
+																	type="text"
+																	value={inspection.Inspector}
+																	name="Inspector"
+																	onChange={(e) =>
+																		handleChange(e, 'inspections', i)
+																	}
+																/>
+															</td>
+															<td className="text-center align-middle">
+																<input
+																	className="w-100"
+																	type="text"
+																	value={inspection.Agency}
+																	name="Agency"
+																	onChange={(e) =>
+																		handleChange(e, 'inspections', i)
+																	}
+																/>
+															</td>
+															<td className="text-center align-middle">
+																<input
+																	className="w-100"
+																	type="text"
+																	value={inspection.Location}
+																	name="Location"
+																	onChange={(e) =>
+																		handleChange(e, 'inspections', i)
+																	}
+																/>
+															</td>
+															<td className="text-center align-middle">
+																<input
+																	className="w-100"
+																	type="text"
+																	value={inspection.Task}
+																	name="Task"
+																	onChange={(e) =>
+																		handleChange(e, 'inspections', i)
+																	}
+																/>
+															</td>
+															<td className="text-center align-middle">
+																<input
+																	className="w-100"
+																	type="text"
+																	value={inspection.Result}
+																	name="Result"
+																	onChange={(e) =>
+																		handleChange(e, 'inspections', i)
+																	}
+																/>
+															</td>
+															{inspections.length === i + 1 ? (
+																<td
+																	className="padding-0 fit"
+																	style={{ backgroundColor: 'transparent' }}
+																>
+																	<button
+																		onClick={() => addRowHandler('inspections')}
+																		className="border-0 bg-transparent"
+																	>
+																		Add Row
+																	</button>
+																</td>
+															) : null}
+														</tr>
+													);
+												})}
 											</tbody>
 										</Table>
 									</Col>
@@ -456,7 +777,9 @@ const Record = () => {
 											hover
 										>
 											<thead>
-												<tr colSpan={5}>Correctional Items</tr>
+												<tr>
+													<th colSpan={5}>Correctional Items</th>
+												</tr>
 												<tr>
 													<th className="text-center align-middle">
 														Deficiency Name
@@ -468,15 +791,73 @@ const Record = () => {
 													<th className="text-center align-middle">
 														Description
 													</th>
+													<th></th>
 												</tr>
 											</thead>
 											<tbody>
-												<tr>
-													<td></td>
-													<td></td>
-													<td></td>
-													<td></td>
-												</tr>
+												{correctionals.map((correctional, i) => {
+													return (
+														<tr key={i}>
+															<td className="text-center align-middle">
+																<input
+																	className="w-100"
+																	type="text"
+																	value={correctional.Deficiency}
+																	name="Deficiency"
+																	onChange={(e) =>
+																		handleChange(e, 'correctionals', i)
+																	}
+																/>
+															</td>
+															<td className="text-center align-middle">
+																<input
+																	className="w-100"
+																	type="text"
+																	value={correctional.Type}
+																	name="Type"
+																	onChange={(e) =>
+																		handleChange(e, 'correctionals', i)
+																	}
+																/>
+															</td>
+															<td className="text-center align-middle">
+																<input
+																	className="w-100"
+																	type="text"
+																	value={correctional.Trade}
+																	name="Trade"
+																	onChange={(e) =>
+																		handleChange(e, 'correctionals', i)
+																	}
+																/>
+															</td>
+															<td className="text-center align-middle">
+																<input
+																	className="w-100"
+																	type="text"
+																	value={correctional.Description}
+																	name="Description"
+																	onChange={(e) =>
+																		handleChange(e, 'correctionals', i)
+																	}
+																/>
+															</td>
+															{correctionals.length === i + 1 ? (
+																<td
+																	className="padding-0 fit"
+																	style={{ backgroundColor: 'transparent' }}
+																>
+																	<button
+																		onClick={() => addRowHandler('inspections')}
+																		className="border-0 bg-transparent"
+																	>
+																		Add Row
+																	</button>
+																</td>
+															) : null}
+														</tr>
+													);
+												})}
 											</tbody>
 										</Table>
 									</Col>
@@ -490,12 +871,39 @@ const Record = () => {
 											hover
 										>
 											<thead>
-												<tr>Note</tr>
+												<tr>
+													<th>Note</th>
+												</tr>
 											</thead>
 											<tbody>
-												<tr>
-													<td></td>
-												</tr>
+												{notes.map((note, i) => {
+													return (
+														<tr key={i}>
+															<td className="text-center align-middle">
+																<input
+																	className="w-100"
+																	type="text"
+																	value={note.Note}
+																	name="Note"
+																	onChange={(e) => handleChange(e, 'notes', i)}
+																/>
+															</td>
+															{notes.length === i + 1 ? (
+																<td
+																	className="padding-0 fit"
+																	style={{ backgroundColor: 'transparent' }}
+																>
+																	<button
+																		onClick={() => addRowHandler('notes')}
+																		className="border-0 bg-transparent"
+																	>
+																		Add Row
+																	</button>
+																</td>
+															) : null}
+														</tr>
+													);
+												})}
 											</tbody>
 										</Table>
 									</Col>
