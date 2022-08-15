@@ -1,4 +1,4 @@
-import '../styles.css';
+import '../styles.scss';
 
 import { createMuiTheme, ThemeProvider } from '@material-ui/core/styles';
 import { useEffect } from 'react';
