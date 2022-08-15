@@ -93,6 +93,17 @@ const MainTab = ({
             textColor={tapNo === 1 ? "inherit" : "primary"}
           />
         </Link>
+        <Link
+          href={projectState ? `/record?pid=${projectState}` : "/record"}
+        >
+          <Tab
+            label={main ? "" : "Record"}
+            // onClick={() => Router.push(`/record/${projectState}`)}
+            disableRipple={true}
+            disabled={main}
+            textColor={tapNo === 2 ? "inherit" : "primary"}
+          />
+        </Link>
         {/* <Link href={`/deficiency-log/${projectState}`}>
           <Tab
             label={main ? "" : "Deficiency Log"}
