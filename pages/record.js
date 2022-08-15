@@ -10,6 +10,8 @@ import Login from '../components/MainTab/login.js';
 import Head from 'next/head';
 import { useMediaQuery } from 'react-responsive';
 import { Container, Row, Col, Table } from 'react-bootstrap';
+import DateFnsUtils from "@date-io/date-fns";
+import { DatePicker, MuiPickersUtilsProvider } from "@material-ui/pickers";
 
 import styles from './record.module.css';
 
@@ -39,7 +41,15 @@ const Record = () => {
 	]);
 	const [stateNoAssigned, setStateNoAssigned] = useState([]);
 	const { promiseInProgress } = usePromiseTracker();
+	const now = new Date().toLocaleString({
+		timeZone: "America/Los_Angeles",
+	  });
+	const [selectedDate, setSelectedDate] = useState(now);
 
+	const handleDateChange = date => {
+		setSelectedDate(date);
+	};
+	
 	useEffect(() => {
 		if (!router.isReady) return;
 
@@ -124,7 +134,7 @@ const Record = () => {
 
 		promises.push(fetchData());
 		trackPromise(Promise.all(promises).then(() => {}));
-	}, [projectState, status, router.isReady]);
+	}, [selectedDate, projectState, status, router.isReady]);
 
 	useEffect(() => {
 		if (typeof stateAssignedProject[0] == 'undefined') {
@@ -235,7 +245,7 @@ const Record = () => {
 							<>
 								<h1 className={styles['title']}>Record</h1>
 								<div className={styles['header']}>
-									<div>
+									<div className={styles["header__left"]}>
 										<select
 											value={projectState}
 											onChange={(e) => setProjectState(e.target.value)}
@@ -273,6 +283,18 @@ const Record = () => {
 												);
 											})}
 										</select>
+										<MuiPickersUtilsProvider utils={DateFnsUtils}>
+                                       		<DatePicker
+                                       		  margin="normal"
+                                       		  id="datePickerDialog"
+                                       		  format="MM/dd/yyyy"
+                                       		  value={selectedDate}
+                                       		  onChange={handleDateChange}
+                                       		  className={styles["header__right__date-picker"]}
+                                       		  autoOk={true}
+                                       		  okLabel=""
+                                       		/>
+                                     	</MuiPickersUtilsProvider>
 									</div>
 								</div>
 								<Row>
