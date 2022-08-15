@@ -335,7 +335,7 @@
 
 .table__current-work-wrapper__input__previous-work {
   text-align: center;
-  width: 40px !important;
+  width: 51px !important;
   color: rgb(168, 164, 167);
   border: 1px solid rgb(200, 191, 196);
   border-radius: 4px;
@@ -343,12 +343,12 @@
   background: rgb(255, 255, 255);
   padding: 4px;
   font-family: "Roboto";
-  font-size: 0.93rem;
+  font-size: 0.9rem;
 }
 
 .table__current-work-wrapper__input__current-work {
   text-align: center;
-  width: 40px !important;
+  width: 51px !important;
   font-weight: 700;
   color: black;
   border: 1px solid rgb(200, 191, 196);
