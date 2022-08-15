@@ -277,40 +277,49 @@ const Record = () => {
 								</div>
 								<Row>
 									<Col>
-										<Table
-											striped
-											bordered
-											hover
-											className="border border-dark"
-										>
+										<Table striped hover className="">
 											<thead>
 												<tr>
-													<th className="text-center align-middle" rowSpan={2}>
+													<th
+														className="text-center align-middle border border-dark"
+														rowSpan={2}
+													>
 														CONTRACTOR
 													</th>
-													<th className="text-center align-middle" rowSpan={2}>
+													<th
+														className="text-center align-middle border border-dark"
+														rowSpan={2}
+													>
 														LOCATION
 													</th>
-													<th className="text-center align-middle" colSpan={3}>
+													<th
+														className="text-center align-middle border border-dark"
+														colSpan={3}
+													>
 														MANPOWER
 													</th>
-													<th className="text-center align-middle" rowSpan={2}>
+													<th
+														className="text-center align-middle border border-dark"
+														rowSpan={2}
+													>
 														TASK
 													</th>
+
+													<th className="border-top-0" rowSpan={2}></th>
 												</tr>
 												<tr>
-													<th className="text-center align-middle sub-heading">
+													<th className="text-center align-middle sub-heading border border-dark">
 														TOTAL
 													</th>
-													<th className="text-center align-middle sub-heading">
+													<th className="text-center align-middle sub-heading border border-dark">
 														ACTIVE
 													</th>
-													<th className="text-center align-middle sub-heading">
+													<th className="text-center align-middle sub-heading border border-dark">
 														INACTIVE
 													</th>
 												</tr>
 											</thead>
-											<tbody>
+											<tbody className="border border-dark">
 												<tr>
 													<td></td>
 													<td></td>
