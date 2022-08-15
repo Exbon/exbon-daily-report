@@ -101,7 +101,7 @@ const MainTab = ({
             // onClick={() => Router.push(`/record/${projectState}`)}
             disableRipple={true}
             disabled={main}
-            textColor={tapNo === 1 ? "inherit" : "primary"}
+            textColor={tapNo === 2 ? "inherit" : "primary"}
           />
         </Link>
         {/* <Link href={`/deficiency-log/${projectState}`}>
