@@ -10,10 +10,9 @@ import Login from "../components/MainTab/login.js";
 import Head from "next/head";
 import { useMediaQuery } from "react-responsive";
 
-import styles from "./record.module.css";
+import styles from "./template.module.css";
 
-const Record = () => {
-  
+const Template = () => {
   const resolution1008 = useMediaQuery({
     maxWidth: "1009px",
     minWidth: "602px",
@@ -121,7 +120,7 @@ const Record = () => {
 
         
       } else {
-        // setData('')
+        // setData(')
       }
     };
 
@@ -139,6 +138,7 @@ const Record = () => {
     }
   }, [stateAssignedProject]);
 
+  
   const signin = async (username, password) => {
     await axios({
       method: "post",
@@ -193,7 +193,6 @@ const Record = () => {
     }));
   };
 
-
   return (
     <>
         <Head>
@@ -210,7 +209,7 @@ const Record = () => {
             <NotPermission path="record" />
           ): (<>
                 <SimpleTabs
-                    tapNo={2}
+                    tapNo={2} // Needs to be changed
                     projectState={projectState}
                     main={false}
                     employeeID={status.cookies.employeeid}
@@ -279,10 +278,15 @@ const Record = () => {
                             </div>
                         </>
                     </div>}
-              </>)         
+              </>)
+         
+         
+         
+         
+         
          }
     </>
   )
 }
 
-export default Record
+export default Template
