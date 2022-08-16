@@ -132,6 +132,12 @@ body {
 
 // RECORD 
 #record {
+  input[type="number"] {
+    text-align: right;
+  }
+  .border-0 {
+    border-bottom-width: 0;
+  }
   td {
     background-color: white;
     padding: 0;
@@ -156,7 +162,8 @@ body {
 input {
   border-radius: 0;
   border: 0;
-  padding: 2px;
+  padding: 2px 6px;
+
 }
   .fit {
     white-space: nowrap;

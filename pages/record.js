@@ -541,44 +541,47 @@ const Record = () => {
 								</div>
 								<Row>
 									<Col>
-										<Table striped hover>
+										<Table hover>
 											<thead>
 												<tr>
 													<th
-														className="text-center align-middle border border-dark"
+														className="text-center border border-dark align-middle border border-dark"
 														rowSpan={2}
 													>
 														CONTRACTOR
 													</th>
 													<th
-														className="text-center align-middle border border-dark"
+														className="text-center border border-dark align-middle border border-dark"
 														rowSpan={2}
 													>
 														LOCATION
 													</th>
 													<th
-														className="text-center align-middle border border-dark"
+														className="text-center border border-dark align-middle border border-dark"
 														colSpan={3}
 													>
 														MANPOWER
 													</th>
 													<th
-														className="text-center align-middle border border-dark"
+														className="text-center border border-dark align-middle border border-dark"
 														rowSpan={2}
 													>
 														TASK
 													</th>
 
-													<th className="border-0 fit" rowSpan={2}></th>
+													<th
+														className="border-0 fit bg-transparent"
+														rowSpan={2}
+													></th>
 												</tr>
 												<tr>
-													<th className="text-center align-middle sub-heading border border-dark">
+													<th className="text-center border border-dark align-middle sub-heading border border-dark">
 														NO. OF SUPER
 													</th>
-													<th className="text-center align-middle sub-heading border border-dark">
+													<th className="text-center border border-dark align-middle sub-heading border border-dark">
 														NO. OF WORKERS
 													</th>
-													<th className="text-center align-middle sub-heading border border-dark">
+													<th className="text-center border border-dark align-middle sub-heading border border-dark">
 														WORK HOURS
 													</th>
 												</tr>
@@ -597,6 +600,7 @@ const Record = () => {
 																				background: isHighlighted
 																					? 'lightgray'
 																					: 'white',
+																				paddingLeft: '8px',
 																			}}
 																		>
 																			{item.CompanyName}
@@ -642,7 +646,7 @@ const Record = () => {
 															</td>
 															<td className="border border-dark">
 																<input
-																	className="w-100"
+																	className="w-100 text-right"
 																	type="number"
 																	value={contractor.NumSuper || ''}
 																	name="NumSuper"
@@ -683,6 +687,7 @@ const Record = () => {
 																				background: isHighlighted
 																					? 'lightgray'
 																					: 'white',
+																				paddingLeft: '8px',
 																			}}
 																		>
 																			{item.Name}
@@ -709,21 +714,18 @@ const Record = () => {
 															</td>
 															{contractors.length === i + 1 ? (
 																<td
-																	className="padding-0 fit"
+																	className="padding-0 fit border-0"
 																	style={{ backgroundColor: 'transparent' }}
 																>
 																	<button
 																		onClick={() => addRowHandler('contractors')}
-																		className="border-0 bg-transparent"
+																		className="border-0 bg-transparent "
 																	>
 																		Add Row
 																	</button>
 																</td>
 															) : (
-																<td
-																	className="padding-0 fit"
-																	style={{ backgroundColor: 'transparent' }}
-																>
+																<td className="padding-0 fit bg-transparent border-0">
 																	<button
 																		onClick={() =>
 																			removeRowHandler('contractors', i)
@@ -741,30 +743,42 @@ const Record = () => {
 											<tfoot>
 												<tr>
 													<td
-														className="text-center align-middle heading border border-dark"
+														className="text-center border border-dark align-middle heading border border-dark"
 														colSpan={2}
 													>
 														TOTAL
 													</td>
-													<td className="text-center align-middle border border-dark">
-														{contractors.reduce(
-															(prev, curr) => prev + Number(curr.NumSuper),
-															0,
-														)}
+													<td className="text-end  palign-middle border border-dark">
+														<input
+															type="number"
+															disabled
+															value={contractors.reduce(
+																(prev, curr) => prev + Number(curr.NumSuper),
+																0,
+															)}
+														/>
 													</td>
-													<td className="text-center align-middle border border-dark">
-														{contractors.reduce(
-															(prev, curr) => prev + Number(curr.NumWorker),
-															0,
-														)}
+													<td className="text-end align-middle border border-dark">
+														<input
+															type="number"
+															disabled
+															value={contractors.reduce(
+																(prev, curr) => prev + Number(curr.NumWorker),
+																0,
+															)}
+														/>
 													</td>
-													<td className="text-center align-middle border border-dark">
-														{contractors.reduce(
-															(prev, curr) => prev + Number(curr.WorkHours),
-															0,
-														)}
+													<td className="text-end align-middle border border-dark">
+														<input
+															type="number"
+															disabled
+															value={contractors.reduce(
+																(prev, curr) => prev + Number(curr.WorkHours),
+																0,
+															)}
+														/>
 													</td>
-													<td className="text-center align-middle border border-dark"></td>
+													<td className="text-center border border-dark align-middle border border-dark"></td>
 												</tr>
 											</tfoot>
 										</Table>
@@ -772,29 +786,32 @@ const Record = () => {
 								</Row>
 								<Row>
 									<Col>
-										<Table
-											className="border border-dark"
-											striped
-											bordered
-											hover
-										>
+										<Table hover>
 											<thead>
 												<tr>
-													<th className="text-center align-middle">
+													<th className="text-center border border-dark align-middle">
 														EQUIPMENT
 													</th>
-													<th className="text-center align-middle">VENDOR</th>
-													<th className="text-center align-middle">MOVE IN</th>
-													<th className="text-center align-middle">MOVE OUT</th>
-													<th className="text-center align-middle">NOTE</th>
-													<th className="border-0 fit"></th>
+													<th className="text-center border border-dark align-middle">
+														VENDOR
+													</th>
+													<th className="text-center border border-dark align-middle">
+														MOVE IN
+													</th>
+													<th className="text-center border border-dark align-middle">
+														MOVE OUT
+													</th>
+													<th className="text-center border border-dark align-middle">
+														NOTE
+													</th>
+													<th className="border-0 fit bg-transparent"></th>
 												</tr>
 											</thead>
 											<tbody>
 												{equipments.map((equipment, i) => {
 													return (
 														<tr key={i}>
-															<td className="text-left align-middle">
+															<td className="text-left border border-dark align-middle">
 																<Autocomplete
 																	getItemValue={(item) => item.Equipment}
 																	items={dropdownList.equipmentList}
@@ -804,6 +821,7 @@ const Record = () => {
 																				background: isHighlighted
 																					? 'lightgray'
 																					: 'white',
+																				paddingLeft: '8px',
 																			}}
 																		>
 																			{item.Equipment}
@@ -828,7 +846,7 @@ const Record = () => {
 																	}
 																></Autocomplete>
 															</td>
-															<td className="text-left align-middle">
+															<td className="text-left border border-dark align-middle">
 																<Autocomplete
 																	getItemValue={(item) => item.VendorName}
 																	items={dropdownList.vendorList}
@@ -838,6 +856,7 @@ const Record = () => {
 																				background: isHighlighted
 																					? 'lightgray'
 																					: 'white',
+																				paddingLeft: '8px',
 																			}}
 																		>
 																			{item.VendorName}
@@ -862,7 +881,7 @@ const Record = () => {
 																	}
 																></Autocomplete>
 															</td>
-															<td className="text-center align-middle">
+															<td className="text-center border border-dark align-middle">
 																<input
 																	className="w-100"
 																	type="date"
@@ -877,7 +896,7 @@ const Record = () => {
 																	}
 																/>
 															</td>
-															<td className="text-center align-middle">
+															<td className="text-center border border-dark align-middle">
 																<input
 																	className="w-100"
 																	type={'date'}
@@ -892,7 +911,7 @@ const Record = () => {
 																	}
 																/>
 															</td>
-															<td className="text-center align-middle">
+															<td className="text-center border border-dark align-middle">
 																<input
 																	className="w-100"
 																	type="text"
@@ -905,7 +924,7 @@ const Record = () => {
 															</td>
 															{equipments.length === i + 1 ? (
 																<td
-																	className="padding-0 fit"
+																	className="padding-0 border-0 fit"
 																	style={{ backgroundColor: 'transparent' }}
 																>
 																	<button
@@ -917,7 +936,7 @@ const Record = () => {
 																</td>
 															) : (
 																<td
-																	className="padding-0 fit"
+																	className="padding-0 fit border-0 bg-transparent"
 																	style={{ backgroundColor: 'transparent' }}
 																>
 																	<button
@@ -940,32 +959,37 @@ const Record = () => {
 
 								<Row>
 									<Col>
-										<Table
-											className="border border-dark"
-											striped
-											bordered
-											hover
-										>
+										<Table hover>
 											<thead>
 												<tr>
-													<th colSpan={5}>Inspection</th>
+													<th className="border border-dark" colSpan={5}>
+														Inspection
+													</th>
 												</tr>
 												<tr>
-													<th className="text-center align-middle">
+													<th className="text-center border border-dark align-middle">
 														Name of Inspector
 													</th>
-													<th className="text-center align-middle">Agency</th>
-													<th className="text-center align-middle">Location</th>
-													<th className="text-center align-middle">Task</th>
-													<th className="text-center align-middle">Result</th>
-													<th></th>
+													<th className="text-center border border-dark align-middle">
+														Agency
+													</th>
+													<th className="text-center border border-dark align-middle">
+														Location
+													</th>
+													<th className="text-center border border-dark align-middle">
+														Task
+													</th>
+													<th className="text-center border border-dark align-middle">
+														Result
+													</th>
+													<th className="bg-transparent border-0"></th>
 												</tr>
 											</thead>
 											<tbody>
 												{inspections.map((inspection, i) => {
 													return (
 														<tr key={i}>
-															<td className="text-center align-middle">
+															<td className="text-center border border-dark align-middle">
 																<input
 																	className="w-100"
 																	type="text"
@@ -976,7 +1000,7 @@ const Record = () => {
 																	}
 																/>
 															</td>
-															<td className="text-center align-middle">
+															<td className="text-center border border-dark align-middle">
 																<input
 																	className="w-100"
 																	type="text"
@@ -987,7 +1011,7 @@ const Record = () => {
 																	}
 																/>
 															</td>
-															<td className="text-center align-middle">
+															<td className="text-center border border-dark align-middle">
 																<input
 																	className="w-100"
 																	type="text"
@@ -998,7 +1022,7 @@ const Record = () => {
 																	}
 																/>
 															</td>
-															<td className="text-center align-middle">
+															<td className="text-center border border-dark align-middle">
 																<input
 																	className="w-100"
 																	type="text"
@@ -1009,7 +1033,7 @@ const Record = () => {
 																	}
 																/>
 															</td>
-															<td className="text-center align-middle">
+															<td className="text-center border border-dark align-middle">
 																<input
 																	className="w-100"
 																	type="text"
@@ -1022,7 +1046,7 @@ const Record = () => {
 															</td>
 															{inspections.length === i + 1 ? (
 																<td
-																	className="padding-0 fit"
+																	className="padding-0 fit border-0"
 																	style={{ backgroundColor: 'transparent' }}
 																>
 																	<button
@@ -1034,7 +1058,7 @@ const Record = () => {
 																</td>
 															) : (
 																<td
-																	className="padding-0 fit"
+																	className="padding-0 fit border-0"
 																	style={{ backgroundColor: 'transparent' }}
 																>
 																	<button
@@ -1056,35 +1080,35 @@ const Record = () => {
 								</Row>
 								<Row>
 									<Col>
-										<Table
-											className="border border-dark"
-											striped
-											bordered
-											hover
-										>
+										<Table hover>
 											<thead>
 												<tr>
-													<th colSpan={5}>Correctional Items</th>
+													<th className="border border-dark" colSpan={4}>
+														Correctional Items
+													</th>
+													<th className="bg-transparent border-0"></th>
 												</tr>
 												<tr>
-													<th className="text-center align-middle">
+													<th className="text-center border border-dark align-middle">
 														Deficiency Name
 													</th>
-													<th className="text-center align-middle">Type</th>
-													<th className="text-center align-middle">
+													<th className="text-center border border-dark align-middle">
+														Type
+													</th>
+													<th className="text-center border border-dark align-middle">
 														Related Trade
 													</th>
-													<th className="text-center align-middle">
+													<th className="text-center border border-dark align-middle">
 														Description
 													</th>
-													<th></th>
+													<th className="border-0 bg-transparent"></th>
 												</tr>
 											</thead>
 											<tbody>
 												{correctionals.map((correctional, i) => {
 													return (
 														<tr key={i}>
-															<td className="text-center align-middle">
+															<td className="text-center border border-dark align-middle">
 																<input
 																	className="w-100"
 																	type="text"
@@ -1095,7 +1119,7 @@ const Record = () => {
 																	}
 																/>
 															</td>
-															<td className="text-left align-middle">
+															<td className="text-left border border-dark align-middle">
 																<Autocomplete
 																	getItemValue={(item) => item.Type}
 																	items={dropdownList.typeList}
@@ -1105,6 +1129,7 @@ const Record = () => {
 																				background: isHighlighted
 																					? 'lightgray'
 																					: 'white',
+																				paddingLeft: '8px',
 																			}}
 																		>
 																			{item.Type}
@@ -1129,7 +1154,7 @@ const Record = () => {
 																	}
 																></Autocomplete>
 															</td>
-															<td className="text-left align-middle">
+															<td className="text-left border border-dark align-middle">
 																<Autocomplete
 																	getItemValue={(item) => item.Trade}
 																	items={dropdownList.relatedTradeList}
@@ -1139,6 +1164,7 @@ const Record = () => {
 																				background: isHighlighted
 																					? 'lightgray'
 																					: 'white',
+																				paddingLeft: '8px',
 																			}}
 																		>
 																			{item.Trade}
@@ -1163,7 +1189,7 @@ const Record = () => {
 																	}
 																></Autocomplete>
 															</td>
-															<td className="text-left align-middle">
+															<td className="text-left border border-dark align-middle">
 																<input
 																	className="w-100"
 																	type="text"
@@ -1176,7 +1202,7 @@ const Record = () => {
 															</td>
 															{correctionals.length === i + 1 ? (
 																<td
-																	className="padding-0 fit"
+																	className="padding-0 fit border-0"
 																	style={{ backgroundColor: 'transparent' }}
 																>
 																	<button
@@ -1190,7 +1216,7 @@ const Record = () => {
 																</td>
 															) : (
 																<td
-																	className="padding-0 fit"
+																	className="padding-0 fit border-0"
 																	style={{ backgroundColor: 'transparent' }}
 																>
 																	<button
@@ -1212,22 +1238,17 @@ const Record = () => {
 								</Row>
 								<Row>
 									<Col>
-										<Table
-											className="border border-dark"
-											striped
-											bordered
-											hover
-										>
+										<Table hover>
 											<thead>
 												<tr>
-													<th>Note</th>
+													<th className="border border-dark">Note</th>
 												</tr>
 											</thead>
 											<tbody>
 												{notes.map((note, i) => {
 													return (
 														<tr key={i}>
-															<td className="text-center align-middle">
+															<td className="text-center border border-dark align-middle">
 																<input
 																	className="w-100"
 																	type="text"
@@ -1238,7 +1259,7 @@ const Record = () => {
 															</td>
 															{notes.length === i + 1 ? (
 																<td
-																	className="padding-0 fit"
+																	className="padding-0 fit border-0"
 																	style={{ backgroundColor: 'transparent' }}
 																>
 																	<button
@@ -1250,7 +1271,7 @@ const Record = () => {
 																</td>
 															) : (
 																<td
-																	className="padding-0 fit"
+																	className="padding-0 fit border-0"
 																	style={{ backgroundColor: 'transparent' }}
 																>
 																	<button
