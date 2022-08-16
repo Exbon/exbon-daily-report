@@ -36,6 +36,7 @@
     "react": "^16.8.6",
     "react-autocomplete": "^1.8.1",
     "react-bootstrap": "^2.5.0",
+    "react-bootstrap-typeahead": "^6.0.0-rc.3",
     "react-cookie": "^4.0.3",
     "react-dom": "^16.8.6",
     "react-icons": "^4.2.0",
