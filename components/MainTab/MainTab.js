@@ -23,6 +23,7 @@ const MainTab = ({
   logout,
 }) => {
   const [anchorEl, setAnchorEl] = React.useState(null);
+  
 
   const open = Boolean(anchorEl);
   const id = open ? "simple-popover" : undefined;
@@ -40,6 +41,10 @@ const MainTab = ({
   const handleLogout = () => {
     logout();
   };
+
+  const admin = [5020, 5023, 7423, 7784, 7869];
+
+
   return (
     <AppBar position="static">
       <Tabs value={tapNo}>
@@ -102,6 +107,7 @@ const MainTab = ({
             disableRipple={true}
             disabled={main}
             textColor={tapNo === 2 ? "inherit" : "primary"}
+            style={!admin.includes(parseInt(employeeID)) ? {display: 'none'} : {}}
           />
         </Link>
         {/* <Link href={`/deficiency-log/${projectState}`}>
