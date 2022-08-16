@@ -14,7 +14,7 @@ import DateFnsUtils from '@date-io/date-fns';
 import { DatePicker, MuiPickersUtilsProvider } from '@material-ui/pickers';
 import { Typeahead } from 'react-bootstrap-typeahead';
 import styles from './record.module.css';
-import { formatDate } from '../components/main/formatDate';
+import { formatDate, formatDateDash } from '../components/main/formatDate';
 import Autocomplete from 'react-autocomplete';
 const Record = () => {
 	const resolution1008 = useMediaQuery({
@@ -61,8 +61,8 @@ const Record = () => {
 		taskList: [],
 		equipmentList: [],
 		vendorList: [],
-		TypeList: [],
-		RelatedTradeList: [],
+		typeList: [],
+		relatedTradeList: [],
 	});
 
 	useEffect(() => {
@@ -142,21 +142,19 @@ const Record = () => {
 				const fetchContractorList = await axios(
 					`/api/record/daily-report/contractor?pid=${projectState}`,
 				);
-				console.log(fetchContractorList.data);
 				const fetchCorrectionalList = await axios(
 					`/api/record/daily-report/correctional`,
 				);
 				const fetchEquipmentList = await axios(
 					`/api/record/daily-report/equipment`,
 				);
-				console.log('test:', fetchEquipmentList.data);
 				setDropdownList({
 					contractorList: fetchContractorList.data.result[0],
 					taskList: fetchContractorList.data.result[1],
 					equipmentList: fetchEquipmentList.data.result[0],
 					vendorList: fetchEquipmentList.data.result[1],
-					TypeList: fetchCorrectionalList.data.result[0],
-					RelatedTradeList: fetchCorrectionalList.data.result[1],
+					typeList: fetchCorrectionalList.data.result[0],
+					relatedTradeList: fetchCorrectionalList.data.result[1],
 				});
 
 				// setContractorList(fetchContractorList);
@@ -355,8 +353,6 @@ const Record = () => {
 		if (type === 'contractors') {
 			setContractors((prevState) => {
 				const newState = [...prevState];
-				console.log('newState', newState);
-				console.log('e.target.name', e);
 				newState[index][e.target.name] = e.target.value;
 				return newState;
 			});
@@ -386,7 +382,6 @@ const Record = () => {
 			});
 		}
 	};
-	console.log(dropdownList);
 	const handleAutoComplete = (val, type, key, index) => {
 		if (type === 'contractors') {
 			setContractors((prevState) => {
@@ -410,6 +405,7 @@ const Record = () => {
 	};
 
 	const removeRowHandler = (type, index) => {
+		console.log(index);
 		if (type === 'contractors') {
 			setContractors((prevState) => {
 				const newState = [...prevState];
@@ -430,7 +426,10 @@ const Record = () => {
 			});
 		} else if (type === 'correctionals') {
 			setCorrectionals((prevState) => {
+				console.log('prev:', prevState);
+
 				const newState = [...prevState];
+				console.log('new:', newState);
 				newState.splice(index, 1);
 				return newState;
 			});
@@ -442,6 +441,7 @@ const Record = () => {
 			});
 		}
 	};
+	console.log('correctionals:', correctionals);
 	return (
 		<>
 			<Head>
@@ -633,7 +633,7 @@ const Record = () => {
 																<input
 																	className="w-100"
 																	type="text"
-																	value={contractor.Location}
+																	value={contractor.Location || ''}
 																	name="Location"
 																	onChange={(e) =>
 																		handleChange(e, 'contractors', i)
@@ -644,7 +644,7 @@ const Record = () => {
 																<input
 																	className="w-100"
 																	type="number"
-																	value={contractor.NumSuper}
+																	value={contractor.NumSuper || ''}
 																	name="NumSuper"
 																	onChange={(e) =>
 																		handleChange(e, 'contractors', i)
@@ -655,7 +655,7 @@ const Record = () => {
 																<input
 																	className="w-100"
 																	type="number"
-																	value={contractor.NumWorker}
+																	value={contractor.NumWorker || ''}
 																	name="NumWorker"
 																	onChange={(e) =>
 																		handleChange(e, 'contractors', i)
@@ -666,7 +666,7 @@ const Record = () => {
 																<input
 																	className="w-100"
 																	type="number"
-																	value={contractor.WorkHours}
+																	value={contractor.WorkHours || ''}
 																	name="WorkHours"
 																	onChange={(e) =>
 																		handleChange(e, 'contractors', i)
@@ -794,7 +794,7 @@ const Record = () => {
 												{equipments.map((equipment, i) => {
 													return (
 														<tr key={i}>
-															<td className="text-center align-middle">
+															<td className="text-left align-middle">
 																<Autocomplete
 																	getItemValue={(item) => item.Equipment}
 																	items={dropdownList.equipmentList}
@@ -828,7 +828,7 @@ const Record = () => {
 																	}
 																></Autocomplete>
 															</td>
-															<td className="text-center align-middle">
+															<td className="text-left align-middle">
 																<Autocomplete
 																	getItemValue={(item) => item.VendorName}
 																	items={dropdownList.vendorList}
@@ -866,7 +866,11 @@ const Record = () => {
 																<input
 																	className="w-100"
 																	type="date"
-																	value={formatDate(equipment.MoveIn)}
+																	value={
+																		equipment.MoveIn
+																			? formatDateDash(equipment.MoveIn)
+																			: ''
+																	}
 																	name={'MoveIn'}
 																	onChange={(e) =>
 																		handleChange(e, 'equipments', i)
@@ -877,7 +881,11 @@ const Record = () => {
 																<input
 																	className="w-100"
 																	type={'date'}
-																	value={formatDate(equipment.MoveOut)}
+																	value={
+																		equipment.MoveOut
+																			? formatDateDash(equipment.MoveOut)
+																			: ''
+																	}
 																	name={'MoveOut'}
 																	onChange={(e) =>
 																		handleChange(e, 'equipments', i)
@@ -888,7 +896,7 @@ const Record = () => {
 																<input
 																	className="w-100"
 																	type="text"
-																	value={equipment.Note}
+																	value={equipment.Note || ''}
 																	name={equipment.Note}
 																	onChange={(e) =>
 																		handleChange(e, 'equipments', i)
@@ -961,7 +969,7 @@ const Record = () => {
 																<input
 																	className="w-100"
 																	type="text"
-																	value={inspection.Inspector}
+																	value={inspection.Inspector || ''}
 																	name="Inspector"
 																	onChange={(e) =>
 																		handleChange(e, 'inspections', i)
@@ -972,7 +980,7 @@ const Record = () => {
 																<input
 																	className="w-100"
 																	type="text"
-																	value={inspection.Agency}
+																	value={inspection.Agency || ''}
 																	name="Agency"
 																	onChange={(e) =>
 																		handleChange(e, 'inspections', i)
@@ -983,7 +991,7 @@ const Record = () => {
 																<input
 																	className="w-100"
 																	type="text"
-																	value={inspection.Location}
+																	value={inspection.Location || ''}
 																	name="Location"
 																	onChange={(e) =>
 																		handleChange(e, 'inspections', i)
@@ -994,7 +1002,7 @@ const Record = () => {
 																<input
 																	className="w-100"
 																	type="text"
-																	value={inspection.Task}
+																	value={inspection.Task || ''}
 																	name="Task"
 																	onChange={(e) =>
 																		handleChange(e, 'inspections', i)
@@ -1005,7 +1013,7 @@ const Record = () => {
 																<input
 																	className="w-100"
 																	type="text"
-																	value={inspection.Result}
+																	value={inspection.Result || ''}
 																	name="Result"
 																	onChange={(e) =>
 																		handleChange(e, 'inspections', i)
@@ -1080,17 +1088,17 @@ const Record = () => {
 																<input
 																	className="w-100"
 																	type="text"
-																	value={correctional.Deficiency}
+																	value={correctional.Deficiency || ''}
 																	name="Deficiency"
 																	onChange={(e) =>
 																		handleChange(e, 'correctionals', i)
 																	}
 																/>
 															</td>
-															<td className="text-center align-middle">
+															<td className="text-left align-middle">
 																<Autocomplete
 																	getItemValue={(item) => item.Type}
-																	items={dropdownList.TypeList}
+																	items={dropdownList.typeList}
 																	renderItem={(item, isHighlighted) => (
 																		<div
 																			style={{
@@ -1121,10 +1129,10 @@ const Record = () => {
 																	}
 																></Autocomplete>
 															</td>
-															<td className="text-center align-middle">
+															<td className="text-left align-middle">
 																<Autocomplete
 																	getItemValue={(item) => item.Trade}
-																	items={dropdownList.RelatedTradeList}
+																	items={dropdownList.relatedTradeList}
 																	renderItem={(item, isHighlighted) => (
 																		<div
 																			style={{
@@ -1133,10 +1141,10 @@ const Record = () => {
 																					: 'white',
 																			}}
 																		>
-																			{item.Type}
+																			{item.Trade}
 																		</div>
 																	)}
-																	value={correctional.Trade}
+																	value={correctional.Trade || ''}
 																	onChange={(e) =>
 																		handleAutoComplete(
 																			e.target.value,
@@ -1155,11 +1163,11 @@ const Record = () => {
 																	}
 																></Autocomplete>
 															</td>
-															<td className="text-center align-middle">
+															<td className="text-left align-middle">
 																<input
 																	className="w-100"
 																	type="text"
-																	value={correctional.Description}
+																	value={correctional.Description || ''}
 																	name="Description"
 																	onChange={(e) =>
 																		handleChange(e, 'correctionals', i)
@@ -1172,7 +1180,9 @@ const Record = () => {
 																	style={{ backgroundColor: 'transparent' }}
 																>
 																	<button
-																		onClick={() => addRowHandler('inspections')}
+																		onClick={() =>
+																			addRowHandler('correctionals')
+																		}
 																		className="border-0 bg-transparent"
 																	>
 																		Add Row
@@ -1185,7 +1195,7 @@ const Record = () => {
 																>
 																	<button
 																		onClick={() =>
-																			removeRowHandler('inspections', i)
+																			removeRowHandler('correctionals', i)
 																		}
 																		className="border-0 bg-transparent"
 																	>
@@ -1221,7 +1231,7 @@ const Record = () => {
 																<input
 																	className="w-100"
 																	type="text"
-																	value={note.Note}
+																	value={note.Note || ''}
 																	name="Note"
 																	onChange={(e) => handleChange(e, 'notes', i)}
 																/>
