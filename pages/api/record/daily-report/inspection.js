@@ -1,7 +1,7 @@
 const mssql = require("mssql");
 const dbserver = require("../../../../dbConfig.js");
 
-const getEquipment = (req, res) => {
+const getInspection = (req, res) => {
   const { method, query, body } = req;
   return new Promise(resolve => {
     switch (method) {
@@ -13,7 +13,7 @@ const getEquipment = (req, res) => {
           }
           const request = new mssql.Request();
 
-          const sqlquery = `EXEC [Exbon].[dbo].[usp_dailyreport_Select_DailyReportEquipment_Dropdown]`;
+        //   const sqlquery = `EXEC [Exbon].[dbo].[usp_dailyreport_Select_DailyReportEquipment_Dropdown]`;
 
           request.query(sqlquery, (err, recordset) => {
             if (err) {
@@ -38,4 +38,4 @@ const getEquipment = (req, res) => {
   });
 };
 
-export default getEquipment;
+export default getInspection;
