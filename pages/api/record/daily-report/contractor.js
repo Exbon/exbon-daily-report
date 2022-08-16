@@ -42,7 +42,13 @@ const getContractor = (req, res) => {
           const request = new mssql.Request();
   
           const sqlquery = `EXEC [Exbon].[dbo].[usp_dailyreport_Insert_DailyReportContractor]
-                            @reportID = ${body.ReportID}
+                            @reportID = ${body.ReportID},
+                            @contractor = '${body.Contractor_Contractor}',
+                            @location = '${body.Contractor_Location}',
+                            @numSuper = ${body.Contractor_NumSuper},
+                            @numWorker = ${body.Contractor_NumWorker},
+                            @workHours = ${body.Contractor_WorkHours},
+                            @task = '${body.Contractor_Task}'
                             `;
   
           request.query(sqlquery, (err, recordset) => {
