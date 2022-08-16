@@ -9,7 +9,7 @@ import { CookiesProvider, useCookies } from 'react-cookie';
 import Login from '../components/MainTab/login.js';
 import Head from 'next/head';
 import { useMediaQuery } from 'react-responsive';
-import { Container, Row, Col, Table } from 'react-bootstrap';
+import { Container, Row, Col, Table, Button } from 'react-bootstrap';
 import DateFnsUtils from '@date-io/date-fns';
 import { DatePicker, MuiPickersUtilsProvider } from '@material-ui/pickers';
 import { Typeahead } from 'react-bootstrap-typeahead';
@@ -65,6 +65,9 @@ const Record = () => {
 		relatedTradeList: [],
 	});
 
+	const saveHandler = () => {
+		axios.post(`/api/record/daily-report`, {});
+	};
 	useEffect(() => {
 		if (!router.isReady) return;
 
@@ -1239,6 +1242,17 @@ const Record = () => {
 												</tr>
 											</tbody>
 										</Table>
+									</Col>
+								</Row>
+								<Row>
+									<Col>
+										<Button
+											variant="primary"
+											type="button"
+											onClick={() => saveHandler()}
+										>
+											Save
+										</Button>
 									</Col>
 								</Row>
 							</>
