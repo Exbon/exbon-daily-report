@@ -12,9 +12,10 @@ import { useMediaQuery } from 'react-responsive';
 import { Container, Row, Col, Table } from 'react-bootstrap';
 import DateFnsUtils from '@date-io/date-fns';
 import { DatePicker, MuiPickersUtilsProvider } from '@material-ui/pickers';
-
+import { Typeahead } from 'react-bootstrap-typeahead';
 import styles from './record.module.css';
-import { formatDate } from '../lib/utils';
+import { formatDate } from '../components/main/formatDate';
+import Autocomplete from 'react-autocomplete';
 const Record = () => {
 	const resolution1008 = useMediaQuery({
 		maxWidth: '1009px',
@@ -55,6 +56,14 @@ const Record = () => {
 	const handleDateChange = (date) => {
 		setSelectedDate(date);
 	};
+	const [dropdownList, setDropdownList] = useState({
+		contractorList: [],
+		taskList: [],
+		equipmentList: [],
+		vendorList: [],
+		TypeList: [],
+		RelatedTradeList: [],
+	});
 
 	useEffect(() => {
 		if (!router.isReady) return;
@@ -130,17 +139,88 @@ const Record = () => {
 
 			if (status.permission === true && projectState !== undefined) {
 				router.push(`?pid=${projectState}`);
-				const res = await axios.get(
-					`/api/record/daily-report?pid=${router.query.pid}&date=${
-						selectedDate.split(',')[0]
-					}`,
+				const fetchContractorList = await axios(
+					`/api/record/daily-report/contractor?pid=${projectState}`,
 				);
-				setContractors(res.data.result[0]);
-				setEquipments(res.data.result[1]);
-				setInspections(res.data.result[2]);
-				setCorrectionals(res.data.result[3]);
-				setNotes(res.data.result[4]);
-				console.log(res.data.result);
+				console.log(fetchContractorList.data);
+				const fetchCorrectionalList = await axios(
+					`/api/record/daily-report/correctional`,
+				);
+				const fetchEquipmentList = await axios(
+					`/api/record/daily-report/equipment`,
+				);
+				console.log('test:', fetchEquipmentList.data);
+				setDropdownList({
+					contractorList: fetchContractorList.data.result[0],
+					taskList: fetchContractorList.data.result[1],
+					equipmentList: fetchEquipmentList.data.result[0],
+					vendorList: fetchEquipmentList.data.result[1],
+					TypeList: fetchCorrectionalList.data.result[0],
+					RelatedTradeList: fetchCorrectionalList.data.result[1],
+				});
+
+				// setContractorList(fetchContractorList);
+				const res = await axios.get(
+					`/api/record/daily-report?pid=${router.query.pid}&date=${formatDate(
+						selectedDate,
+					)}`,
+				);
+				setContractors([
+					...res.data.result[0],
+					...[
+						{
+							ContractorID: '',
+							Location: '',
+							NumSuper: '',
+							NumWorker: '',
+							WorkHours: '',
+							Task: '',
+						},
+					],
+				]);
+				setEquipments([
+					...res.data.result[1],
+					...[
+						{
+							EquipmentID: '',
+							Location: '',
+							Num: '',
+							Task: '',
+						},
+					],
+				]);
+				setInspections([
+					...res.data.result[2],
+					...[
+						{
+							InspectionID: '',
+							Agency: '',
+							NuLocation: '',
+							Task: '',
+							Result: '',
+						},
+					],
+				]);
+				setCorrectionals([
+					...res.data.result[3],
+					...[
+						{
+							CorrectionalID: '',
+							Location: '',
+							Num: '',
+							Task: '',
+						},
+					],
+				]);
+				setNotes([
+					...res.data.result[4],
+					...[
+						{
+							NoteID: '',
+							Note: '',
+						},
+					],
+				]);
 			} else {
 				setData('');
 			}
@@ -306,6 +386,62 @@ const Record = () => {
 			});
 		}
 	};
+	console.log(dropdownList);
+	const handleAutoComplete = (val, type, key, index) => {
+		if (type === 'contractors') {
+			setContractors((prevState) => {
+				const newState = [...prevState];
+				newState[index][key] = val;
+				return newState;
+			});
+		} else if (type === 'equipments') {
+			setEquipments((prevState) => {
+				const newState = [...prevState];
+				newState[index][key] = val;
+				return newState;
+			});
+		} else if (type === 'correctionals') {
+			setCorrectionals((prevState) => {
+				const newState = [...prevState];
+				newState[index][key] = val;
+				return newState;
+			});
+		}
+	};
+
+	const removeRowHandler = (type, index) => {
+		if (type === 'contractors') {
+			setContractors((prevState) => {
+				const newState = [...prevState];
+				newState.splice(index, 1);
+				return newState;
+			});
+		} else if (type === 'equipments') {
+			setEquipments((prevState) => {
+				const newState = [...prevState];
+				newState.splice(index, 1);
+				return newState;
+			});
+		} else if (type === 'inspections') {
+			setInspections((prevState) => {
+				const newState = [...prevState];
+				newState.splice(index, 1);
+				return newState;
+			});
+		} else if (type === 'correctionals') {
+			setCorrectionals((prevState) => {
+				const newState = [...prevState];
+				newState.splice(index, 1);
+				return newState;
+			});
+		} else if (type === 'notes') {
+			setNotes((prevState) => {
+				const newState = [...prevState];
+				newState.splice(index, 1);
+				return newState;
+			});
+		}
+	};
 	return (
 		<>
 			<Head>
@@ -452,15 +588,46 @@ const Record = () => {
 													return (
 														<tr key={i}>
 															<td className="border border-dark">
-																<input
-																	className="w-100"
-																	type="text"
+																<Autocomplete
+																	getItemValue={(item) => item.CompanyName}
+																	items={dropdownList.contractorList}
+																	renderItem={(item, isHighlighted) => (
+																		<div
+																			style={{
+																				background: isHighlighted
+																					? 'lightgray'
+																					: 'white',
+																			}}
+																		>
+																			{item.CompanyName}
+																		</div>
+																	)}
 																	value={contractor.Contractor}
-																	name="Contractor"
 																	onChange={(e) =>
-																		handleChange(e, 'contractors', i)
+																		handleAutoComplete(
+																			e.target.value,
+																			'contractors',
+																			'Contractor',
+																			i,
+																		)
 																	}
-																/>
+																	onSelect={(val) =>
+																		handleAutoComplete(
+																			val,
+																			'contractors',
+																			'Contractor',
+																			i,
+																		)
+																	}
+																></Autocomplete>
+																{/* <Typeahead
+																	id="basic-typeahead-single"
+																	labelKey="CompanyName"
+																	onChange={handleAutoComplete}
+																	options={contractorList}
+																	placeholder="Choose a state..."
+																	selected={contractor.Contractor}
+																/> */}
 															</td>
 															<td className="border border-dark">
 																<input
@@ -507,15 +674,38 @@ const Record = () => {
 																/>
 															</td>
 															<td className="border border-dark">
-																<input
-																	className="w-100"
-																	type="text"
+																<Autocomplete
+																	getItemValue={(item) => item.Name}
+																	items={dropdownList.taskList}
+																	renderItem={(item, isHighlighted) => (
+																		<div
+																			style={{
+																				background: isHighlighted
+																					? 'lightgray'
+																					: 'white',
+																			}}
+																		>
+																			{item.Name}
+																		</div>
+																	)}
 																	value={contractor.Task}
-																	name="Task"
 																	onChange={(e) =>
-																		handleChange(e, 'contractors', i)
+																		handleAutoComplete(
+																			e.target.value,
+																			'contractors',
+																			'Task',
+																			i,
+																		)
 																	}
-																/>
+																	onSelect={(val) =>
+																		handleAutoComplete(
+																			val,
+																			'contractors',
+																			'Task',
+																			i,
+																		)
+																	}
+																></Autocomplete>
 															</td>
 															{contractors.length === i + 1 ? (
 																<td
@@ -529,7 +719,21 @@ const Record = () => {
 																		Add Row
 																	</button>
 																</td>
-															) : null}
+															) : (
+																<td
+																	className="padding-0 fit"
+																	style={{ backgroundColor: 'transparent' }}
+																>
+																	<button
+																		onClick={() =>
+																			removeRowHandler('contractors', i)
+																		}
+																		className="border-0 bg-transparent"
+																	>
+																		Remove row
+																	</button>
+																</td>
+															)}
 														</tr>
 													);
 												})}
@@ -591,26 +795,72 @@ const Record = () => {
 													return (
 														<tr key={i}>
 															<td className="text-center align-middle">
-																<input
-																	className="w-100"
-																	type="text"
+																<Autocomplete
+																	getItemValue={(item) => item.Equipment}
+																	items={dropdownList.equipmentList}
+																	renderItem={(item, isHighlighted) => (
+																		<div
+																			style={{
+																				background: isHighlighted
+																					? 'lightgray'
+																					: 'white',
+																			}}
+																		>
+																			{item.Equipment}
+																		</div>
+																	)}
 																	value={equipment.Equipment}
-																	name={equipment.Equipment}
 																	onChange={(e) =>
-																		handleChange(e, 'equipments', i)
+																		handleAutoComplete(
+																			e.target.value,
+																			'equipments',
+																			'Equipment',
+																			i,
+																		)
 																	}
-																/>
+																	onSelect={(val) =>
+																		handleAutoComplete(
+																			val,
+																			'equipments',
+																			'Equipment',
+																			i,
+																		)
+																	}
+																></Autocomplete>
 															</td>
 															<td className="text-center align-middle">
-																<input
-																	className="w-100"
-																	type="text"
+																<Autocomplete
+																	getItemValue={(item) => item.VendorName}
+																	items={dropdownList.vendorList}
+																	renderItem={(item, isHighlighted) => (
+																		<div
+																			style={{
+																				background: isHighlighted
+																					? 'lightgray'
+																					: 'white',
+																			}}
+																		>
+																			{item.VendorName}
+																		</div>
+																	)}
 																	value={equipment.Vendor}
-																	name={equipment.Vendor}
 																	onChange={(e) =>
-																		handleChange(e, 'equipments', i)
+																		handleAutoComplete(
+																			e.target.value,
+																			'equipments',
+																			'Vendor',
+																			i,
+																		)
 																	}
-																/>
+																	onSelect={(val) =>
+																		handleAutoComplete(
+																			val,
+																			'equipments',
+																			'Vendor',
+																			i,
+																		)
+																	}
+																></Autocomplete>
 															</td>
 															<td className="text-center align-middle">
 																<input
@@ -657,7 +907,21 @@ const Record = () => {
 																		Add Row
 																	</button>
 																</td>
-															) : null}
+															) : (
+																<td
+																	className="padding-0 fit"
+																	style={{ backgroundColor: 'transparent' }}
+																>
+																	<button
+																		onClick={() =>
+																			removeRowHandler('equipments', i)
+																		}
+																		className="border-0 bg-transparent"
+																	>
+																		Remove row
+																	</button>
+																</td>
+															)}
 														</tr>
 													);
 												})}
@@ -760,7 +1024,21 @@ const Record = () => {
 																		Add Row
 																	</button>
 																</td>
-															) : null}
+															) : (
+																<td
+																	className="padding-0 fit"
+																	style={{ backgroundColor: 'transparent' }}
+																>
+																	<button
+																		onClick={() =>
+																			removeRowHandler('inspections', i)
+																		}
+																		className="border-0 bg-transparent"
+																	>
+																		Remove row
+																	</button>
+																</td>
+															)}
 														</tr>
 													);
 												})}
@@ -810,26 +1088,72 @@ const Record = () => {
 																/>
 															</td>
 															<td className="text-center align-middle">
-																<input
-																	className="w-100"
-																	type="text"
+																<Autocomplete
+																	getItemValue={(item) => item.Type}
+																	items={dropdownList.TypeList}
+																	renderItem={(item, isHighlighted) => (
+																		<div
+																			style={{
+																				background: isHighlighted
+																					? 'lightgray'
+																					: 'white',
+																			}}
+																		>
+																			{item.Type}
+																		</div>
+																	)}
 																	value={correctional.Type}
-																	name="Type"
 																	onChange={(e) =>
-																		handleChange(e, 'correctionals', i)
+																		handleAutoComplete(
+																			e.target.value,
+																			'correctionals',
+																			'Type',
+																			i,
+																		)
 																	}
-																/>
+																	onSelect={(val) =>
+																		handleAutoComplete(
+																			val,
+																			'correctionals',
+																			'Type',
+																			i,
+																		)
+																	}
+																></Autocomplete>
 															</td>
 															<td className="text-center align-middle">
-																<input
-																	className="w-100"
-																	type="text"
+																<Autocomplete
+																	getItemValue={(item) => item.Trade}
+																	items={dropdownList.RelatedTradeList}
+																	renderItem={(item, isHighlighted) => (
+																		<div
+																			style={{
+																				background: isHighlighted
+																					? 'lightgray'
+																					: 'white',
+																			}}
+																		>
+																			{item.Type}
+																		</div>
+																	)}
 																	value={correctional.Trade}
-																	name="Trade"
 																	onChange={(e) =>
-																		handleChange(e, 'correctionals', i)
+																		handleAutoComplete(
+																			e.target.value,
+																			'correctionals',
+																			'Trade',
+																			i,
+																		)
 																	}
-																/>
+																	onSelect={(val) =>
+																		handleAutoComplete(
+																			val,
+																			'correctionals',
+																			'Trade',
+																			i,
+																		)
+																	}
+																></Autocomplete>
 															</td>
 															<td className="text-center align-middle">
 																<input
@@ -854,7 +1178,21 @@ const Record = () => {
 																		Add Row
 																	</button>
 																</td>
-															) : null}
+															) : (
+																<td
+																	className="padding-0 fit"
+																	style={{ backgroundColor: 'transparent' }}
+																>
+																	<button
+																		onClick={() =>
+																			removeRowHandler('inspections', i)
+																		}
+																		className="border-0 bg-transparent"
+																	>
+																		Remove row
+																	</button>
+																</td>
+															)}
 														</tr>
 													);
 												})}
@@ -900,7 +1238,19 @@ const Record = () => {
 																		Add Row
 																	</button>
 																</td>
-															) : null}
+															) : (
+																<td
+																	className="padding-0 fit"
+																	style={{ backgroundColor: 'transparent' }}
+																>
+																	<button
+																		onClick={() => removeRowHandler('notes', i)}
+																		className="border-0 bg-transparent"
+																	>
+																		Remove row
+																	</button>
+																</td>
+															)}
 														</tr>
 													);
 												})}

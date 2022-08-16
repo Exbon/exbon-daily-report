@@ -135,6 +135,12 @@ body {
   td {
     background-color: white;
     padding: 0;
+    div:nth-child(1) {
+      width:100%;
+      input {
+        width: 100%;
+      }
+    }
   }
   th {
     background-color: white;
