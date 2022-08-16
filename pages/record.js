@@ -163,62 +163,11 @@ const Record = () => {
 						selectedDate,
 					)}`,
 				);
-				setContractors([
-					...res.data.result[0],
-					...[
-						{
-							ContractorID: '',
-							Location: '',
-							NumSuper: '',
-							NumWorker: '',
-							WorkHours: '',
-							Task: '',
-						},
-					],
-				]);
-				setEquipments([
-					...res.data.result[1],
-					...[
-						{
-							EquipmentID: '',
-							Location: '',
-							Num: '',
-							Task: '',
-						},
-					],
-				]);
-				setInspections([
-					...res.data.result[2],
-					...[
-						{
-							InspectionID: '',
-							Agency: '',
-							NuLocation: '',
-							Task: '',
-							Result: '',
-						},
-					],
-				]);
-				setCorrectionals([
-					...res.data.result[3],
-					...[
-						{
-							CorrectionalID: '',
-							Location: '',
-							Num: '',
-							Task: '',
-						},
-					],
-				]);
-				setNotes([
-					...res.data.result[4],
-					...[
-						{
-							NoteID: '',
-							Note: '',
-						},
-					],
-				]);
+				setContractors(res.data.result[0]);
+				setEquipments(res.data.result[1]);
+				setInspections(res.data.result[2]);
+				setCorrectionals(res.data.result[3]);
+				setNotes(res.data.result[4]);
 			} else {
 				setData('');
 			}
@@ -310,9 +259,11 @@ const Record = () => {
 				...prevState,
 				{
 					EquipmentID: '',
-					Location: '',
-					Num: '',
-					Task: '',
+					Equipment: '',
+					MoveIn: '',
+					MoveOut: '',
+					Vendor: '',
+					Note: '',
 				},
 			]);
 		} else if (type === 'inspections') {
@@ -348,6 +299,8 @@ const Record = () => {
 	};
 
 	const handleChange = (e, type, index) => {
+		console.log(e.target.name);
+		console.log(e.target.value);
 		e.persist();
 
 		if (type === 'contractors') {
@@ -357,6 +310,7 @@ const Record = () => {
 				return newState;
 			});
 		} else if (type === 'equipments') {
+			console.log(equipments);
 			setEquipments((prevState) => {
 				const newState = [...prevState];
 				newState[index][e.target.name] = e.target.value;
@@ -405,7 +359,6 @@ const Record = () => {
 	};
 
 	const removeRowHandler = (type, index) => {
-		console.log(index);
 		if (type === 'contractors') {
 			setContractors((prevState) => {
 				const newState = [...prevState];
@@ -426,10 +379,7 @@ const Record = () => {
 			});
 		} else if (type === 'correctionals') {
 			setCorrectionals((prevState) => {
-				console.log('prev:', prevState);
-
 				const newState = [...prevState];
-				console.log('new:', newState);
 				newState.splice(index, 1);
 				return newState;
 			});
@@ -441,7 +391,6 @@ const Record = () => {
 			});
 		}
 	};
-	console.log('correctionals:', correctionals);
 	return (
 		<>
 			<Head>
@@ -712,33 +661,31 @@ const Record = () => {
 																	}
 																></Autocomplete>
 															</td>
-															{contractors.length === i + 1 ? (
-																<td
-																	className="padding-0 fit border-0"
-																	style={{ backgroundColor: 'transparent' }}
+
+															<td className="padding-0 fit bg-transparent border-0">
+																<button
+																	onClick={() =>
+																		removeRowHandler('contractors', i)
+																	}
+																	className="border-0 bg-transparent"
 																>
-																	<button
-																		onClick={() => addRowHandler('contractors')}
-																		className="border-0 bg-transparent "
-																	>
-																		Add Row
-																	</button>
-																</td>
-															) : (
-																<td className="padding-0 fit bg-transparent border-0">
-																	<button
-																		onClick={() =>
-																			removeRowHandler('contractors', i)
-																		}
-																		className="border-0 bg-transparent"
-																	>
-																		Remove row
-																	</button>
-																</td>
-															)}
+																	Remove row
+																</button>
+															</td>
 														</tr>
 													);
 												})}
+												<tr style={{ backgroundColor: 'transparent' }}>
+													<td colSpan={6} className="border border-dark">
+														<button
+															onClick={() => addRowHandler('contractors')}
+															className="border-0 bg-transparent"
+														>
+															(+) ADD
+														</button>
+													</td>
+													<td className="border-0 fit bg-transparent"></td>
+												</tr>
 											</tbody>
 											<tfoot>
 												<tr>
@@ -922,36 +869,38 @@ const Record = () => {
 																	}
 																/>
 															</td>
-															{equipments.length === i + 1 ? (
-																<td
-																	className="padding-0 border-0 fit"
-																	style={{ backgroundColor: 'transparent' }}
+
+															<td
+																className="padding-0 fit border-0 bg-transparent"
+																style={{ backgroundColor: 'transparent' }}
+															>
+																<button
+																	onClick={() =>
+																		removeRowHandler('equipments', i)
+																	}
+																	className="border-0 bg-transparent"
 																>
-																	<button
-																		onClick={() => addRowHandler('equipments')}
-																		className="border-0 bg-transparent"
-																	>
-																		Add Row
-																	</button>
-																</td>
-															) : (
-																<td
-																	className="padding-0 fit border-0 bg-transparent"
-																	style={{ backgroundColor: 'transparent' }}
-																>
-																	<button
-																		onClick={() =>
-																			removeRowHandler('equipments', i)
-																		}
-																		className="border-0 bg-transparent"
-																	>
-																		Remove row
-																	</button>
-																</td>
-															)}
+																	Remove row
+																</button>
+															</td>
 														</tr>
 													);
 												})}
+
+												<tr
+													className="padding-0 border-0 fit"
+													style={{ backgroundColor: 'transparent' }}
+												>
+													<td colSpan={5} className="border border-dark">
+														<button
+															onClick={() => addRowHandler('equipments')}
+															className="border-0 bg-transparent"
+														>
+															(+) ADD
+														</button>
+													</td>
+													<td className="border-0 fit bg-transparent"></td>
+												</tr>
 											</tbody>
 										</Table>
 									</Col>
@@ -1044,36 +993,38 @@ const Record = () => {
 																	}
 																/>
 															</td>
-															{inspections.length === i + 1 ? (
-																<td
-																	className="padding-0 fit border-0"
-																	style={{ backgroundColor: 'transparent' }}
+
+															<td
+																className="padding-0 fit border-0"
+																style={{ backgroundColor: 'transparent' }}
+															>
+																<button
+																	onClick={() =>
+																		removeRowHandler('inspections', i)
+																	}
+																	className="border-0 bg-transparent"
 																>
-																	<button
-																		onClick={() => addRowHandler('inspections')}
-																		className="border-0 bg-transparent"
-																	>
-																		Add Row
-																	</button>
-																</td>
-															) : (
-																<td
-																	className="padding-0 fit border-0"
-																	style={{ backgroundColor: 'transparent' }}
-																>
-																	<button
-																		onClick={() =>
-																			removeRowHandler('inspections', i)
-																		}
-																		className="border-0 bg-transparent"
-																	>
-																		Remove row
-																	</button>
-																</td>
-															)}
+																	Remove row
+																</button>
+															</td>
 														</tr>
 													);
 												})}
+												<tr
+													className="padding-0 fit border-0"
+													style={{ backgroundColor: 'transparent' }}
+												>
+													<td colSpan={5} className="border border-dark">
+														<button
+															onClick={() => addRowHandler('inspections')}
+															className="border-0 bg-transparent"
+														>
+															(+) ADD
+														</button>
+													</td>
+
+													<td className="border-0 fit bg-transparent"></td>
+												</tr>
 											</tbody>
 										</Table>
 									</Col>
@@ -1200,38 +1151,38 @@ const Record = () => {
 																	}
 																/>
 															</td>
-															{correctionals.length === i + 1 ? (
-																<td
-																	className="padding-0 fit border-0"
-																	style={{ backgroundColor: 'transparent' }}
+															<td
+																className="padding-0 fit border-0"
+																style={{ backgroundColor: 'transparent' }}
+															>
+																<button
+																	onClick={() =>
+																		removeRowHandler('correctionals', i)
+																	}
+																	className="border-0 bg-transparent"
 																>
-																	<button
-																		onClick={() =>
-																			addRowHandler('correctionals')
-																		}
-																		className="border-0 bg-transparent"
-																	>
-																		Add Row
-																	</button>
-																</td>
-															) : (
-																<td
-																	className="padding-0 fit border-0"
-																	style={{ backgroundColor: 'transparent' }}
-																>
-																	<button
-																		onClick={() =>
-																			removeRowHandler('correctionals', i)
-																		}
-																		className="border-0 bg-transparent"
-																	>
-																		Remove row
-																	</button>
-																</td>
-															)}
+																	Remove row
+																</button>
+															</td>
 														</tr>
 													);
 												})}
+
+												<tr
+													colSpan="5"
+													className="padding-0 fit border-0"
+													style={{ backgroundColor: 'transparent' }}
+												>
+													<td colSpan={4} className="border border-dark">
+														<button
+															onClick={() => addRowHandler('correctionals')}
+															className="border-0 bg-transparent"
+														>
+															(+) ADD
+														</button>
+													</td>
+													<td className="border-0 bg-transparent"></td>
+												</tr>
 											</tbody>
 										</Table>
 									</Col>
@@ -1257,34 +1208,35 @@ const Record = () => {
 																	onChange={(e) => handleChange(e, 'notes', i)}
 																/>
 															</td>
-															{notes.length === i + 1 ? (
-																<td
-																	className="padding-0 fit border-0"
-																	style={{ backgroundColor: 'transparent' }}
+															<td
+																className="padding-0 fit border-0"
+																style={{ backgroundColor: 'transparent' }}
+															>
+																<button
+																	onClick={() => removeRowHandler('notes', i)}
+																	className="border-0 bg-transparent"
 																>
-																	<button
-																		onClick={() => addRowHandler('notes')}
-																		className="border-0 bg-transparent"
-																	>
-																		Add Row
-																	</button>
-																</td>
-															) : (
-																<td
-																	className="padding-0 fit border-0"
-																	style={{ backgroundColor: 'transparent' }}
-																>
-																	<button
-																		onClick={() => removeRowHandler('notes', i)}
-																		className="border-0 bg-transparent"
-																	>
-																		Remove row
-																	</button>
-																</td>
-															)}
+																	Remove row
+																</button>
+															</td>
 														</tr>
 													);
 												})}
+												<tr
+													colSpan="2"
+													className="padding-0 fit border-0"
+													style={{ backgroundColor: 'transparent' }}
+												>
+													<td className="border border-dark">
+														<button
+															onClick={() => addRowHandler('notes')}
+															className="border-0 bg-transparent"
+														>
+															(+) ADD
+														</button>
+													</td>
+													<td className="border-0 bg-transparent"></td>
+												</tr>
 											</tbody>
 										</Table>
 									</Col>
