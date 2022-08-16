@@ -1,4 +1,4 @@
-import React, { useState, useMemo, useEffect } from "react";
+import React, { useState, useMemo, useEffect, useRef } from "react";
 import axios from "axios";
 import { useTable, useBlockLayout } from "react-table";
 import DateFnsUtils from "@date-io/date-fns";
@@ -1211,7 +1211,7 @@ const Task = () => {
         FinishDate: modalSaveNoWork.FinishDate,
         NewReqFinishDate: modalSaveNoWork.StartDate,
         NewReqStartDate: modalSaveNoWork.FinishDate,
-        Note: modalSaveNoWork.Reason,
+        Note: noWorkReasonRef.current.value,
       },
     ];
     setNoWork(tempNoWork);
@@ -1382,6 +1382,8 @@ const Task = () => {
       setStateNoAssigned(false);
     }
   }, [stateAssignedProject]);
+
+  const noWorkReasonRef = useRef();
 
   return (
     <>
@@ -1764,8 +1766,9 @@ const Task = () => {
                             label="Reason"
                             multiline
                             rows={2}
-                            onChange={handleReasonOfSaveNoWork}
-                            value={modalSaveNoWork.Reason || ""}
+                            // onChange={handleReasonOfSaveNoWork}
+                            // value={modalSaveNoWork.Reason || ""}
+                            inputRef={noWorkReasonRef}
                             variant="outlined"
                             fullWidth
                             InputLabelProps={{
