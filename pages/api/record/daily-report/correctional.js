@@ -29,6 +29,36 @@ const getCorrectional = (req, res) => {
         });
         break;
 
+      case "POST":
+        mssql.connect(dbserver.dbConfig, err => {
+          if (err) {
+            console.error(err);
+            return resolve();
+          }
+          const request = new mssql.Request();
+    
+          const sqlquery = `EXEC [Exbon].[dbo].[usp_dailyreport_Insert_DailyReportCorrectional]
+                            @reportID = ${body.ReportID},
+                            @deficiency = '${body.Correctional_Deficiency}',
+                            @type = '${body.Correctional_Type}',
+                            @trade = '${body.Correctional_Trade}',
+                            @description = '${body.Correctional_Description}'
+                            `;
+    
+          request.query(sqlquery, (err, recordset) => {
+            if (err) {
+              console.error(err);
+              return resolve();
+            }
+            res.status(200).json({
+              message: "Success",
+              result: recordset.recordsets,
+            });
+            return resolve();
+          });
+        });
+        break;
+
       default:
         res.setHeader("Allow", ["GET", "POST"]);
         res.status(405).end(`Method ${method} Not Allowed`);
