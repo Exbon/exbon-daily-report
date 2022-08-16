@@ -2,7 +2,7 @@ const mssql = require("mssql");
 const dbserver = require("../../../../dbConfig.js");
 
 const getCorrectional = (req, res) => {
-  const { method, query } = req;
+  const { method, query, body } = req;
   return new Promise(resolve => {
     switch (method) {
       case "GET":
@@ -30,7 +30,7 @@ const getCorrectional = (req, res) => {
         break;
 
       default:
-        res.setHeader("Allow", ["GET"]);
+        res.setHeader("Allow", ["GET", "POST"]);
         res.status(405).end(`Method ${method} Not Allowed`);
         res.status(404).end(`Failed`);
         resolve();
