@@ -73,6 +73,7 @@ const Record = () => {
 	});
 
 	const saveHandler = async () => {
+		console.log('hi');
 		let promises = [];
 		const fetchData = async () => {
 			const reportID = (
@@ -80,16 +81,10 @@ const Record = () => {
 					ProjectID: router.query.pid,
 					Date: formatDate(selectedDate),
 					EmployeeID: status.cookies.employeeid,
-					Note: note.Note,
+					Note: note ? note.Note : '',
 				})
 			).data.result[0][0].ReportID;
 
-			console.log({
-				ProjectID: router.query.pid,
-				Date: selectedDate,
-				EmployeeID: status.cookies.employeeid,
-				Notes: note,
-			});
 			console.log(reportID);
 
 			for (let i = 0; i < contractors.length; i++) {
