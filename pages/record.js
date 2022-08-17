@@ -21,6 +21,7 @@ import { toast } from 'react-toastify';
 import SaveIcon from '@material-ui/icons/Save';
 import AddBoxIcon from '@material-ui/icons/AddBox';
 import MUIButton from '@material-ui/core/Button';
+import DeleteTwoTone from '@material-ui/icons/DeleteTwoTone';
 
 toast.configure();
 
@@ -787,14 +788,20 @@ const Record = () => {
 															</td>
 
 															<td className="padding-0 fit bg-transparent border-0">
-																<button
+																{/* <button
 																	onClick={() =>
 																		removeRowHandler('contractors', i)
 																	}
 																	className="border-0 bg-transparent"
 																>
 																	Remove row
-																</button>
+																</button> */}
+																<DeleteTwoTone
+																	className={styles['table__is-deleted__icon']}
+																	onClick={() =>
+																		removeRowHandler('contractors', i)
+																	}
+																/>
 															</td>
 														</tr>
 													);
@@ -865,11 +872,7 @@ const Record = () => {
 														/>
 													</td>
 													<td className="text-center border border-gray align-middle border border-gray"></td>
-													<td className="border-0 fit bg-transparent">
-														<button className="border-0 invisible">
-															Remove row
-														</button>
-													</td>
+													<td className="border-0 fit bg-transparent"></td>
 												</tr>
 											</tfoot>
 										</Table>
@@ -1079,14 +1082,12 @@ const Record = () => {
 																className="padding-0 fit border-0 bg-transparent"
 																style={{ backgroundColor: 'transparent' }}
 															>
-																<button
+																<DeleteTwoTone
+																	className={styles['table__is-deleted__icon']}
 																	onClick={() =>
 																		removeRowHandler('equipments', i)
 																	}
-																	className="border-0 bg-transparent"
-																>
-																	Remove row
-																</button>
+																/>
 															</td>
 														</tr>
 													);
@@ -1250,14 +1251,12 @@ const Record = () => {
 																className="padding-0 fit border-0"
 																style={{ backgroundColor: 'transparent' }}
 															>
-																<button
+																<DeleteTwoTone
+																	className={styles['table__is-deleted__icon']}
 																	onClick={() =>
 																		removeRowHandler('inspections', i)
 																	}
-																	className="border-0 bg-transparent"
-																>
-																	Remove row
-																</button>
+																/>
 															</td>
 														</tr>
 													);
@@ -1466,14 +1465,12 @@ const Record = () => {
 																className="padding-0 fit border-0"
 																style={{ backgroundColor: 'transparent' }}
 															>
-																<button
+																<DeleteTwoTone
+																	className={styles['table__is-deleted__icon']}
 																	onClick={() =>
 																		removeRowHandler('correctionals', i)
 																	}
-																	className="border-0 bg-transparent"
-																>
-																	Remove row
-																</button>
+																/>
 															</td>
 														</tr>
 													);
