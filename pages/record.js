@@ -55,8 +55,6 @@ const Record = () => {
 		timeZone: 'America/Los_Angeles',
 	});
 	const [selectedDate, setSelectedDate] = useState(now);
-	const [data, setData] = useState();
-	const [paramPID, setParamPID] = useState(router.query.pid);
 	const [contractors, setContractors] = useState([]);
 	const [equipments, setEquipments] = useState([]);
 	const [inspections, setInspections] = useState([]);
@@ -239,11 +237,69 @@ const Record = () => {
 						selectedDate,
 					)}`,
 				);
-				setContractors(res.data.result[0]);
-				setEquipments(res.data.result[1]);
-				setInspections(res.data.result[2]);
-				setCorrectionals(res.data.result[3]);
-				setNote(res.data.result[4][0]);
+				setContractors(
+					res.data.result[0].length > 0
+						? res.data.result[0]
+						: [
+								{
+									ContractorID: '',
+									Location: '',
+									NumSuper: '',
+									NumWorker: '',
+									WorkHours: '',
+									Task: '',
+								},
+						  ],
+				);
+				setEquipments(
+					res.data.result[1].length > 0
+						? res.data.result[1]
+						: [
+								{
+									EquipmentID: '',
+									Equipment: '',
+									MoveIn: '',
+									MoveOut: '',
+									Vendor: '',
+									Note: '',
+								},
+						  ],
+				);
+				setInspections(
+					res.data.result[2].length > 0
+						? res.data.result[2]
+						: [
+								{
+									Inspector: '',
+									Agency: '',
+									Location: '',
+									Task: '',
+									Result: '',
+								},
+						  ],
+				);
+				setCorrectionals(
+					res.data.result[3].length > 0
+						? res.data.result[3]
+						: [
+								{
+									Deficiency: '',
+									Type: '',
+									Trade: '',
+									Description: '',
+								},
+						  ],
+				);
+				setNote(
+					res.data.result[4][0].length > 0
+						? res.data.result[4][0]
+						: [
+								{
+									NoteID: '',
+									Note: '',
+								},
+						  ],
+				);
 			} else {
 				setData('');
 			}
