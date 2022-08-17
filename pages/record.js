@@ -1485,7 +1485,7 @@ const Record = () => {
 														colSpan={4}
 														className="border border-gray text-center py-2"
 													>
-														<MUIButton
+														{/* <MUIButton
 															variant="contained"
 															color="secondary"
 															style={{ color: 'white' }}
@@ -1495,7 +1495,11 @@ const Record = () => {
 															onClick={() => addRowHandler('correctionals')}
 														>
 															ADD
-														</MUIButton>
+														</MUIButton> */}
+														<AddBoxIcon
+															className={styles['table__add-icon']}
+															onClick={() => addRowHandler('correctionals')}
+														/>
 													</td>
 													<td className="border-0 fit bg-transparent">
 														<button className="border-0 invisible">

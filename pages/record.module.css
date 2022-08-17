@@ -97,3 +97,12 @@
 .table__is-deleted__icon:hover {
 	color: rgb(110, 104, 187);
 }
+
+.table__add-icon {
+	color: rgb(125, 119, 119);
+	cursor: pointer;
+}
+
+.table__add-icon:hover {
+	color: rgb(110, 104, 187);
+}
