@@ -598,25 +598,32 @@ const Record = () => {
 													<th
 														className="text-center border border-gray align-middle border border-gray"
 														rowSpan={2}
+														minWidth="20%"
+														width="20%"
 													>
 														Contractor
 													</th>
 													<th
 														className="text-center border border-gray align-middle border border-gray"
 														rowSpan={2}
+														minWidth="20%"
+														width="20%"
 													>
 														Location
 													</th>
 													<th
 														className="text-center border border-gray align-middle border border-gray"
 														colSpan={3}
-														style={{ width: '150px' }}
+														minWidth="10%"
+														width="10%"
 													>
 														Manpower
 													</th>
 													<th
 														className="text-center border border-gray align-middle border border-gray"
 														rowSpan={2}
+														minWidth="40%"
+														width="40%"
 													>
 														Task
 													</th>
@@ -624,6 +631,8 @@ const Record = () => {
 													<th
 														className="border-0 fit bg-transparent"
 														rowSpan={2}
+														minWidth="15%"
+														width="15%"
 													></th>
 												</tr>
 												<tr>
@@ -830,6 +839,7 @@ const Record = () => {
 																(prev, curr) => prev + Number(curr.NumSuper),
 																0,
 															)}
+															style={{ minWidth: '50px', width: '50px' }}
 														/>
 													</td>
 													<td className="text-end align-middle border border-gray">
@@ -840,6 +850,7 @@ const Record = () => {
 																(prev, curr) => prev + Number(curr.NumWorker),
 																0,
 															)}
+															style={{ minWidth: '50px', width: '50px' }}
 														/>
 													</td>
 													<td className="text-end align-middle border border-gray">
@@ -850,9 +861,15 @@ const Record = () => {
 																(prev, curr) => prev + Number(curr.WorkHours),
 																0,
 															)}
+															style={{ minWidth: '50px', width: '50px' }}
 														/>
 													</td>
 													<td className="text-center border border-gray align-middle border border-gray"></td>
+													<td className="border-0 fit bg-transparent">
+														<button className="border-0 invisible">
+															Remove row
+														</button>
+													</td>
 												</tr>
 											</tfoot>
 										</Table>
