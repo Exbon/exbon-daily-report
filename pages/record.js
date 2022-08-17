@@ -564,7 +564,7 @@ const Record = () => {
 							<Loader type="Oval" color="#4e88de" height="150" width="150" />
 						</div>
 					) : (
-						<Container id="record">
+						<Container id="record" className={styles['container']}>
 							<Row>
 								<Col>
 									<h1 className={styles['title']}>Record</h1>
@@ -697,7 +697,7 @@ const Record = () => {
 														No. of Super
 													</th>
 													<th className="text-center border border-gray align-middle sub-heading border border-gray">
-														No. oF Workers
+														No. of Workers
 													</th>
 													<th className="text-center border border-gray align-middle sub-heading border border-gray">
 														Work hours
@@ -867,17 +867,10 @@ const Record = () => {
 														colSpan={6}
 														className="border border-gray text-center py-2"
 													>
-														<MUIButton
-															variant="contained"
-															color="secondary"
-															style={{ color: 'white' }}
-															size="small"
-															className={styles['header__right__save-btn']}
-															startIcon={<AddBoxIcon />}
+														<AddBoxIcon
+															className={styles['table__add-icon']}
 															onClick={() => addRowHandler('contractors')}
-														>
-															ADD
-														</MUIButton>
+														/>
 													</td>
 													<td className="border-0 fit bg-transparent">
 														<button className="border-0 invisible">
@@ -1157,17 +1150,10 @@ const Record = () => {
 														colSpan={5}
 														className="border border-gray text-center py-2"
 													>
-														<MUIButton
-															variant="contained"
-															color="secondary"
-															style={{ color: 'white' }}
-															size="small"
-															className={styles['header__right__save-btn']}
-															startIcon={<AddBoxIcon />}
+														<AddBoxIcon
+															className={styles['table__add-icon']}
 															onClick={() => addRowHandler('equipments')}
-														>
-															ADD
-														</MUIButton>
+														/>
 													</td>
 													<td className="border-0 fit bg-transparent">
 														<button className="border-0 invisible">
@@ -1325,17 +1311,10 @@ const Record = () => {
 														colSpan={5}
 														className="border border-gray text-center py-2"
 													>
-														<MUIButton
-															variant="contained"
-															color="secondary"
-															style={{ color: 'white' }}
-															size="small"
-															className={styles['header__right__save-btn']}
-															startIcon={<AddBoxIcon />}
+														<AddBoxIcon
+															className={styles['table__add-icon']}
 															onClick={() => addRowHandler('inspections')}
-														>
-															ADD
-														</MUIButton>
+														/>
 													</td>
 													<td className="border-0 fit bg-transparent">
 														<button className="border-0 invisible">
@@ -1541,17 +1520,6 @@ const Record = () => {
 														colSpan={4}
 														className="border border-gray text-center py-2"
 													>
-														{/* <MUIButton
-															variant="contained"
-															color="secondary"
-															style={{ color: 'white' }}
-															size="small"
-															className={styles['header__right__save-btn']}
-															startIcon={<AddBoxIcon />}
-															onClick={() => addRowHandler('correctionals')}
-														>
-															ADD
-														</MUIButton> */}
 														<AddBoxIcon
 															className={styles['table__add-icon']}
 															onClick={() => addRowHandler('correctionals')}
@@ -1579,7 +1547,6 @@ const Record = () => {
 											<tbody>
 												<tr>
 													<td className="text-center border border-gray align-middle">
-														{console.log(note)}
 														<textarea
 															className="w-100"
 															type="text"
