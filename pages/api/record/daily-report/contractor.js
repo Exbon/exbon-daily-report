@@ -42,7 +42,7 @@ const getContractor = (req, res) => {
 
 					const sqlquery = `EXEC [Exbon].[dbo].[usp_dailyreport_Insert_DailyReportContractor]
                             @reportID = ${body.ReportID},
-                            @contractor = '${sqlEscape(body.Contractor)}',
+                            @contractor = '${sqlEscape(body.Contractor || '')}',
                             @location = '${sqlEscape(body.Location)}',
                             @numSuper = ${body.NumSuper || 0},
                             @numWorker = ${body.NumWorker || 0},
