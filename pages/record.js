@@ -839,7 +839,7 @@ const Record = () => {
 																(prev, curr) => prev + Number(curr.NumSuper),
 																0,
 															)}
-															style={{ minWidth: '50px', width: '50px' }}
+															style={{ minWidth: '100px', width: '100px' }}
 														/>
 													</td>
 													<td className="text-end align-middle border border-gray">
@@ -850,7 +850,7 @@ const Record = () => {
 																(prev, curr) => prev + Number(curr.NumWorker),
 																0,
 															)}
-															style={{ minWidth: '50px', width: '50px' }}
+															style={{ minWidth: '100px', width: '100px' }}
 														/>
 													</td>
 													<td className="text-end align-middle border border-gray">
@@ -861,7 +861,7 @@ const Record = () => {
 																(prev, curr) => prev + Number(curr.WorkHours),
 																0,
 															)}
-															style={{ minWidth: '50px', width: '50px' }}
+															style={{ minWidth: '100px', width: '100px' }}
 														/>
 													</td>
 													<td className="text-center border border-gray align-middle border border-gray"></td>
@@ -880,19 +880,54 @@ const Record = () => {
 										<Table>
 											<thead>
 												<tr>
-													<th className="text-center border border-gray align-middle">
+													<th
+														className="text-center border border-gray align-middle"
+														style={{
+															minWidth: '20%',
+															width: '20%',
+															maxWidth: '20%',
+														}}
+													>
 														Equipment
 													</th>
-													<th className="text-center border border-gray align-middle">
+													<th
+														className="text-center border border-gray align-middle"
+														style={{
+															minWidth: '20%',
+															width: '20%',
+															maxWidth: '20%',
+														}}
+													>
 														Vendor
 													</th>
-													<th className="text-center border border-gray align-middle">
+													<th
+														className="text-center border border-gray align-middle"
+														style={{
+															minWidth: '135px',
+															width: '135px',
+															maxWidth: '135px',
+														}}
+													>
 														Move In
 													</th>
-													<th className="text-center border border-gray align-middle">
+													<th
+														className="text-center border border-gray align-middle"
+														style={{
+															minWidth: '135px',
+															width: '135px',
+															maxWidth: '135px',
+														}}
+													>
 														Move Out
 													</th>
-													<th className="text-center border border-gray align-middle">
+													<th
+														className="text-center border border-gray align-middle"
+														style={{
+															minWidth: 'auto',
+															width: 'auto',
+															maxWidth: 'auto',
+														}}
+													>
 														Note
 													</th>
 													<th className="border-0 fit bg-transparent"></th>
@@ -994,6 +1029,11 @@ const Record = () => {
 															</td>
 															<td className="text-center border border-gray align-middle">
 																<input
+																	style={{
+																		minWidth: '130px',
+																		width: '130px',
+																		maxWidth: '130px',
+																	}}
 																	className="w-100"
 																	type="date"
 																	value={
@@ -1007,6 +1047,11 @@ const Record = () => {
 															</td>
 															<td className="text-center border border-gray align-middle">
 																<input
+																	style={{
+																		minWidth: '130px',
+																		width: '130px',
+																		maxWidth: '130px',
+																	}}
 																	className="w-100"
 																	type={'date'}
 																	value={
@@ -1088,19 +1133,54 @@ const Record = () => {
 													</th>
 												</tr>
 												<tr>
-													<th className="text-center border border-gray align-middle">
+													<th
+														className="text-center border border-gray align-middle"
+														style={{
+															minWidth: '20%',
+															width: '20%',
+															maxWidth: '20%',
+														}}
+													>
 														Name of Inspector
 													</th>
-													<th className="text-center border border-gray align-middle">
+													<th
+														className="text-center border border-gray align-middle"
+														style={{
+															minWidth: '20%',
+															width: '20%',
+															maxWidth: '20%',
+														}}
+													>
 														Agency
 													</th>
-													<th className="text-center border border-gray align-middle">
+													<th
+														className="text-center border border-gray align-middle"
+														style={{
+															minWidth: '20%',
+															width: '20%',
+															maxWidth: '20%',
+														}}
+													>
 														Location
 													</th>
-													<th className="text-center border border-gray align-middle">
+													<th
+														className="text-center border border-gray align-middle"
+														style={{
+															minWidth: '20%',
+															width: '20%',
+															maxWidth: '20%',
+														}}
+													>
 														Task
 													</th>
-													<th className="text-center border border-gray align-middle">
+													<th
+														className="text-center border border-gray align-middle"
+														style={{
+															minWidth: '20%',
+															width: '20%',
+															maxWidth: '20%',
+														}}
+													>
 														Result
 													</th>
 													<th className="bg-transparent border-0"></th>
@@ -1223,16 +1303,44 @@ const Record = () => {
 													<th className="bg-transparent border-0"></th>
 												</tr>
 												<tr>
-													<th className="text-center border border-gray align-middle">
+													<th
+														className="text-center border border-gray align-middle"
+														style={{
+															minWidth: '20%',
+															width: '20%',
+															maxWidth: '20%',
+														}}
+													>
 														Deficiency Name
 													</th>
-													<th className="text-center border border-gray align-middle">
+													<th
+														className="text-center border border-gray align-middle"
+														style={{
+															minWidth: '20%',
+															width: '20%',
+															maxWidth: '20%',
+														}}
+													>
 														Type
 													</th>
-													<th className="text-center border border-gray align-middle">
+													<th
+														className="text-center border border-gray align-middle"
+														style={{
+															minWidth: '20%',
+															width: '20%',
+															maxWidth: '20%',
+														}}
+													>
 														Related Trade
 													</th>
-													<th className="text-center border border-gray align-middle">
+													<th
+														className="text-center border border-gray align-middle"
+														style={{
+															minWidth: '20%',
+															width: '20%',
+															maxWidth: '20%',
+														}}
+													>
 														Description
 													</th>
 													<th className="border-0 bg-transparent"></th>
