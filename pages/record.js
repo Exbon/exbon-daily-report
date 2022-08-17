@@ -16,6 +16,11 @@ import { Typeahead } from 'react-bootstrap-typeahead';
 import styles from './record.module.css';
 import { formatDate, formatDateDash } from '../components/main/formatDate';
 import Autocomplete from 'react-autocomplete';
+import "react-toastify/dist/ReactToastify.css";
+import { toast } from "react-toastify";
+
+toast.configure();
+
 const Record = () => {
 	const resolution1008 = useMediaQuery({
 		maxWidth: '1009px',
@@ -66,54 +71,72 @@ const Record = () => {
 	});
 
 	const saveHandler = async () => {
-		const reportID = (
-			await axios.post(`/api/record/daily-report`, {
-				ProjectID: router.query.pid,
-				Date: formatDate(selectedDate),
-				EmployeeID: status.cookies.employeeid,
-				Note: note.Note,
-			})
-		).data.result[0][0].ReportID;
-		console.log({
-			ProjectID: router.query.pid,
-			Date: selectedDate,
-			EmployeeID: status.cookies.employeeid,
-			Notes: note,
-		});
+		let promises = [];
+		const fetchData = async () => {
 
-		console.log(reportID);
-		const postContractors = await Promise.all(
-			contractors.map((contractor) =>
-				axios.post(`/api/record/daily-report/contractor`, {
-					...contractor,
-					ReportID: reportID,
-				}),
+			const reportID = (
+				await axios.post(`/api/record/daily-report`, {
+					ProjectID: router.query.pid,
+					Date: formatDate(selectedDate),
+					EmployeeID: status.cookies.employeeid,
+					Note: note.Note,
+				})
+			).data.result[0][0].ReportID;
+
+			console.log({
+				ProjectID: router.query.pid,
+				Date: selectedDate,
+				EmployeeID: status.cookies.employeeid,
+				Notes: note,
+			});
+			console.log(reportID);
+
+		
+			contractors.forEach(async (contractor) => {
+					await axios.post(`/api/record/daily-report/contractor`, {
+						...contractor,
+						ReportID: reportID
+					})
+					.catch((err) => alert(err))
+				}
+			)
+			equipments.forEach(async (equipment) => {
+					await axios.post(`/api/record/daily-report/equipment`, {
+						...equipment,
+						ReportID: reportID
+					})
+					.catch((err) => alert(err))
+				}
 			),
-		);
-		const postEquipments = await Promise.all(
-			equipments.map((equipment) =>
-				axios.post(`/api/record/daily-report/equipment`, {
-					...equipment,
-					ReportID: reportID,
-				}),
+			inspections.forEach(async (inspection) => {
+					await axios.post(`/api/record/daily-report/inspection`, {
+						...inspection,
+						ReportID: reportID
+					})
+					.catch((err) => alert(err))
+				}
 			),
-		);
-		const postInspections = await Promise.all(
-			inspections.map((inspection) =>
-				axios.post(`/api/record/daily-report/inspection`, {
-					...inspection,
-					ReportID: reportID,
-				}),
-			),
-		);
-		const postCorrectionals = await Promise.all(
-			correctionals.map((correctional) =>
-				axios.post(`/api/record/daily-report/correctional`, {
-					...correctional,
-					ReportID: reportID,
-				}),
-			),
-		);
+			correctionals.forEach(async (correctional) => {
+					await axios.post(`/api/record/daily-report/correctional`, {
+						...correctional,
+						ReportID: reportID
+					})
+					.catch((err) => alert(err))
+				}
+			)
+		}		
+		promises.push(fetchData());
+		trackPromise(Promise.all(promises).then(() => {
+			toast.success(
+				<div className={styles["alert__complete"]}>
+				  <strong>Save Complete</strong>
+				</div>,
+				{
+				  position: toast.POSITION.BOTTOM_CENTER,
+				  hideProgressBar: true,
+				}
+			  );
+		}));
 	};
 
 	useEffect(() => {

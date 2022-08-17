@@ -84,3 +84,8 @@
     margin-right: 20px !important;
     white-space: nowrap;
   }
+
+  .alert__complete {
+    text-align: center;
+  }
+  
