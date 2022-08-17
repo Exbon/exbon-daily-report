@@ -1,5 +1,6 @@
 const mssql = require('mssql');
 const dbserver = require('../../../dbConfig.js');
+import { sqlEscape } from '../../../lib/utils';
 
 const getDailyReport = (req, res) => {
 	const { method, query, body } = req;
@@ -43,7 +44,7 @@ const getDailyReport = (req, res) => {
                         @projectID = ${body.ProjectID},
                         @date = '${body.Date}',
 						@userID = ${body.EmployeeID},
-						@note = '${body.Note}'
+						@note = '${sqlEscape(body.Note)}'
                         `;
 					request.query(sqlquery, (err, recordset) => {
 						if (err) {

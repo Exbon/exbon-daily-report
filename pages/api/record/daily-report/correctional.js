@@ -1,5 +1,6 @@
 const mssql = require('mssql');
 const dbserver = require('../../../../dbConfig.js');
+import { sqlEscape } from '../../../../lib/utils';
 
 const getCorrectional = (req, res) => {
 	const { method, query, body } = req;
@@ -39,10 +40,10 @@ const getCorrectional = (req, res) => {
 
 					const sqlquery = `EXEC [Exbon].[dbo].[usp_dailyreport_Insert_DailyReportCorrectional]
                             @reportID = ${body.ReportID},
-                            @deficiency = '${body.Deficiency}',
-                            @type = '${body.Type}',
-                            @trade = '${body.Trade}',
-                            @description = '${body.Description}'
+                            @deficiency = '${sqlEscape(body.Deficiency)}',
+                            @type = '${sqlEscape(body.Type)}',
+                            @trade = '${sqlEscape(body.Trade)}',
+                            @description = '${sqlEscape(body.Description)}'
                             `;
 
 					request.query(sqlquery, (err, recordset) => {

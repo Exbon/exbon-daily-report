@@ -99,6 +99,7 @@ const Record = () => {
 					.catch((err) => alert(err));
 			}
 
+
 			for (let i = 0; i < equipments.length; i++) {
 				await axios
 					.post(`/api/record/daily-report/equipment`, {
@@ -115,6 +116,7 @@ const Record = () => {
 						ReportID: reportID,
 					})
 					.catch((err) => alert(err));
+
 			}
 
 			for (let i = 0; i < correctionals.length; i++) {
@@ -126,6 +128,7 @@ const Record = () => {
 					.catch((err) => alert(err));
 			}
 		};
+
 		promises.push(fetchData());
 		trackPromise(
 			Promise.all(promises).then(() => {
