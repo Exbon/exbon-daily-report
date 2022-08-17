@@ -101,7 +101,6 @@ const Record = () => {
 				.catch((err) => alert(err))
 			}
 
-			
 			for (let i=0; i < equipments.length; i++)
 			{
 				await axios.post(`/api/record/daily-report/equipment`, {
@@ -111,7 +110,6 @@ const Record = () => {
 				.catch((err) => alert(err))
 			}
 
-			
 			for (let i=0; i < inspections.length; i++)
 			{
 				await axios.post(`/api/record/daily-report/inspection`, {
@@ -129,7 +127,6 @@ const Record = () => {
 				})
 				.catch((err) => alert(err))
 			}
-			
 		}		
 		promises.push(fetchData());
 		trackPromise(Promise.all(promises).then(() => {
