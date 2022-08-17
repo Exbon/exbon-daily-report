@@ -18,9 +18,10 @@ const exportExcel = async (req, res) => {
 					await workbook.xlsx.readFile(__dirname + filename);
 
 					const worksheet = workbook.getWorksheet('To Customer');
-					const row5 = worksheet.getRow(5);
-					row5.getCell(2).value = 'TEST';
 
+					// worksheet.duplicateRow(13, 3, true);
+
+					worksheet.duplicateRow(19, 1, true);
 					// write file
 					await workbook.xlsx.writeFile(
 						__dirname + '/ToCustomer_' + '7784' + '.xlsx',

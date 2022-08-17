@@ -946,14 +946,32 @@ const workActivities = () => {
 		}
 	}, [stateAssignedProject]);
 
-	const handleTest = () => {
-		axios({
+	const handleTest = async () => {
+		await axios({
 			method: 'post',
 			url: '/api/record/excel-export',
 			timeout: 1000000, // 5 seconds timeout
 			headers: {},
 			data: {},
 		});
+
+		setTimeout(() => {
+			// setCheckDownload(0);
+			document
+				.getElementById('excelExport')
+				.setAttribute('href', '/record/ToCustomer_7784.xlsx');
+			document.getElementById('excelExport').click();
+			setCheckDownload(0);
+			toast.success(
+				<div className={styles['alert__complete']}>
+					<strong>Download Complete</strong>
+				</div>,
+				{
+					position: toast.POSITION.BOTTOM_CENTER,
+					hideProgressBar: true,
+				},
+			);
+		}, 3000);
 	};
 	return (
 		<>
