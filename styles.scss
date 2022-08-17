@@ -132,6 +132,11 @@ body {
 
 // RECORD 
 #record {
+
+  color: red;
+  .border-gray {
+    border-color:#dadada;
+  }
   .save-btn {
     right: 100px;
     top: 5px;
@@ -171,7 +176,9 @@ input {
   border-radius: 0;
   border: 0;
   padding: 2px 6px;
-
+ &:disabled {
+  background-color: white;
+ }
 }
   .fit {
     white-space: nowrap;

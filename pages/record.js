@@ -74,7 +74,6 @@ const Record = () => {
 	});
 
 	const saveHandler = async () => {
-		console.log('hi');
 		let promises = [];
 		const fetchData = async () => {
 			const reportID = (
@@ -597,25 +596,26 @@ const Record = () => {
 											<thead>
 												<tr>
 													<th
-														className="text-center border border-dark align-middle border border-dark"
+														className="text-center border border-gray align-middle border border-gray"
 														rowSpan={2}
 													>
 														Contractor
 													</th>
 													<th
-														className="text-center border border-dark align-middle border border-dark"
+														className="text-center border border-gray align-middle border border-gray"
 														rowSpan={2}
 													>
 														Location
 													</th>
 													<th
-														className="text-center border border-dark align-middle border border-dark"
+														className="text-center border border-gray align-middle border border-gray"
 														colSpan={3}
+														style={{ width: '150px' }}
 													>
 														Manpower
 													</th>
 													<th
-														className="text-center border border-dark align-middle border border-dark"
+														className="text-center border border-gray align-middle border border-gray"
 														rowSpan={2}
 													>
 														Task
@@ -627,13 +627,13 @@ const Record = () => {
 													></th>
 												</tr>
 												<tr>
-													<th className="text-center border border-dark align-middle sub-heading border border-dark">
+													<th className="text-center border border-gray align-middle sub-heading border border-gray">
 														No. of Super
 													</th>
-													<th className="text-center border border-dark align-middle sub-heading border border-dark">
+													<th className="text-center border border-gray align-middle sub-heading border border-gray">
 														No. oF Workers
 													</th>
-													<th className="text-center border border-dark align-middle sub-heading border border-dark">
+													<th className="text-center border border-gray align-middle sub-heading border border-gray">
 														Work hours
 													</th>
 												</tr>
@@ -642,7 +642,7 @@ const Record = () => {
 												{contractors.map((contractor, i) => {
 													return (
 														<tr key={i}>
-															<td className="border border-dark">
+															<td className="border border-gray">
 																<Autocomplete
 																	getItemValue={(item) => item.CompanyName}
 																	items={dropdownList.contractorList}
@@ -687,7 +687,7 @@ const Record = () => {
 																	}}
 																></Autocomplete>
 															</td>
-															<td className="border border-dark">
+															<td className="border border-gray">
 																<input
 																	className="w-100"
 																	type="text"
@@ -698,7 +698,7 @@ const Record = () => {
 																	}
 																/>
 															</td>
-															<td className="border border-dark">
+															<td className="border border-gray">
 																<input
 																	className="w-100 text-right"
 																	type="number"
@@ -709,7 +709,7 @@ const Record = () => {
 																	}
 																/>
 															</td>
-															<td className="border border-dark">
+															<td className="border border-gray">
 																<input
 																	className="w-100"
 																	type="number"
@@ -720,7 +720,7 @@ const Record = () => {
 																	}
 																/>
 															</td>
-															<td className="border border-dark">
+															<td className="border border-gray">
 																<input
 																	className="w-100"
 																	type="number"
@@ -731,7 +731,7 @@ const Record = () => {
 																	}
 																/>
 															</td>
-															<td className="border border-dark">
+															<td className="border border-gray">
 																<Autocomplete
 																	getItemValue={(item) => item.Name}
 																	items={dropdownList.taskList}
@@ -793,7 +793,7 @@ const Record = () => {
 												<tr style={{ backgroundColor: 'transparent' }}>
 													<td
 														colSpan={6}
-														className="border border-dark text-center py-2"
+														className="border border-gray text-center py-2"
 													>
 														<MUIButton
 															variant="contained"
@@ -817,12 +817,12 @@ const Record = () => {
 											<tfoot>
 												<tr>
 													<td
-														className="text-center border border-dark align-middle heading border border-dark"
+														className="text-center border border-gray align-middle heading border border-gray"
 														colSpan={2}
 													>
 														Total
 													</td>
-													<td className="text-end  palign-middle border border-dark">
+													<td className="text-end  palign-middle border border-gray">
 														<input
 															type="number"
 															disabled
@@ -832,7 +832,7 @@ const Record = () => {
 															)}
 														/>
 													</td>
-													<td className="text-end align-middle border border-dark">
+													<td className="text-end align-middle border border-gray">
 														<input
 															type="number"
 															disabled
@@ -842,7 +842,7 @@ const Record = () => {
 															)}
 														/>
 													</td>
-													<td className="text-end align-middle border border-dark">
+													<td className="text-end align-middle border border-gray">
 														<input
 															type="number"
 															disabled
@@ -852,7 +852,7 @@ const Record = () => {
 															)}
 														/>
 													</td>
-													<td className="text-center border border-dark align-middle border border-dark"></td>
+													<td className="text-center border border-gray align-middle border border-gray"></td>
 												</tr>
 											</tfoot>
 										</Table>
@@ -863,19 +863,19 @@ const Record = () => {
 										<Table>
 											<thead>
 												<tr>
-													<th className="text-center border border-dark align-middle">
+													<th className="text-center border border-gray align-middle">
 														Equipment
 													</th>
-													<th className="text-center border border-dark align-middle">
+													<th className="text-center border border-gray align-middle">
 														Vendor
 													</th>
-													<th className="text-center border border-dark align-middle">
+													<th className="text-center border border-gray align-middle">
 														Move In
 													</th>
-													<th className="text-center border border-dark align-middle">
+													<th className="text-center border border-gray align-middle">
 														Move Out
 													</th>
-													<th className="text-center border border-dark align-middle">
+													<th className="text-center border border-gray align-middle">
 														Note
 													</th>
 													<th className="border-0 fit bg-transparent"></th>
@@ -885,7 +885,7 @@ const Record = () => {
 												{equipments.map((equipment, i) => {
 													return (
 														<tr key={i}>
-															<td className="text-left border border-dark align-middle">
+															<td className="text-left border border-gray align-middle">
 																<Autocomplete
 																	getItemValue={(item) => item.Equipment}
 																	items={dropdownList.equipmentList}
@@ -930,7 +930,7 @@ const Record = () => {
 																	}}
 																></Autocomplete>
 															</td>
-															<td className="text-left border border-dark align-middle">
+															<td className="text-left border border-gray align-middle">
 																<Autocomplete
 																	getItemValue={(item) => item.VendorName}
 																	items={dropdownList.vendorList}
@@ -975,7 +975,7 @@ const Record = () => {
 																	}}
 																></Autocomplete>
 															</td>
-															<td className="text-center border border-dark align-middle">
+															<td className="text-center border border-gray align-middle">
 																<input
 																	className="w-100"
 																	type="date"
@@ -988,7 +988,7 @@ const Record = () => {
 																	}
 																/>
 															</td>
-															<td className="text-center border border-dark align-middle">
+															<td className="text-center border border-gray align-middle">
 																<input
 																	className="w-100"
 																	type={'date'}
@@ -1001,7 +1001,7 @@ const Record = () => {
 																	}
 																/>
 															</td>
-															<td className="text-center border border-dark align-middle">
+															<td className="text-center border border-gray align-middle">
 																<input
 																	className="w-100"
 																	type="text"
@@ -1036,7 +1036,7 @@ const Record = () => {
 												>
 													<td
 														colSpan={5}
-														className="border border-dark text-center py-2"
+														className="border border-gray text-center py-2"
 													>
 														<MUIButton
 															variant="contained"
@@ -1066,24 +1066,24 @@ const Record = () => {
 										<Table>
 											<thead>
 												<tr>
-													<th className="border border-dark" colSpan={5}>
+													<th className="border border-gray" colSpan={5}>
 														Inspection
 													</th>
 												</tr>
 												<tr>
-													<th className="text-center border border-dark align-middle">
+													<th className="text-center border border-gray align-middle">
 														Name of Inspector
 													</th>
-													<th className="text-center border border-dark align-middle">
+													<th className="text-center border border-gray align-middle">
 														Agency
 													</th>
-													<th className="text-center border border-dark align-middle">
+													<th className="text-center border border-gray align-middle">
 														Location
 													</th>
-													<th className="text-center border border-dark align-middle">
+													<th className="text-center border border-gray align-middle">
 														Task
 													</th>
-													<th className="text-center border border-dark align-middle">
+													<th className="text-center border border-gray align-middle">
 														Result
 													</th>
 													<th className="bg-transparent border-0"></th>
@@ -1093,7 +1093,7 @@ const Record = () => {
 												{inspections.map((inspection, i) => {
 													return (
 														<tr key={i}>
-															<td className="text-center border border-dark align-middle">
+															<td className="text-center border border-gray align-middle">
 																<input
 																	className="w-100"
 																	type="text"
@@ -1104,7 +1104,7 @@ const Record = () => {
 																	}
 																/>
 															</td>
-															<td className="text-center border border-dark align-middle">
+															<td className="text-center border border-gray align-middle">
 																<input
 																	className="w-100"
 																	type="text"
@@ -1115,7 +1115,7 @@ const Record = () => {
 																	}
 																/>
 															</td>
-															<td className="text-center border border-dark align-middle">
+															<td className="text-center border border-gray align-middle">
 																<input
 																	className="w-100"
 																	type="text"
@@ -1126,7 +1126,7 @@ const Record = () => {
 																	}
 																/>
 															</td>
-															<td className="text-center border border-dark align-middle">
+															<td className="text-center border border-gray align-middle">
 																<input
 																	className="w-100"
 																	type="text"
@@ -1137,7 +1137,7 @@ const Record = () => {
 																	}
 																/>
 															</td>
-															<td className="text-center border border-dark align-middle">
+															<td className="text-center border border-gray align-middle">
 																<input
 																	className="w-100"
 																	type="text"
@@ -1171,7 +1171,7 @@ const Record = () => {
 												>
 													<td
 														colSpan={5}
-														className="border border-dark text-center py-2"
+														className="border border-gray text-center py-2"
 													>
 														<MUIButton
 															variant="contained"
@@ -1200,22 +1200,22 @@ const Record = () => {
 										<Table>
 											<thead>
 												<tr>
-													<th className="border border-dark" colSpan={4}>
+													<th className="border border-gray" colSpan={4}>
 														Correctional Items
 													</th>
 													<th className="bg-transparent border-0"></th>
 												</tr>
 												<tr>
-													<th className="text-center border border-dark align-middle">
+													<th className="text-center border border-gray align-middle">
 														Deficiency Name
 													</th>
-													<th className="text-center border border-dark align-middle">
+													<th className="text-center border border-gray align-middle">
 														Type
 													</th>
-													<th className="text-center border border-dark align-middle">
+													<th className="text-center border border-gray align-middle">
 														Related Trade
 													</th>
-													<th className="text-center border border-dark align-middle">
+													<th className="text-center border border-gray align-middle">
 														Description
 													</th>
 													<th className="border-0 bg-transparent"></th>
@@ -1225,7 +1225,7 @@ const Record = () => {
 												{correctionals.map((correctional, i) => {
 													return (
 														<tr key={i}>
-															<td className="text-center border border-dark align-middle">
+															<td className="text-center border border-gray align-middle">
 																<input
 																	className="w-100"
 																	type="text"
@@ -1236,7 +1236,7 @@ const Record = () => {
 																	}
 																/>
 															</td>
-															<td className="text-left border border-dark align-middle">
+															<td className="text-left border border-gray align-middle">
 																<Autocomplete
 																	getItemValue={(item) => item.Type}
 																	items={dropdownList.typeList}
@@ -1281,7 +1281,7 @@ const Record = () => {
 																	}}
 																></Autocomplete>
 															</td>
-															<td className="text-left border border-dark align-middle">
+															<td className="text-left border border-gray align-middle">
 																<Autocomplete
 																	getItemValue={(item) => item.Trade}
 																	items={dropdownList.relatedTradeList}
@@ -1326,7 +1326,7 @@ const Record = () => {
 																	}}
 																></Autocomplete>
 															</td>
-															<td className="text-left border border-dark align-middle">
+															<td className="text-left border border-gray align-middle">
 																<input
 																	className="w-100"
 																	type="text"
@@ -1361,7 +1361,7 @@ const Record = () => {
 												>
 													<td
 														colSpan={4}
-														className="border border-dark text-center py-2"
+														className="border border-gray text-center py-2"
 													>
 														<MUIButton
 															variant="contained"
@@ -1390,13 +1390,13 @@ const Record = () => {
 										<Table>
 											<thead>
 												<tr>
-													<th className="border border-dark">Note</th>
+													<th className="border border-gray">Note</th>
 													<th className="border-0 bg-transparent"></th>
 												</tr>
 											</thead>
 											<tbody>
 												<tr>
-													<td className="text-center border border-dark align-middle">
+													<td className="text-center border border-gray align-middle">
 														{console.log(note)}
 														<textarea
 															className="w-100"
