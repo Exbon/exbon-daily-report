@@ -159,7 +159,7 @@ const workActivities = () => {
 				width: 37,
 			},
 		],
-		[]
+		[],
 	);
 
 	const updateMyData = (rowIndex, columnId, value) => {
@@ -173,7 +173,7 @@ const workActivities = () => {
 					};
 				}
 				return row;
-			})
+			}),
 		);
 	};
 
@@ -226,9 +226,7 @@ const workActivities = () => {
 						<div
 							key={item.Name}
 							style={{
-								background: isHighlighted
-									? 'lightgray'
-									: 'white',
+								background: isHighlighted ? 'lightgray' : 'white',
 							}}
 						>
 							{item.Name}
@@ -332,7 +330,7 @@ const workActivities = () => {
 					};
 				}
 				return row;
-			})
+			}),
 		);
 	};
 
@@ -344,14 +342,14 @@ const workActivities = () => {
 						CANNOT ADD row more than 8
 					</strong>
 					<p style={{ marginBottom: '20px' }}>
-						Please contact IT if you need to add more. (Hyunmyung
-						Kim: 201-554-6666)
+						Please contact IT if you need to add more. (Hyunmyung Kim:
+						201-554-6666)
 					</p>
 				</div>,
 				{
 					position: toast.POSITION.TOP_CENTER,
 					hideProgressBar: true,
-				}
+				},
 			);
 			return null;
 		}
@@ -373,7 +371,7 @@ const workActivities = () => {
 		setData((old) =>
 			old.filter((row, index) => {
 				return index !== rowIndex;
-			})
+			}),
 		);
 	};
 
@@ -390,7 +388,7 @@ const workActivities = () => {
 				defaultColumn,
 				updateMyData,
 			},
-			useBlockLayout
+			useBlockLayout,
 		);
 
 	const logout = () => {
@@ -430,30 +428,21 @@ const workActivities = () => {
 					path: '/',
 					maxAge: 3600 * 24 * 30,
 				});
-				setCookie(
-					'fullname',
-					response.data.result.recordset[0].FullName,
-					{
-						path: '/',
-						maxAge: 3600 * 24 * 30,
-					}
-				);
-				setCookie(
-					'employeeid',
-					response.data.result.recordset[0].EmployeeID,
-					{
-						path: '/',
-						maxAge: 3600 * 24 * 30,
-					}
-				);
+				setCookie('fullname', response.data.result.recordset[0].FullName, {
+					path: '/',
+					maxAge: 3600 * 24 * 30,
+				});
+				setCookie('employeeid', response.data.result.recordset[0].EmployeeID, {
+					path: '/',
+					maxAge: 3600 * 24 * 30,
+				});
 				setStatus((prevState) => ({
 					...prevState,
 					cookies: {
 						username: username,
 						password: password,
 						fullname: response.data.result.recordset[0].FullName,
-						employeeid:
-							response.data.result.recordset[0].EmployeeID,
+						employeeid: response.data.result.recordset[0].EmployeeID,
 					},
 				}));
 			} else {
@@ -480,11 +469,8 @@ const workActivities = () => {
 						},
 					})
 						.then((response) => {
-							const assignedProject =
-								response.data.result.recordsets[1];
-							setStateAssignedProject(
-								response.data.result.recordsets[1]
-							);
+							const assignedProject = response.data.result.recordsets[1];
+							setStateAssignedProject(response.data.result.recordsets[1]);
 
 							if (
 								response.data.result.recordsets[1].length > 0 &&
@@ -494,27 +480,16 @@ const workActivities = () => {
 									setProjectState(router.query.pid);
 								} else {
 									setProjectState(
-										'' +
-											response.data.result
-												.recordsets[1][0].ProjectID
+										'' + response.data.result.recordsets[1][0].ProjectID,
 									);
 								}
 							}
 
-							if (
-								status.permission === true &&
-								projectState !== undefined
-							) {
+							if (status.permission === true && projectState !== undefined) {
 								let check = 0;
-								for (
-									let i = 0;
-									i < assignedProject.length;
-									i++
-								) {
+								for (let i = 0; i < assignedProject.length; i++) {
 									if (
-										assignedProject[
-											i
-										].ProjectID.toString() === projectState
+										assignedProject[i].ProjectID.toString() === projectState
 									) {
 										check++;
 										break;
@@ -531,7 +506,7 @@ const workActivities = () => {
 						.catch((err) => {
 							alert(
 								'Loading Error.(POST /api/daily-report/signin) \n\nPlease try again.\n\nPlease contact IT if the issue still persists. (Hyunmyung Kim 201-554-6666)\n\n' +
-									err
+									err,
 							);
 						});
 				}
@@ -552,7 +527,7 @@ const workActivities = () => {
 				await axios({
 					method: 'get',
 					url: `/api/project-activity?projectID=${projectState}&selectedDate=${formatDate(
-						selectedDate
+						selectedDate,
 					)}`,
 					timeout: 1000000, // 5 seconds timeout
 					headers: {},
@@ -564,8 +539,7 @@ const workActivities = () => {
 							StartTime: response.data.result[0][0].StartTime,
 							EndTime: response.data.result[0][0].EndTime,
 							Tests: response.data.result[0][0].Tests,
-							Correctional:
-								response.data.result[0][0].Correctional,
+							Correctional: response.data.result[0][0].Correctional,
 							Note: response.data.result[0][0].Note,
 						});
 					} else {
@@ -610,14 +584,10 @@ const workActivities = () => {
 		const project_id = document.getElementById('project-state-id');
 
 		const projectName =
-			project_id.options[project_id.selectedIndex].getAttribute(
-				'projectname'
-			);
+			project_id.options[project_id.selectedIndex].getAttribute('projectname');
 
 		const contractNo =
-			project_id.options[project_id.selectedIndex].getAttribute(
-				'contractno'
-			);
+			project_id.options[project_id.selectedIndex].getAttribute('contractno');
 
 		await axios({
 			method: 'POST',
@@ -647,7 +617,7 @@ const workActivities = () => {
 				.getElementById('excelExport')
 				.setAttribute(
 					'href',
-					'/Daily Report_' + status.cookies.username + '.xlsx'
+					'/Daily Report_' + status.cookies.username + '.xlsx',
 				);
 			document.getElementById('excelExport').click();
 			setCheckDownload(0);
@@ -658,7 +628,7 @@ const workActivities = () => {
 				{
 					position: toast.POSITION.BOTTOM_CENTER,
 					hideProgressBar: true,
-				}
+				},
 			);
 		}, 3000);
 	};
@@ -668,17 +638,12 @@ const workActivities = () => {
 		const project_id = document.getElementById('project-state-id');
 
 		const projectName =
-			project_id.options[project_id.selectedIndex].getAttribute(
-				'projectname'
-			);
+			project_id.options[project_id.selectedIndex].getAttribute('projectname');
 
 		const contractNo =
-			project_id.options[project_id.selectedIndex].getAttribute(
-				'contractno'
-			);
+			project_id.options[project_id.selectedIndex].getAttribute('contractno');
 
-		const totalWorkers =
-			document.getElementById('total-workers-id').innerText;
+		const totalWorkers = document.getElementById('total-workers-id').innerText;
 		await axios({
 			method: 'POST',
 			url: `/api/work-activities/export-pdf`,
@@ -708,7 +673,7 @@ const workActivities = () => {
 				.getElementById('pdfExport')
 				.setAttribute(
 					'href',
-					'/Daily Report_' + status.cookies.username + '.pdf'
+					'/Daily Report_' + status.cookies.username + '.pdf',
 				);
 			document.getElementById('pdfExport').click();
 			setCheckDownload(0);
@@ -719,7 +684,7 @@ const workActivities = () => {
 				{
 					position: toast.POSITION.BOTTOM_CENTER,
 					hideProgressBar: true,
-				}
+				},
 			);
 		}, 3500);
 	};
@@ -822,9 +787,9 @@ const workActivities = () => {
 					{
 						position: toast.POSITION.BOTTOM_CENTER,
 						hideProgressBar: true,
-					}
+					},
 				);
-			})
+			}),
 		);
 
 		axios({
@@ -922,14 +887,14 @@ const workActivities = () => {
 			toast.warning(
 				<div className={styles['alert__complete']}>
 					<p style={{ marginBottom: '20px' }}>
-						The hour input range is <strong>01 ~ 12 </strong> in
-						Start Time. Please set AM or PM.
+						The hour input range is <strong>01 ~ 12 </strong> in Start Time.
+						Please set AM or PM.
 					</p>
 				</div>,
 				{
 					position: toast.POSITION.TOP_CENTER,
 					hideProgressBar: true,
-				}
+				},
 			);
 
 			setActivity(() => ({
@@ -951,14 +916,14 @@ const workActivities = () => {
 			toast.warning(
 				<div className={styles['alert__complete']}>
 					<p style={{ marginBottom: '20px' }}>
-						The hour input range is <strong>01 ~ 12 </strong> in End
-						Time. Please set AM or PM.
+						The hour input range is <strong>01 ~ 12 </strong> in End Time.
+						Please set AM or PM.
 					</p>
 				</div>,
 				{
 					position: toast.POSITION.TOP_CENTER,
 					hideProgressBar: true,
-				}
+				},
 			);
 			setActivity(() => ({
 				Weather: activity.Weather,
@@ -981,6 +946,33 @@ const workActivities = () => {
 		}
 	}, [stateAssignedProject]);
 
+	const handleTest = async () => {
+		await axios({
+			method: 'post',
+			url: '/api/record/excel-export',
+			timeout: 1000000, // 5 seconds timeout
+			headers: {},
+			data: {},
+		});
+
+		setTimeout(() => {
+			// setCheckDownload(0);
+			document
+				.getElementById('excelExport')
+				.setAttribute('href', '/record/ToCustomer_7784.xlsx');
+			document.getElementById('excelExport').click();
+			setCheckDownload(0);
+			toast.success(
+				<div className={styles['alert__complete']}>
+					<strong>Download Complete</strong>
+				</div>,
+				{
+					position: toast.POSITION.BOTTOM_CENTER,
+					hideProgressBar: true,
+				},
+			);
+		}, 3000);
+	};
 	return (
 		<>
 			<Head>
@@ -1017,12 +1009,7 @@ const workActivities = () => {
 								alignItems: 'center',
 							}}
 						>
-							<Loader
-								type="Oval"
-								color="#1ec996"
-								height="150"
-								width="150"
-							/>
+							<Loader type="Oval" color="#1ec996" height="150" width="150" />
 						</div>
 					) : (
 						<div id={styles.mainDiv}>
@@ -1032,9 +1019,7 @@ const workActivities = () => {
 									<select
 										id="project-state-id"
 										value={projectState}
-										onChange={(e) =>
-											setProjectState(e.target.value)
-										}
+										onChange={(e) => setProjectState(e.target.value)}
 										style={{
 											fontFamily: 'Roboto, sans-serif',
 											fontSize: 'medium',
@@ -1042,14 +1027,11 @@ const workActivities = () => {
 											color: '#74646e',
 											border: '1px solid #c8bfc4',
 											borderRadius: '4px',
-											boxShadow:
-												'inset 1px 1px 2px #ddd8dc',
+											boxShadow: 'inset 1px 1px 2px #ddd8dc',
 											background: '#fff',
 											zIndex: '1',
 											position: 'relative',
-											maxWidth: resolution602
-												? '450px'
-												: '600px',
+											maxWidth: resolution602 ? '450px' : '600px',
 											height: '30px',
 										}}
 									>
@@ -1058,15 +1040,9 @@ const workActivities = () => {
 												<option
 													value={item.ProjectID}
 													key={item.ProjectID}
-													projectgroup={
-														item.ProjectGroup
-													}
-													projectname={
-														item.ProjectName
-													}
-													contractno={
-														item.ContractNumber
-													}
+													projectgroup={item.ProjectGroup}
+													projectname={item.ProjectName}
+													contractno={item.ContractNumber}
 												>
 													{item.JobNumber} &emsp;[
 													{item.ProjectGroup}]&ensp;
@@ -1075,15 +1051,9 @@ const workActivities = () => {
 											);
 										})}
 									</select>
-									<MuiPickersUtilsProvider
-										utils={DateFnsUtils}
-									>
+									<MuiPickersUtilsProvider utils={DateFnsUtils}>
 										<DatePicker
-											className={
-												styles[
-													'header__right__date-picker'
-												]
-											}
+											className={styles['header__right__date-picker']}
 											value={selectedDate}
 											onChange={handleDateChange}
 											format="MM/dd/yyyy"
@@ -1093,13 +1063,11 @@ const workActivities = () => {
 												day,
 												selectedDate,
 												isInCurrentMonth,
-												dayComponent
+												dayComponent,
 											) => {
 												const isSelected =
 													isInCurrentMonth &&
-													selectedDays.includes(
-														formatDate(day)
-													);
+													selectedDays.includes(formatDate(day));
 
 												// You can also use our internal <Day /> component
 												return (
@@ -1110,10 +1078,8 @@ const workActivities = () => {
 														style={
 															isSelected
 																? {
-																		backgroundColor:
-																			'#61e2bb',
-																		borderRadius:
-																			'30%',
+																		backgroundColor: '#61e2bb',
+																		borderRadius: '30%',
 																  }
 																: undefined
 														}
@@ -1129,11 +1095,7 @@ const workActivities = () => {
 									<Button
 										variant="contained"
 										size="small"
-										className={
-											styles[
-												'header__right__pdf-export-btn'
-											]
-										}
+										className={styles['header__right__pdf-export-btn']}
 										startIcon={<FaFilePdf />}
 										onClick={handlePDFExport}
 										style={{ marginRight: '10px' }}
@@ -1143,11 +1105,17 @@ const workActivities = () => {
 									<Button
 										variant="contained"
 										size="small"
-										className={
-											styles[
-												'header__right__excel-export-btn'
-											]
-										}
+										className={styles['header__right__pdf-export-btn']}
+										startIcon={<FaFilePdf />}
+										onClick={handleTest}
+										style={{ marginRight: '10px' }}
+									>
+										TEST
+									</Button>
+									<Button
+										variant="contained"
+										size="small"
+										className={styles['header__right__excel-export-btn']}
 										startIcon={<RiFileExcel2Fill />}
 										onClick={handleExcelExport}
 										style={{ marginRight: '10px' }}
@@ -1158,9 +1126,7 @@ const workActivities = () => {
 										variant="contained"
 										color="primary"
 										size="small"
-										className={
-											styles['header__right__save-btn']
-										}
+										className={styles['header__right__save-btn']}
 										startIcon={<SaveIcon />}
 										onClick={handleSaveBtn}
 									>
@@ -1210,16 +1176,12 @@ const workActivities = () => {
 										marginTop: '15.5px',
 									}}
 									value={activity.Weather}
-									onChange={(e) =>
-										handleChangeWeather(e.target.value)
-									}
+									onChange={(e) => handleChangeWeather(e.target.value)}
 								>
 									<option value="">Choose here</option>
 									<option value="Sunny">Sunny</option>
 									<option value="Cloudy">Cloudy</option>
-									<option value="Partly Cloudy">
-										Partly Cloudy
-									</option>
+									<option value="Partly Cloudy">Partly Cloudy</option>
 									<option value="Windy">Windy</option>
 									<option value="Rainy">Rainy</option>
 									<option value="Foggy">Foggy</option>
@@ -1227,17 +1189,13 @@ const workActivities = () => {
 								</select>
 								<div
 									style={{
-										marginLeft: resolution602
-											? '50px'
-											: '80px',
+										marginLeft: resolution602 ? '50px' : '80px',
 										display: 'flex',
 									}}
 								>
 									<div style={{ display: 'flex' }}>
 										<TextField
-											className={
-												styles['table__start-time']
-											}
+											className={styles['table__start-time']}
 											label="Start Time"
 											type="time"
 											InputLabelProps={{
@@ -1252,18 +1210,12 @@ const workActivities = () => {
 													? activity.StartTime
 													: '07:00'
 											}
-											onChange={(e) =>
-												handleChangeStartTime(
-													e.target.value
-												)
-											}
+											onChange={(e) => handleChangeStartTime(e.target.value)}
 										/>
 									</div>
 									<div style={{ marginLeft: '20px' }}>
 										<TextField
-											className={
-												styles['table__end-time']
-											}
+											className={styles['table__end-time']}
 											label="End Time"
 											type="time"
 											InputLabelProps={{
@@ -1278,11 +1230,7 @@ const workActivities = () => {
 													? activity.EndTime
 													: '17:00'
 											}
-											onChange={(e) =>
-												handleChangeEndTime(
-													e.target.value
-												)
-											}
+											onChange={(e) => handleChangeEndTime(e.target.value)}
 										/>
 									</div>
 								</div>
@@ -1291,21 +1239,12 @@ const workActivities = () => {
 								<table {...getTableProps()}>
 									<thead>
 										{headerGroups.map((headerGroup, i) => (
-											<tr
-												{...headerGroup.getHeaderGroupProps()}
-												key={i}
-											>
-												{headerGroup.headers.map(
-													(column, j) => (
-														<th
-															{...column.getHeaderProps()}
-														>
-															{column.render(
-																'Header'
-															)}
-														</th>
-													)
-												)}
+											<tr {...headerGroup.getHeaderGroupProps()} key={i}>
+												{headerGroup.headers.map((column, j) => (
+													<th {...column.getHeaderProps()}>
+														{column.render('Header')}
+													</th>
+												))}
 											</tr>
 										))}
 									</thead>
@@ -1314,80 +1253,32 @@ const workActivities = () => {
 											prepareRow(row);
 											return (
 												<tr {...row.getRowProps()}>
-													{row.cells.map(
-														(cell, j) => {
-															return (
-																<td
-																	{...cell.getCellProps()}
-																>
-																	{cell.render(
-																		'Cell'
-																	)}
-																</td>
-															);
-														}
-													)}
+													{row.cells.map((cell, j) => {
+														return (
+															<td {...cell.getCellProps()}>
+																{cell.render('Cell')}
+															</td>
+														);
+													})}
 												</tr>
 											);
 										})}
-										<tr
-											className={styles['table__add-row']}
-										>
+										<tr className={styles['table__add-row']}>
 											<td
-												className={
-													styles['table__button-add']
-												}
+												className={styles['table__button-add']}
 												onClick={addActivityRow}
 											>
 												(+) ADD
 											</td>
-											<td
-												className={
-													styles[
-														'table__trade-column'
-													]
-												}
-											></td>
-											<td
-												className={
-													styles[
-														'table__worker-column'
-													]
-												}
-											>
+											<td className={styles['table__trade-column']}></td>
+											<td className={styles['table__worker-column']}>
 												<div>Total</div>
-												<div id="total-workers-id">
-													{totalWorkers(data)}
-												</div>
+												<div id="total-workers-id">{totalWorkers(data)}</div>
 											</td>
-											<td
-												className={
-													styles[
-														'table__hours-column'
-													]
-												}
-											></td>
-											<td
-												className={
-													styles[
-														'table__equipment-column'
-													]
-												}
-											></td>
-											<td
-												className={
-													styles[
-														'table__perform-column'
-													]
-												}
-											></td>
-											<td
-												className={
-													styles[
-														'table__delete-column'
-													]
-												}
-											></td>
+											<td className={styles['table__hours-column']}></td>
+											<td className={styles['table__equipment-column']}></td>
+											<td className={styles['table__perform-column']}></td>
+											<td className={styles['table__delete-column']}></td>
 										</tr>
 									</tbody>
 								</table>
@@ -1414,14 +1305,8 @@ const workActivities = () => {
 										width: '99%',
 										marginLeft: '8px',
 									}}
-									value={
-										activity.Tests !== undefined
-											? activity.Tests
-											: ''
-									}
-									onChange={(e) =>
-										handleChangeTests(e.target.value)
-									}
+									value={activity.Tests !== undefined ? activity.Tests : ''}
+									onChange={(e) => handleChangeTests(e.target.value)}
 								/>
 								<TextField
 									label="CORRECTIONAL ITEMS"
@@ -1449,9 +1334,7 @@ const workActivities = () => {
 											? activity.Correctional
 											: ''
 									}
-									onChange={(e) =>
-										handleChangeCorrectional(e.target.value)
-									}
+									onChange={(e) => handleChangeCorrectional(e.target.value)}
 								/>
 								<TextField
 									label="NOTE"
@@ -1474,14 +1357,8 @@ const workActivities = () => {
 										marginLeft: '8px',
 										width: '99%',
 									}}
-									value={
-										activity.Note !== undefined
-											? activity.Note
-											: ''
-									}
-									onChange={(e) =>
-										handleChangeNote(e.target.value)
-									}
+									value={activity.Note !== undefined ? activity.Note : ''}
+									onChange={(e) => handleChangeNote(e.target.value)}
 								/>
 							</div>
 						</div>
@@ -1496,12 +1373,7 @@ const workActivities = () => {
 			>
 				download
 			</a>
-			<a
-				id="pdfExport"
-				href="/export.pdf"
-				download
-				style={{ display: 'none' }}
-			>
+			<a id="pdfExport" href="/export.pdf" download style={{ display: 'none' }}>
 				download
 			</a>
 		</>
