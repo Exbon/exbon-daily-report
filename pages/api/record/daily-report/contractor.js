@@ -44,9 +44,9 @@ const getContractor = (req, res) => {
                             @reportID = ${body.ReportID},
                             @contractor = '${sqlEscape(body.Contractor)}',
                             @location = '${sqlEscape(body.Location)}',
-                            @numSuper = ${body.NumSuper},
-                            @numWorker = ${body.NumWorker},
-                            @workHours = ${body.WorkHours},
+                            @numSuper = ${body.NumSuper || 0},
+                            @numWorker = ${body.NumWorker || 0},
+                            @workHours = ${body.WorkHours || 0},
                             @task = '${sqlEscape(body.Task)}'
                             `;
 
