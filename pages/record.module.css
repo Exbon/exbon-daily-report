@@ -23,7 +23,6 @@
     align-items: center;
     align-content: center;
     flex-grow: 1;
-    margin-left: 5px;
   }
   
   .header__left__project-id {
@@ -61,7 +60,7 @@
     flex-direction: row-reverse;
     align-content: center;
     flex-grow: 1;
-    margin-bottom: 5px;
+    margin-right: 100px;
   }
   .header__right__label-date-picker {
     margin-bottom: 17px;
