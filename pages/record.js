@@ -218,7 +218,6 @@ const Record = () => {
 				setEquipments(res.data.result[1]);
 				setInspections(res.data.result[2]);
 				setCorrectionals(res.data.result[3]);
-				console.log(res.data.result[4][0]);
 				setNote(res.data.result[4][0]);
 			} else {
 				setData('');
@@ -885,9 +884,7 @@ const Record = () => {
 																	className="w-100"
 																	type="date"
 																	value={
-																		equipment.MoveIn
-																			? formatDateDash(equipment.MoveIn)
-																			: ''
+																		equipment.MoveIn ? equipment.MoveIn : ''
 																	}
 																	name={'MoveIn'}
 																	onChange={(e) =>
@@ -900,9 +897,7 @@ const Record = () => {
 																	className="w-100"
 																	type={'date'}
 																	value={
-																		equipment.MoveOut
-																			? formatDateDash(equipment.MoveOut)
-																			: ''
+																		equipment.MoveOut ? equipment.MoveOut : ''
 																	}
 																	name={'MoveOut'}
 																	onChange={(e) =>
@@ -915,7 +910,7 @@ const Record = () => {
 																	className="w-100"
 																	type="text"
 																	value={equipment.Note || ''}
-																	name={equipment.Note}
+																	name={'Note'}
 																	onChange={(e) =>
 																		handleChange(e, 'equipments', i)
 																	}
