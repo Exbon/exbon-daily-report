@@ -19,6 +19,7 @@ import Autocomplete from 'react-autocomplete';
 import 'react-toastify/dist/ReactToastify.css';
 import { toast } from 'react-toastify';
 import SaveIcon from '@material-ui/icons/Save';
+import AddBoxIcon from '@material-ui/icons/AddBox';
 import MUIButton from '@material-ui/core/Button';
 
 toast.configure();
@@ -599,25 +600,25 @@ const Record = () => {
 														className="text-center border border-dark align-middle border border-dark"
 														rowSpan={2}
 													>
-														CONTRACTOR
+														Contractor
 													</th>
 													<th
 														className="text-center border border-dark align-middle border border-dark"
 														rowSpan={2}
 													>
-														LOCATION
+														Location
 													</th>
 													<th
 														className="text-center border border-dark align-middle border border-dark"
 														colSpan={3}
 													>
-														MANPOWER
+														Manpower
 													</th>
 													<th
 														className="text-center border border-dark align-middle border border-dark"
 														rowSpan={2}
 													>
-														TASK
+														Task
 													</th>
 
 													<th
@@ -627,13 +628,13 @@ const Record = () => {
 												</tr>
 												<tr>
 													<th className="text-center border border-dark align-middle sub-heading border border-dark">
-														NO. OF SUPER
+														No. of Super
 													</th>
 													<th className="text-center border border-dark align-middle sub-heading border border-dark">
-														NO. OF WORKERS
+														No. oF Workers
 													</th>
 													<th className="text-center border border-dark align-middle sub-heading border border-dark">
-														WORK HOURS
+														Work hours
 													</th>
 												</tr>
 											</thead>
@@ -790,13 +791,21 @@ const Record = () => {
 													);
 												})}
 												<tr style={{ backgroundColor: 'transparent' }}>
-													<td colSpan={6} className="border border-dark">
-														<button
+													<td
+														colSpan={6}
+														className="border border-dark text-center py-2"
+													>
+														<MUIButton
+															variant="contained"
+															color="secondary"
+															style={{ color: 'white' }}
+															size="small"
+															className={styles['header__right__save-btn']}
+															startIcon={<AddBoxIcon />}
 															onClick={() => addRowHandler('contractors')}
-															className="border-0 bg-transparent"
 														>
-															(+) ADD
-														</button>
+															ADD
+														</MUIButton>
 													</td>
 													<td className="border-0 fit bg-transparent">
 														<button className="border-0 invisible">
@@ -811,7 +820,7 @@ const Record = () => {
 														className="text-center border border-dark align-middle heading border border-dark"
 														colSpan={2}
 													>
-														TOTAL
+														Total
 													</td>
 													<td className="text-end  palign-middle border border-dark">
 														<input
@@ -855,19 +864,19 @@ const Record = () => {
 											<thead>
 												<tr>
 													<th className="text-center border border-dark align-middle">
-														EQUIPMENT
+														Equipment
 													</th>
 													<th className="text-center border border-dark align-middle">
-														VENDOR
+														Vendor
 													</th>
 													<th className="text-center border border-dark align-middle">
-														MOVE IN
+														Move In
 													</th>
 													<th className="text-center border border-dark align-middle">
-														MOVE OUT
+														Move Out
 													</th>
 													<th className="text-center border border-dark align-middle">
-														NOTE
+														Note
 													</th>
 													<th className="border-0 fit bg-transparent"></th>
 												</tr>
@@ -1025,13 +1034,21 @@ const Record = () => {
 													className="padding-0 border-0 fit"
 													style={{ backgroundColor: 'transparent' }}
 												>
-													<td colSpan={5} className="border border-dark">
-														<button
+													<td
+														colSpan={5}
+														className="border border-dark text-center py-2"
+													>
+														<MUIButton
+															variant="contained"
+															color="secondary"
+															style={{ color: 'white' }}
+															size="small"
+															className={styles['header__right__save-btn']}
+															startIcon={<AddBoxIcon />}
 															onClick={() => addRowHandler('equipments')}
-															className="border-0 bg-transparent"
 														>
-															(+) ADD
-														</button>
+															ADD
+														</MUIButton>
 													</td>
 													<td className="border-0 fit bg-transparent">
 														<button className="border-0 invisible">
@@ -1152,15 +1169,22 @@ const Record = () => {
 													className="padding-0 fit border-0"
 													style={{ backgroundColor: 'transparent' }}
 												>
-													<td colSpan={5} className="border border-dark">
-														<button
+													<td
+														colSpan={5}
+														className="border border-dark text-center py-2"
+													>
+														<MUIButton
+															variant="contained"
+															color="secondary"
+															style={{ color: 'white' }}
+															size="small"
+															className={styles['header__right__save-btn']}
+															startIcon={<AddBoxIcon />}
 															onClick={() => addRowHandler('inspections')}
-															className="border-0 bg-transparent"
 														>
-															(+) ADD
-														</button>
+															ADD
+														</MUIButton>
 													</td>
-
 													<td className="border-0 fit bg-transparent">
 														<button className="border-0 invisible">
 															Remove row
@@ -1335,13 +1359,21 @@ const Record = () => {
 													className="padding-0 fit border-0"
 													style={{ backgroundColor: 'transparent' }}
 												>
-													<td colSpan={4} className="border border-dark">
-														<button
+													<td
+														colSpan={4}
+														className="border border-dark text-center py-2"
+													>
+														<MUIButton
+															variant="contained"
+															color="secondary"
+															style={{ color: 'white' }}
+															size="small"
+															className={styles['header__right__save-btn']}
+															startIcon={<AddBoxIcon />}
 															onClick={() => addRowHandler('correctionals')}
-															className="border-0 bg-transparent"
 														>
-															(+) ADD
-														</button>
+															ADD
+														</MUIButton>
 													</td>
 													<td className="border-0 fit bg-transparent">
 														<button className="border-0 invisible">
