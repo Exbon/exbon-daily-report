@@ -72,7 +72,135 @@ const Record = () => {
 		relatedTradeList: [],
 	});
 
-	const saveHandler = async () => {
+	const validate = () => {
+		// check contractors
+		for (let i = 0; i < contractors.length; i++) {
+			for (const key in contractors[i]) {
+				if (
+					contractors[i][key] === '' &&
+					key !== 'Contractor' &&
+					contractors[i]['Contractor'].length > 0
+				) {
+					return {
+						status: false,
+						message: `Please fill in all fields. (Contractor, Row: ${
+							i + 1
+						}, Col: ${key})`,
+					};
+				} else if (
+					contractors[i][key] !== '' &&
+					key !== 'Contractor' &&
+					contractors[i]['Contractor'].length === 0
+				) {
+					return {
+						status: false,
+						message: `Please fill in all fields. (Contractor, Row: ${
+							i + 1
+						}, Col: Contractor)`,
+					};
+				}
+			}
+		}
+		console.log(equipments);
+		// check equipments
+		for (let i = 0; i < equipments.length; i++) {
+			for (const key in equipments[i]) {
+				if (
+					equipments[i][key] === '' &&
+					key !== 'Equipment' &&
+					equipments[i]['Equipment'].length > 0
+				) {
+					return {
+						status: false,
+						message: `Please fill in all fields. (Equipment, Row: ${
+							i + 1
+						}, Col: ${key})`,
+					};
+				} else if (
+					equipments[i][key] !== '' &&
+					key !== 'Equipment' &&
+					equipments[i]['Equipment'].length === 0
+				) {
+					return {
+						status: false,
+						message: `Please fill in all fields. (Equipment, Row: ${
+							i + 1
+						}, Col: Equipment)`,
+					};
+				}
+			}
+			if (equipments[i]['Equipment'] === '') {
+				return {
+					status: false,
+					message: `Please fill in all fields. (Equipment, Row: ${
+						i + 1
+					}, Col: Equipment)`,
+				};
+			}
+		}
+		// check inspections
+		for (let i = 0; i < inspections.length; i++) {
+			for (const key in inspections[i]) {
+				if (
+					inspections[i][key] === '' &&
+					key !== 'Inspector' &&
+					inspections[i]['Inspector'].length > 0
+				) {
+					return {
+						status: false,
+						message: `Please fill in all fields. (Inspection, Row: ${
+							i + 1
+						}, Col: ${key})`,
+					};
+				} else if (
+					inspections[i][key] !== '' &&
+					key !== 'Inspector' &&
+					inspections[i]['Inspector'].length === 0
+				) {
+					return {
+						status: false,
+						message: `Please fill in all fields. (Inspector, Row: ${
+							i + 1
+						}, Col: Inspector)`,
+					};
+				}
+			}
+		}
+		// check correctionals
+		for (let i = 0; i < correctionals.length; i++) {
+			for (const key in correctionals[i]) {
+				if (
+					correctionals[i][key] === '' &&
+					key !== 'Deficiency' &&
+					correctionals[i]['Deficiency'].length > 0
+				) {
+					return {
+						status: false,
+						message: `Please fill in all fields. (Correctional, Row: ${
+							i + 1
+						}, Col: ${key})`,
+					};
+				} else if (
+					correctionals[i][key] !== '' &&
+					key !== 'Deficiency' &&
+					correctionals[i]['Deficiency'].length === 0
+				) {
+					return {
+						status: false,
+						message: `Please fill in all fields. (Deficiency, Row: ${
+							i + 1
+						}, Col: Deficiency)`,
+					};
+				}
+			}
+		}
+		return {
+			status: true,
+			message: `All fields are filled in.`,
+		};
+	};
+
+	const save = () => {
 		let promises = [];
 		const fetchData = async () => {
 			const reportID = (
@@ -84,9 +212,18 @@ const Record = () => {
 				})
 			).data.result[0][0].ReportID;
 
-			console.log(reportID);
-
 			for (let i = 0; i < contractors.length; i++) {
+				if (contractors[i].Contractor.length === 0) {
+					toast.success(
+						<div className={styles['alert__complete']}>
+							<strong>Save Complete</strong>
+						</div>,
+						{
+							position: toast.POSITION.BOTTOM_CENTER,
+							hideProgressBar: true,
+						},
+					);
+				}
 				await axios
 					.post(`/api/record/daily-report/contractor`, {
 						...contractors[i],
@@ -137,6 +274,23 @@ const Record = () => {
 				);
 			}),
 		);
+	};
+
+	const saveHandler = async () => {
+		const validateResponse = await validate();
+		if (!validateResponse.status) {
+			toast.error(
+				<div className={styles['alert__complete']}>
+					<strong>{validateResponse.message}</strong>
+				</div>,
+				{
+					position: toast.POSITION.BOTTOM_CENTER,
+					hideProgressBar: true,
+				},
+			);
+		} else {
+			const saveResponse = await save();
+		}
 	};
 
 	useEffect(() => {
@@ -242,7 +396,7 @@ const Record = () => {
 						? res.data.result[0]
 						: [
 								{
-									ContractorID: '',
+									Contractor: '',
 									Location: '',
 									NumSuper: '',
 									NumWorker: '',
@@ -256,7 +410,6 @@ const Record = () => {
 						? res.data.result[1]
 						: [
 								{
-									EquipmentID: '',
 									Equipment: '',
 									MoveIn: '',
 									MoveOut: '',
@@ -378,7 +531,7 @@ const Record = () => {
 			setContractors((prevState) => [
 				...prevState,
 				{
-					ContractorID: '',
+					Contractor: '',
 					Location: '',
 					NumSuper: '',
 					NumWorker: '',
@@ -390,7 +543,6 @@ const Record = () => {
 			setEquipments((prevState) => [
 				...prevState,
 				{
-					EquipmentID: '',
 					Equipment: '',
 					MoveIn: '',
 					MoveOut: '',
@@ -431,8 +583,6 @@ const Record = () => {
 	};
 
 	const handleChange = (e, type, index) => {
-		console.log(e.target.name);
-		console.log(e.target.value);
 		e.persist();
 
 		if (type === 'contractors') {
@@ -442,7 +592,6 @@ const Record = () => {
 				return newState;
 			});
 		} else if (type === 'equipments') {
-			console.log(equipments);
 			setEquipments((prevState) => {
 				const newState = [...prevState];
 				newState[index][e.target.name] = e.target.value;
@@ -641,6 +790,17 @@ const Record = () => {
 												onClick={() => saveHandler()}
 											>
 												Save
+											</MUIButton>
+											<MUIButton
+												variant="contained"
+												color="primary"
+												size="small"
+												className={styles['header__right__save-btn']}
+												startIcon={<SaveIcon />}
+												onClick={() => saveHandler()}
+												style={{ marginRight: '10px' }}
+											>
+												Export
 											</MUIButton>
 										</div>
 									</div>
