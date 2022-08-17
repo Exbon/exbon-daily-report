@@ -99,7 +99,6 @@ const Record = () => {
 					.catch((err) => alert(err));
 			}
 
-
 			for (let i = 0; i < equipments.length; i++) {
 				await axios
 					.post(`/api/record/daily-report/equipment`, {
@@ -116,7 +115,6 @@ const Record = () => {
 						ReportID: reportID,
 					})
 					.catch((err) => alert(err));
-
 			}
 
 			for (let i = 0; i < correctionals.length; i++) {
@@ -1336,7 +1334,11 @@ const Record = () => {
 															(+) ADD
 														</button>
 													</td>
-													<td className="border-0 bg-transparent"></td>
+													<td className="border-0 fit bg-transparent">
+														<button className="border-0 invisible">
+															Remove row
+														</button>
+													</td>{' '}
 												</tr>
 											</tbody>
 										</Table>
