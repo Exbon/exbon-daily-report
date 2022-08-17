@@ -132,6 +132,10 @@ body {
 
 // RECORD 
 #record {
+  .save-btn {
+    right: 100px;
+    top: 5px;
+  }
   input[type="number"] {
     text-align: right;
   }

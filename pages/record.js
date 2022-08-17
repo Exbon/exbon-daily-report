@@ -484,61 +484,76 @@ const Record = () => {
 						</div>
 					) : (
 						<Container id="record">
-							<>
-								<h1 className={styles['title']}>Record</h1>
-								<div className={styles['header']}>
-									<div className={styles['header__left']}>
-										<select
-											value={projectState}
-											onChange={(e) => setProjectState(e.target.value)}
-											style={{
-												fontFamily: 'Roboto, sans-serif',
-												fontSize: 'medium',
-												display: 'inline-block',
-												color: '#74646e',
-												border: '1px solid #c8bfc4',
-												borderRadius: '4px',
-												boxShadow: 'inset 1px 1px 2px #ddd8dc',
-												background: '#fff',
-												// zIndex: modalNoWork.isOpen ? "0" : "1",
-												position: 'relative',
-												height: '30px',
-												marginBottom: '3px',
-												width: resolution602
-													? '450px'
-													: resolution1008
-													? '500px'
-													: '800px',
-											}}
-										>
-											{stateAssignedProject.map((item) => {
-												return (
-													<option
-														value={item.ProjectID}
-														key={item.ProjectID}
-														projectgroup={item.ProjectGroup}
-														projectname={item.ProjectName}
-													>
-														{item.JobNumber} &emsp;[{item.ProjectGroup}]&ensp;
-														{item.ProjectName}
-													</option>
-												);
-											})}
-										</select>
-										<MuiPickersUtilsProvider utils={DateFnsUtils}>
-											<DatePicker
-												margin="normal"
-												id="datePickerDialog"
-												format="MM/dd/yyyy"
-												value={selectedDate}
-												onChange={handleDateChange}
-												className={styles['header__right__date-picker']}
-												autoOk={true}
-												okLabel=""
-											/>
-										</MuiPickersUtilsProvider>
+							<Row>
+								<Col>
+									<h1 className={styles['title']}>Record</h1>
+									<div className={styles['header']}>
+										<div className={styles['header__left']}>
+											<select
+												value={projectState}
+												onChange={(e) => setProjectState(e.target.value)}
+												style={{
+													fontFamily: 'Roboto, sans-serif',
+													fontSize: 'medium',
+													display: 'inline-block',
+													color: '#74646e',
+													border: '1px solid #c8bfc4',
+													borderRadius: '4px',
+													boxShadow: 'inset 1px 1px 2px #ddd8dc',
+													background: '#fff',
+													// zIndex: modalNoWork.isOpen ? "0" : "1",
+													position: 'relative',
+													height: '30px',
+													marginBottom: '3px',
+													width: resolution602
+														? '450px'
+														: resolution1008
+														? '500px'
+														: '800px',
+												}}
+											>
+												{stateAssignedProject.map((item) => {
+													return (
+														<option
+															value={item.ProjectID}
+															key={item.ProjectID}
+															projectgroup={item.ProjectGroup}
+															projectname={item.ProjectName}
+														>
+															{item.JobNumber} &emsp;[{item.ProjectGroup}]&ensp;
+															{item.ProjectName}
+														</option>
+													);
+												})}
+											</select>
+											<div className="position-relative w-100">
+												<MuiPickersUtilsProvider utils={DateFnsUtils}>
+													<DatePicker
+														margin="normal"
+														id="datePickerDialog"
+														format="MM/dd/yyyy"
+														value={selectedDate}
+														onChange={handleDateChange}
+														className={styles['header__right__date-picker']}
+														autoOk={true}
+														okLabel=""
+													/>
+												</MuiPickersUtilsProvider>
+
+												<Button
+													className="position-absolute save-btn"
+													variant="primary"
+													type="button"
+													onClick={() => saveHandler()}
+												>
+													Save
+												</Button>
+											</div>
+										</div>
 									</div>
-								</div>
+								</Col>
+							</Row>
+							<>
 								<Row>
 									<Col>
 										<Table>
@@ -735,7 +750,11 @@ const Record = () => {
 															(+) ADD
 														</button>
 													</td>
-													<td className="border-0 fit bg-transparent"></td>
+													<td className="border-0 fit bg-transparent">
+														<button className="border-0 invisible">
+															Remove row
+														</button>
+													</td>
 												</tr>
 											</tbody>
 											<tfoot>
@@ -946,7 +965,11 @@ const Record = () => {
 															(+) ADD
 														</button>
 													</td>
-													<td className="border-0 fit bg-transparent"></td>
+													<td className="border-0 fit bg-transparent">
+														<button className="border-0 invisible">
+															Remove row
+														</button>
+													</td>
 												</tr>
 											</tbody>
 										</Table>
@@ -1070,7 +1093,11 @@ const Record = () => {
 														</button>
 													</td>
 
-													<td className="border-0 fit bg-transparent"></td>
+													<td className="border-0 fit bg-transparent">
+														<button className="border-0 invisible">
+															Remove row
+														</button>
+													</td>
 												</tr>
 											</tbody>
 										</Table>
@@ -1259,21 +1286,14 @@ const Record = () => {
 															rows={'3'}
 														/>
 													</td>
-													<td className="border-0 bg-transparent"></td>
+													<td className="border-0 fit bg-transparent">
+														<button className="border-0 invisible">
+															Remove row
+														</button>
+													</td>
 												</tr>
 											</tbody>
 										</Table>
-									</Col>
-								</Row>
-								<Row>
-									<Col>
-										<Button
-											variant="primary"
-											type="button"
-											onClick={() => saveHandler()}
-										>
-											Save
-										</Button>
 									</Col>
 								</Row>
 							</>
