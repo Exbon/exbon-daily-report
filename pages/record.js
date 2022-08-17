@@ -16,8 +16,8 @@ import { Typeahead } from 'react-bootstrap-typeahead';
 import styles from './record.module.css';
 import { formatDate, formatDateDash } from '../components/main/formatDate';
 import Autocomplete from 'react-autocomplete';
-import "react-toastify/dist/ReactToastify.css";
-import { toast } from "react-toastify";
+import 'react-toastify/dist/ReactToastify.css';
+import { toast } from 'react-toastify';
 
 toast.configure();
 
@@ -73,7 +73,6 @@ const Record = () => {
 	const saveHandler = async () => {
 		let promises = [];
 		const fetchData = async () => {
-
 			const reportID = (
 				await axios.post(`/api/record/daily-report`, {
 					ProjectID: router.query.pid,
@@ -91,58 +90,56 @@ const Record = () => {
 			});
 			console.log(reportID);
 
-		
-			for(let i=0; i < contractors.length; i++)
-			{
-				await axios.post(`/api/record/daily-report/contractor`, {
-					...contractors[i],
-					ReportID: reportID
-				})
-				.catch((err) => alert(err))
+			for (let i = 0; i < contractors.length; i++) {
+				await axios
+					.post(`/api/record/daily-report/contractor`, {
+						...contractors[i],
+						ReportID: reportID,
+					})
+					.catch((err) => alert(err));
 			}
 
-			
-			for (let i=0; i < equipments.length; i++)
-			{
-				await axios.post(`/api/record/daily-report/equipment`, {
-					...equipments[i],
-					ReportID: reportID
-				})
-				.catch((err) => alert(err))
+			for (let i = 0; i < equipments.length; i++) {
+				await axios
+					.post(`/api/record/daily-report/equipment`, {
+						...equipments[i],
+						ReportID: reportID,
+					})
+					.catch((err) => alert(err));
 			}
 
-			
-			for (let i=0; i < inspections.length; i++)
-			{
-				await axios.post(`/api/record/daily-report/inspection`, {
-					...inspections[i],
-					ReportID: reportID
-				})
-				.catch((err) => alert(err))
+			for (let i = 0; i < inspections.length; i++) {
+				await axios
+					.post(`/api/record/daily-report/inspection`, {
+						...inspections[i],
+						ReportID: reportID,
+					})
+					.catch((err) => alert(err));
 			}
 
-			for (let i=0; i < correctionals.length; i++)
-			{
-				await axios.post(`/api/record/daily-report/correctional`, {
-					...correctionals[i],
-					ReportID: reportID
-				})
-				.catch((err) => alert(err))
+			for (let i = 0; i < correctionals.length; i++) {
+				await axios
+					.post(`/api/record/daily-report/correctional`, {
+						...correctionals[i],
+						ReportID: reportID,
+					})
+					.catch((err) => alert(err));
 			}
-			
-		}		
+		};
 		promises.push(fetchData());
-		trackPromise(Promise.all(promises).then(() => {
-			toast.success(
-				<div className={styles["alert__complete"]}>
-				  <strong>Save Complete</strong>
-				</div>,
-				{
-				  position: toast.POSITION.BOTTOM_CENTER,
-				  hideProgressBar: true,
-				}
-			  );
-		}));
+		trackPromise(
+			Promise.all(promises).then(() => {
+				toast.success(
+					<div className={styles['alert__complete']}>
+						<strong>Save Complete</strong>
+					</div>,
+					{
+						position: toast.POSITION.BOTTOM_CENTER,
+						hideProgressBar: true,
+					},
+				);
+			}),
+		);
 	};
 
 	useEffect(() => {
@@ -1241,6 +1238,16 @@ const Record = () => {
 																			i,
 																		)
 																	}
+																	menuStyle={{
+																		borderRadius: '3px',
+																		boxShadow: '0 2px 12px rgba(0, 0, 0, 0.1)',
+																		background: 'rgba(255, 255, 255, 0.9)',
+																		padding: '2px 0',
+																		fontSize: '90%',
+																		position: 'fixed',
+																		overflow: 'auto',
+																		maxHeight: '15%',
+																	}}
 																></Autocomplete>
 															</td>
 															<td className="text-left border border-dark align-middle">
