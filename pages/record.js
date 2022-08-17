@@ -18,8 +18,8 @@ import { formatDate, formatDateDash } from '../components/main/formatDate';
 import Autocomplete from 'react-autocomplete';
 import 'react-toastify/dist/ReactToastify.css';
 import { toast } from 'react-toastify';
-import SaveIcon from "@material-ui/icons/Save";
-import MUIButton from "@material-ui/core/Button";
+import SaveIcon from '@material-ui/icons/Save';
+import MUIButton from '@material-ui/core/Button';
 
 toast.configure();
 
@@ -101,7 +101,6 @@ const Record = () => {
 					.catch((err) => alert(err));
 			}
 
-
 			for (let i = 0; i < equipments.length; i++) {
 				await axios
 					.post(`/api/record/daily-report/equipment`, {
@@ -118,7 +117,6 @@ const Record = () => {
 						ReportID: reportID,
 					})
 					.catch((err) => alert(err));
-
 			}
 
 			for (let i = 0; i < correctionals.length; i++) {
@@ -579,19 +577,18 @@ const Record = () => {
 												>
 													Save
 												</Button> */}
-												
 											</div>
 										</div>
-										<div className={styles["header__right"]}>
+										<div className={styles['header__right']}>
 											<MUIButton
 												variant="contained"
 												color="primary"
 												size="small"
-												className={styles["header__right__save-btn"]}
+												className={styles['header__right__save-btn']}
 												startIcon={<SaveIcon />}
 												onClick={() => saveHandler()}
 											>
-													Save
+												Save
 											</MUIButton>
 										</div>
 									</div>
