@@ -18,6 +18,8 @@ import { formatDate, formatDateDash } from '../components/main/formatDate';
 import Autocomplete from 'react-autocomplete';
 import 'react-toastify/dist/ReactToastify.css';
 import { toast } from 'react-toastify';
+import SaveIcon from "@material-ui/icons/Save";
+import MUIButton from "@material-ui/core/Button";
 
 toast.configure();
 
@@ -569,15 +571,28 @@ const Record = () => {
 													/>
 												</MuiPickersUtilsProvider>
 
-												<Button
+												{/* <Button
 													className="position-absolute save-btn"
 													variant="primary"
 													type="button"
 													onClick={() => saveHandler()}
 												>
 													Save
-												</Button>
+												</Button> */}
+												
 											</div>
+										</div>
+										<div className={styles["header__right"]}>
+											<MUIButton
+												variant="contained"
+												color="primary"
+												size="small"
+												className={styles["header__right__save-btn"]}
+												startIcon={<SaveIcon />}
+												onClick={() => saveHandler()}
+											>
+													Save
+											</MUIButton>
 										</div>
 									</div>
 								</Col>
