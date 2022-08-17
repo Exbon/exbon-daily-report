@@ -52,7 +52,7 @@ const Record = () => {
 	const [equipments, setEquipments] = useState([]);
 	const [inspections, setInspections] = useState([]);
 	const [correctionals, setCorrectionals] = useState([]);
-	const [notes, setNotes] = useState([]);
+	const [note, setNote] = useState('');
 	const handleDateChange = (date) => {
 		setSelectedDate(date);
 	};
@@ -65,9 +65,57 @@ const Record = () => {
 		relatedTradeList: [],
 	});
 
-	const saveHandler = () => {
-		axios.post(`/api/record/daily-report`, {});
+	const saveHandler = async () => {
+		const reportID = (
+			await axios.post(`/api/record/daily-report`, {
+				ProjectID: router.query.pid,
+				Date: formatDate(selectedDate),
+				EmployeeID: status.cookies.employeeid,
+				Note: note.Note,
+			})
+		).data.result[0][0].ReportID;
+		console.log({
+			ProjectID: router.query.pid,
+			Date: selectedDate,
+			EmployeeID: status.cookies.employeeid,
+			Notes: note,
+		});
+
+		console.log(reportID);
+		const postContractors = await Promise.all(
+			contractors.map((contractor) =>
+				axios.post(`/api/record/daily-report/contractor`, {
+					...contractor,
+					ReportID: reportID,
+				}),
+			),
+		);
+		const postEquipments = await Promise.all(
+			equipments.map((equipment) =>
+				axios.post(`/api/record/daily-report/equipment`, {
+					...equipment,
+					ReportID: reportID,
+				}),
+			),
+		);
+		const postInspections = await Promise.all(
+			inspections.map((inspection) =>
+				axios.post(`/api/record/daily-report/inspection`, {
+					...inspection,
+					ReportID: reportID,
+				}),
+			),
+		);
+		const postCorrectionals = await Promise.all(
+			correctionals.map((correctional) =>
+				axios.post(`/api/record/daily-report/correctional`, {
+					...correctional,
+					ReportID: reportID,
+				}),
+			),
+		);
 	};
+
 	useEffect(() => {
 		if (!router.isReady) return;
 
@@ -170,7 +218,8 @@ const Record = () => {
 				setEquipments(res.data.result[1]);
 				setInspections(res.data.result[2]);
 				setCorrectionals(res.data.result[3]);
-				setNotes(res.data.result[4]);
+				console.log(res.data.result[4][0]);
+				setNote(res.data.result[4][0]);
 			} else {
 				setData('');
 			}
@@ -273,9 +322,9 @@ const Record = () => {
 			setInspections((prevState) => [
 				...prevState,
 				{
-					InspectionID: '',
+					Inspector: '',
 					Agency: '',
-					NuLocation: '',
+					Location: '',
 					Task: '',
 					Result: '',
 				},
@@ -284,14 +333,14 @@ const Record = () => {
 			setCorrectionals((prevState) => [
 				...prevState,
 				{
-					CorrectionalID: '',
-					Location: '',
-					Num: '',
-					Task: '',
+					Deficiency: '',
+					Type: '',
+					Trade: '',
+					Description: '',
 				},
 			]);
-		} else if (type === 'notes') {
-			setNotes((prevState) => [
+		} else if (type === 'note') {
+			setNote((prevState) => [
 				...prevState,
 				{
 					NoteID: '',
@@ -331,8 +380,8 @@ const Record = () => {
 				newState[index][e.target.name] = e.target.value;
 				return newState;
 			});
-		} else if (type === 'notes') {
-			setNotes((prevState) => {
+		} else if (type === 'note') {
+			setNote((prevState) => {
 				const newState = [...prevState];
 				newState[index][e.target.name] = e.target.value;
 				return newState;
@@ -386,8 +435,8 @@ const Record = () => {
 				newState.splice(index, 1);
 				return newState;
 			});
-		} else if (type === 'notes') {
-			setNotes((prevState) => {
+		} else if (type === 'note') {
+			setNote((prevState) => {
 				const newState = [...prevState];
 				newState.splice(index, 1);
 				return newState;
@@ -493,7 +542,7 @@ const Record = () => {
 								</div>
 								<Row>
 									<Col>
-										<Table hover>
+										<Table>
 											<thead>
 												<tr>
 													<th
@@ -736,7 +785,7 @@ const Record = () => {
 								</Row>
 								<Row>
 									<Col>
-										<Table hover>
+										<Table>
 											<thead>
 												<tr>
 													<th className="text-center border border-dark align-middle">
@@ -911,7 +960,7 @@ const Record = () => {
 
 								<Row>
 									<Col>
-										<Table hover>
+										<Table>
 											<thead>
 												<tr>
 													<th className="border border-dark" colSpan={5}>
@@ -1034,7 +1083,7 @@ const Record = () => {
 								</Row>
 								<Row>
 									<Col>
-										<Table hover>
+										<Table>
 											<thead>
 												<tr>
 													<th className="border border-dark" colSpan={4}>
@@ -1192,51 +1241,28 @@ const Record = () => {
 								</Row>
 								<Row>
 									<Col>
-										<Table hover>
+										<Table>
 											<thead>
 												<tr>
 													<th className="border border-dark">Note</th>
+													<th className="border-0 bg-transparent"></th>
 												</tr>
 											</thead>
 											<tbody>
-												{notes.map((note, i) => {
-													return (
-														<tr key={i}>
-															<td className="text-center border border-dark align-middle">
-																<input
-																	className="w-100"
-																	type="text"
-																	value={note.Note || ''}
-																	name="Note"
-																	onChange={(e) => handleChange(e, 'notes', i)}
-																/>
-															</td>
-															<td
-																className="padding-0 fit border-0"
-																style={{ backgroundColor: 'transparent' }}
-															>
-																<button
-																	onClick={() => removeRowHandler('notes', i)}
-																	className="border-0 bg-transparent"
-																>
-																	Remove row
-																</button>
-															</td>
-														</tr>
-													);
-												})}
-												<tr
-													colSpan="2"
-													className="padding-0 fit border-0"
-													style={{ backgroundColor: 'transparent' }}
-												>
-													<td className="border border-dark">
-														<button
-															onClick={() => addRowHandler('notes')}
-															className="border-0 bg-transparent"
-														>
-															(+) ADD
-														</button>
+												<tr>
+													<td className="text-center border border-dark align-middle">
+														{console.log(note)}
+														<textarea
+															className="w-100"
+															type="text"
+															value={note ? note.Note : ''}
+															name="Note"
+															onChange={(e) =>
+																setNote({ ...note, Note: e.target.value })
+															}
+															multiple={true}
+															rows={'3'}
+														/>
 													</td>
 													<td className="border-0 bg-transparent"></td>
 												</tr>

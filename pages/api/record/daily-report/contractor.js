@@ -2,17 +2,16 @@ const mssql = require('mssql');
 const dbserver = require('../../../../dbConfig.js');
 
 const getContractor = (req, res) => {
-
-  const { method, query, body } = req;
-  return new Promise(resolve => {
-    switch (method) {
-      case "GET":
-        mssql.connect(dbserver.dbConfig, err => {
-          if (err) {
-            console.error(err);
-            return resolve();
-          }
-          const request = new mssql.Request();
+	const { method, query, body } = req;
+	return new Promise((resolve) => {
+		switch (method) {
+			case 'GET':
+				mssql.connect(dbserver.dbConfig, (err) => {
+					if (err) {
+						console.error(err);
+						return resolve();
+					}
+					const request = new mssql.Request();
 
 					const sqlquery = `EXEC [Exbon].[dbo].[usp_dailyreport_Select_DailyReportContractor_Dropdown]
                             @projectID = ${query.pid}
@@ -32,46 +31,45 @@ const getContractor = (req, res) => {
 				});
 				break;
 
+			case 'POST':
+				mssql.connect(dbserver.dbConfig, (err) => {
+					if (err) {
+						console.error(err);
+						return resolve();
+					}
+					const request = new mssql.Request();
 
-      case "POST":
-        mssql.connect(dbserver.dbConfig, err => {
-          if (err) {
-            console.error(err);
-            return resolve();
-          }
-          const request = new mssql.Request();
-  
-          const sqlquery = `EXEC [Exbon].[dbo].[usp_dailyreport_Insert_DailyReportContractor]
+					const sqlquery = `EXEC [Exbon].[dbo].[usp_dailyreport_Insert_DailyReportContractor]
                             @reportID = ${body.ReportID},
-                            @contractor = '${body.Contractor_Contractor}',
-                            @location = '${body.Contractor_Location}',
-                            @numSuper = ${body.Contractor_NumSuper},
-                            @numWorker = ${body.Contractor_NumWorker},
-                            @workHours = ${body.Contractor_WorkHours},
-                            @task = '${body.Contractor_Task}'
+                            @contractor = '${body.Contractor}',
+                            @location = '${body.Location}',
+                            @numSuper = ${body.NumSuper},
+                            @numWorker = ${body.NumWorker},
+                            @workHours = ${body.WorkHours},
+                            @task = '${body.Task}'
                             `;
-  
-          request.query(sqlquery, (err, recordset) => {
-            if (err) {
-              console.error(err);
-              return resolve();
-            }
-            res.status(200).json({
-              message: "Success",
-              result: recordset.recordsets,
-            });
-            return resolve();
-          });
-        });
-        break;
 
-      default:
-        res.setHeader("Allow", ["GET", "POST"]);
-        res.status(405).end(`Method ${method} Not Allowed`);
-        res.status(404).end(`Failed`);
-        resolve();
-    }
-  });
+					request.query(sqlquery, (err, recordset) => {
+						if (err) {
+							console.error(err);
+							return resolve();
+						}
+						res.status(200).json({
+							message: 'Success',
+							result: recordset.recordsets,
+						});
+						return resolve();
+					});
+				});
+				break;
+
+			default:
+				res.setHeader('Allow', ['GET', 'POST']);
+				res.status(405).end(`Method ${method} Not Allowed`);
+				res.status(404).end(`Failed`);
+				resolve();
+		}
+	});
 };
 
 export default getContractor;

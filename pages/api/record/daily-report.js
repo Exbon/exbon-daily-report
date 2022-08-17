@@ -39,7 +39,6 @@ const getDailyReport = (req, res) => {
 						return resolve();
 					}
 					const request = new mssql.Request();
-
 					const sqlquery = `EXEC [Exbon].[dbo].[usp_dailyreport_DeleteAndInsert_DailyReport]
                         @projectID = ${body.ProjectID},
                         @date = '${body.Date}',
@@ -58,7 +57,7 @@ const getDailyReport = (req, res) => {
 						return resolve();
 					});
 				});
-				break;	
+				break;
 
 			default:
 				res.setHeader('Allow', ['GET', 'POST']);
