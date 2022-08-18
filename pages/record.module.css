@@ -54,9 +54,9 @@
 	cursor: pointer;
 }
 .header__right__excel-export-btn {
-	background: #1cc26f !important;
-	color: #ffffff !important;
-  }
+  background: #1cc26f !important;
+  color: #ffffff !important;
+}
 .header__right {
 	display: flex;
 	align-items: center;
