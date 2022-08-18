@@ -8,23 +8,44 @@ const exportExcel = async (req, res) => {
 		switch (method) {
 			case 'POST':
 				try {
+					// projectName: currentProject.ProjectName,
+					// date: formatDate(selectedDate),
+					// contractNo: '???',
+					// jobNumber: currentProject.JobNumber,
+					// taskOrderNo: '???',
+					// documentedBy: status.cookies.fullname,
+					// contractors: tempContractors,
+					// inspectors: tempInspections,
+					// note: note ? note.Note : '',
+					// userID: status.cookies.employeeid,
+
 					const __dirname = 'public/record';
 					const Excel = require('exceljs');
 					const filename = '/ToCustomer_Form.xlsx';
 					const workbook = new Excel.Workbook();
-					// const {body} = req;
 
 					// read file
 					await workbook.xlsx.readFile(__dirname + filename);
 
 					const worksheet = workbook.getWorksheet('To Customer');
 
-					// worksheet.duplicateRow(13, 3, true);
+					const row2 = worksheet.getRow(2);
+					row2.getCell(2).value = body.projectName;
+					row2.getCell(6).value = body.date;
 
+					const row3 = worksheet.getRow(3);
+					row3.getCell(2).value = body.contractNo;
+					row3.getCell(6).value = body.jobNumber;
+
+					const row4 = worksheet.getRow(4);
+					row4.getCell(2).value = body.taskOrderNo;
+					row4.getCell(6).value = body.documentedBy;
+
+					// worksheet.duplicateRow(13, 3, true);
 					worksheet.duplicateRow(19, 3, true);
 					// write file
 					await workbook.xlsx.writeFile(
-						__dirname + '/ToCustomer_' + '7784' + '.xlsx',
+						__dirname + '/ToCustomer_' + body.userID + '.xlsx',
 					);
 
 					console.log('body', body);
