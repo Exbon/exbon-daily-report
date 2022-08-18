@@ -60,7 +60,7 @@ const Record = () => {
 	const [equipments, setEquipments] = useState([]);
 	const [inspections, setInspections] = useState([]);
 	const [correctionals, setCorrectionals] = useState([]);
-	const [note, setNote] = useState('');
+	const [notes, setNotes] = useState('');
 	const handleDateChange = (date) => {
 		setSelectedDate(date);
 	};
@@ -171,7 +171,7 @@ const Record = () => {
 					ProjectID: router.query.pid,
 					Date: formatDate(selectedDate),
 					EmployeeID: status.cookies.employeeid,
-					Note: note ? note.Note : '',
+					Note: notes ? notes[0].Note : '',
 				})
 			).data.result[0][0].ReportID;
 
@@ -294,7 +294,7 @@ const Record = () => {
 				documentedBy: status.cookies.fullname,
 				contractors: tempContractors,
 				inspectors: tempInspections,
-				note: note ? note.Note : '',
+				note: notes ? notes[0].Note : '',
 				userID: status.cookies.employeeid,
 			},
 		});
@@ -502,9 +502,10 @@ const Record = () => {
 								},
 						  ],
 				);
-				setNote(
-					res.data.result[4][0].length > 0
-						? res.data.result[4][0]
+				console.log('result4:', res.data.result[4]);
+				setNotes(
+					res.data.result[4].length > 0
+						? res.data.result[4]
 						: [
 								{
 									NoteID: '',
@@ -630,8 +631,8 @@ const Record = () => {
 					Description: '',
 				},
 			]);
-		} else if (type === 'note') {
-			setNote((prevState) => [
+		} else if (type === 'notes') {
+			setNotes((prevState) => [
 				...prevState,
 				{
 					NoteID: '',
@@ -668,8 +669,8 @@ const Record = () => {
 				newState[index][e.target.name] = e.target.value;
 				return newState;
 			});
-		} else if (type === 'note') {
-			setNote((prevState) => {
+		} else if (type === 'notes') {
+			setNotes((prevState) => {
 				const newState = [...prevState];
 				newState[index][e.target.name] = e.target.value;
 				return newState;
@@ -723,8 +724,8 @@ const Record = () => {
 				newState.splice(index, 1);
 				return newState;
 			});
-		} else if (type === 'note') {
-			setNote((prevState) => {
+		} else if (type === 'notes') {
+			setNotes((prevState) => {
 				const newState = [...prevState];
 				newState.splice(index, 1);
 				return newState;
@@ -1761,15 +1762,14 @@ const Record = () => {
 														<textarea
 															className="w-100"
 															type="text"
-															value={note ? note.Note : ''}
+															value={notes ? notes[0].Note : ''}
 															name="Note"
-															onChange={(e) =>
-																setNote({ ...note, Note: e.target.value })
-															}
+															onChange={(e) => handleChange(e, 'notes', 0)}
 															multiple={true}
 															rows={'3'}
 														/>
 													</td>
+													{console.log(notes)}
 													<td className="border-0 fit bg-transparent">
 														<button className="border-0 invisible">
 															Remove row
