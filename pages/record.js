@@ -257,7 +257,7 @@ const Record = () => {
 		}
 	};
 
-	const exportToCustomerHandler = async () => {
+	const exportToCustomer = async () => {
 		// Start spinner
 		setCheckDownload(1);
 
@@ -321,6 +321,35 @@ const Record = () => {
 				},
 			);
 		}, 3000);
+	};
+
+	const exportToCustomerHandler = async () => {
+		const validateResponse = [
+			validateContractors(),
+			validateEquipments(),
+			validateInspections(),
+			validateCorretionals(),
+		];
+
+		const validate = await Promise.all(validateResponse);
+
+		if (validate.every((item) => item.status)) {
+			exportToCustomer();
+		} else {
+			validate.map((item, index) => {
+				if (item.status === false) {
+					toast.error(
+						<div className={styles['alert__complete']}>
+							<strong>{item.message}</strong>
+						</div>,
+						{
+							position: toast.POSITION.BOTTOM_CENTER,
+							hideProgressBar: true,
+						},
+					);
+				}
+			});
+		}
 	};
 
 	useEffect(() => {
