@@ -47,6 +47,7 @@ const getEquipment = (req, res) => {
                             @note = '${sqlEscape(body.Note)}'
                             `;
 					console.log(sqlquery);
+
 					request.query(sqlquery, (err, recordset) => {
 						if (err) {
 							console.error(err);
