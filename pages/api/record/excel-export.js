@@ -21,7 +21,7 @@ const exportExcel = async (req, res) => {
 
 					// worksheet.duplicateRow(13, 3, true);
 
-					worksheet.duplicateRow(19, 1, true);
+					worksheet.duplicateRow(19, 3, true);
 					// write file
 					await workbook.xlsx.writeFile(
 						__dirname + '/ToCustomer_' + '7784' + '.xlsx',
