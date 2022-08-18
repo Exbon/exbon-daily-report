@@ -75,29 +75,25 @@ const Record = () => {
 
 	const validateContractors = () => {
 		for (let i = 0; i < contractors.length; i++) {
-			if (contractors[i]['Contractor'].length > 0) {
-				return {
-					status: true,
-					message: '',
-				};
-			} else if (contractors[i]['Contractor'].length === 0) {
-				for (const key in contractors[i]) {
-					if (contractors[i][key] !== '' && contractors[i][key] !== 0) {
-						return {
-							status: false,
-							message: `Please fill in all fields. Contractor field is empty.`,
-						};
-					}
+			if (contractors[i].Contractors === '') {
+				if (contractors[i].Location !== '' || contractors[i].No !== '') {
+					return false;
 				}
-				return {
-					status: true,
-					message: '',
-				};
 			}
 		}
+		return {
+			status: true,
+			message: '',
+		};
 	};
 	const validateEquipments = () => {
 		// check equipments
+		if (equipments.length === 0) {
+			return {
+				status: true,
+				message: '',
+			};
+		}
 		for (let i = 0; i < equipments.length; i++) {
 			if (equipments[i]['Equipment'].length > 0) {
 				return {
@@ -123,6 +119,12 @@ const Record = () => {
 
 	const validateInspections = () => {
 		// check inspections
+		if (inspections.length === 0) {
+			return {
+				status: true,
+				message: '',
+			};
+		}
 		for (let i = 0; i < inspections.length; i++) {
 			if (inspections[i]['Inspector'].length > 0) {
 				return {
@@ -147,6 +149,12 @@ const Record = () => {
 	};
 	const validateCorretionals = () => {
 		// check correctionals
+		if (correctionals.length === 0) {
+			return {
+				status: true,
+				message: '',
+			};
+		}
 		for (let i = 0; i < correctionals.length; i++) {
 			if (correctionals[i]['Deficiency'].length > 0) {
 				return {
@@ -183,17 +191,6 @@ const Record = () => {
 			).data.result[0][0].ReportID;
 
 			for (let i = 0; i < contractors.length; i++) {
-				if (contractors[i].Contractor.length === 0) {
-					toast.success(
-						<div className={styles['alert__complete']}>
-							<strong>Save Complete</strong>
-						</div>,
-						{
-							position: toast.POSITION.BOTTOM_CENTER,
-							hideProgressBar: true,
-						},
-					);
-				}
 				await axios
 					.post(`/api/record/daily-report/contractor`, {
 						...contractors[i],
@@ -202,7 +199,6 @@ const Record = () => {
 					.catch((err) => alert(err));
 			}
 
-			console.log('post', equipments);
 			for (let i = 0; i < equipments.length; i++) {
 				await axios
 					.post(`/api/record/daily-report/equipment`, {
@@ -1662,7 +1658,7 @@ const Record = () => {
 														<button className="border-0 invisible">
 															Remove row
 														</button>
-													</td>{' '}
+													</td>
 												</tr>
 											</tbody>
 										</Table>

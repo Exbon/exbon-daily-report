@@ -43,9 +43,8 @@ const getDailyReport = (req, res) => {
                         @projectID = ${body.ProjectID},
                         @date = '${body.Date}',
 						@userID = ${body.EmployeeID},
-						@note = '${sqlEscape(body.Note)}'
+						@note = '${body.Note ? sqlEscape(body.Note) : ''}'
                         `;
-					console.log(sqlEscape);
 					request.query(sqlquery, (err, recordset) => {
 						if (err) {
 							console.error(err);
