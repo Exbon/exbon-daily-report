@@ -2,12 +2,14 @@ const mssql = require('mssql');
 const dbserver = require('../../../dbConfig.js');
 import { sqlEscape } from '../../../lib/utils';
 
+// prettier-ignore
 const exportExcel = async (req, res) => {
 	const { method, query, body } = req;
 	return new Promise(async (resolve) => {
 		switch (method) {
 			case 'POST':
 				try {
+					// From API
 					// projectName: currentProject.ProjectName,
 					// date: formatDate(selectedDate),
 					// contractNo: '???',
@@ -19,15 +21,46 @@ const exportExcel = async (req, res) => {
 					// note: note ? note.Note : '',
 					// userID: status.cookies.employeeid,
 
+					// Read file
 					const __dirname = 'public/record';
 					const Excel = require('exceljs');
 					const filename = '/ToCustomer_Form.xlsx';
 					const workbook = new Excel.Workbook();
-
-					// read file
 					await workbook.xlsx.readFile(__dirname + filename);
-
 					const worksheet = workbook.getWorksheet('To Customer');
+
+					// Declare variable
+					const contractorsLength = body.contractors.length;
+					const inspectorsLength = body.inspectors.length;
+					const startContractorsLine = 7; // in excel form
+					const targetContractorsLine = startContractorsLine + 6; // in excel form
+					const countRowsContractors = 8; // in excel form
+					const countRowsInspectors = 3; // in excel form
+					let startInspectorsLine = 18; // in excel form
+					let targetInspectorsLine = startInspectorsLine + 2; // in excel form
+					let startNoteLine = 22; // in excel form
+
+					// If needed, add rows for contractors
+					if (contractorsLength > countRowsContractors) {
+						worksheet.duplicateRow(
+							targetContractorsLine, // Target line to duplicate
+							contractorsLength - countRowsContractors, // How many lines
+							true, // Insert or not
+						);
+
+						startInspectorsLine += contractorsLength - countRowsContractors;
+						startNoteLine += contractorsLength - countRowsContractors;
+					}
+
+					// If needed, add rows for inspectors
+					if (inspectorsLength > countRowsInspectors) {
+						worksheet.duplicateRow(
+							targetInspectorsLine, // Target line to duplicate
+							inspectorsLength - countRowsInspectors, // How many lines
+							true, // Insert or not
+						);
+						startNoteLine += inspectorsLength - countRowsInspectors;
+					}
 
 					const row2 = worksheet.getRow(2);
 					row2.getCell(2).value = body.projectName;
@@ -41,8 +74,29 @@ const exportExcel = async (req, res) => {
 					row4.getCell(2).value = body.taskOrderNo;
 					row4.getCell(6).value = body.documentedBy;
 
-					// worksheet.duplicateRow(13, 3, true);
-					worksheet.duplicateRow(19, 3, true);
+					const contractors = body.contractors;
+					
+					for(let i = 0; i < contractorsLength; i++)
+					{
+						worksheet.getRow(startContractorsLine + i).getCell(1).value = contractors[i].Contractor;
+						worksheet.getRow(startContractorsLine + i).getCell(2).value = contractors[i].Location;
+						worksheet.getRow(startContractorsLine + i).getCell(3).value = contractors[i].NumSuper;
+						worksheet.getRow(startContractorsLine + i).getCell(4).value = contractors[i].NumWorker;
+						worksheet.getRow(startContractorsLine + i).getCell(5).value = contractors[i].Task;
+					}
+
+					const inspectors = body.inspectors;
+					for(let i = 0; i < inspectorsLength; i++)
+					{
+						worksheet.getRow(startInspectorsLine + i).getCell(1).value = inspectors[i].Inspector;
+						worksheet.getRow(startInspectorsLine + i).getCell(2).value = inspectors[i].Agency;
+						worksheet.getRow(startInspectorsLine + i).getCell(3).value = inspectors[i].Location;
+						worksheet.getRow(startInspectorsLine + i).getCell(5).value = inspectors[i].Task;
+						worksheet.getRow(startInspectorsLine + i).getCell(7).value = inspectors[i].Result;
+					}
+
+					worksheet.getRow(startNoteLine).getCell(1).value = body.note;
+
 					// write file
 					await workbook.xlsx.writeFile(
 						__dirname + '/ToCustomer_' + body.userID + '.xlsx',
