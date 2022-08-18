@@ -838,7 +838,7 @@ const Record = () => {
 												onClick={() => exportToCustomerHandler()}
 												style={{ marginRight: '10px' }}
 											>
-												Export
+												To Customer
 											</MUIButton>
 										</div>
 									</div>
