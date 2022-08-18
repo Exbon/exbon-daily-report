@@ -60,7 +60,8 @@ const Record = () => {
 	const [equipments, setEquipments] = useState([]);
 	const [inspections, setInspections] = useState([]);
 	const [correctionals, setCorrectionals] = useState([]);
-	const [notes, setNotes] = useState('');
+	const [notes, setNotes] = useState();
+	const [numbers, setNumbers] = useState([]);
 	const handleDateChange = (date) => {
 		setSelectedDate(date);
 	};
@@ -288,9 +289,9 @@ const Record = () => {
 			data: {
 				projectName: currentProject.ProjectName,
 				date: formatDate(selectedDate),
-				contractNo: '???',
+				contractNo: numbers.ContractNumber,
 				jobNumber: currentProject.JobNumber,
-				taskOrderNo: '???',
+				taskOrderNo: numbers.TaskOrder,
 				documentedBy: status.cookies.fullname,
 				contractors: tempContractors,
 				inspectors: tempInspections,
@@ -502,7 +503,6 @@ const Record = () => {
 								},
 						  ],
 				);
-				console.log('result4:', res.data.result[4]);
 				setNotes(
 					res.data.result[4].length > 0
 						? res.data.result[4]
@@ -513,6 +513,8 @@ const Record = () => {
 								},
 						  ],
 				);
+				console.log('numbers:', res.data.result[5]);
+				setNumbers(res.data.result[5][0]);
 			} else {
 				setData('');
 			}
