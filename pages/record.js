@@ -72,6 +72,7 @@ const Record = () => {
 		typeList: [],
 		relatedTradeList: [],
 	});
+	const [checkDownload, setCheckDownload] = useState(0);
 
 	const validateContractors = () => {
 		for (let i = 0; i < contractors.length; i++) {
@@ -271,6 +272,73 @@ const Record = () => {
 			});
 		}
 	};
+
+	const exportToCustomerHandler = async () => {
+		// Start spinner
+		setCheckDownload(1);
+
+		// Check first column exist start
+		let tempContractors = [];
+		contractors.forEach((contractor) => {
+			if (contractor.Contractor !== '' && contractor.Contractor !== null)
+				tempContractors.push(contractor);
+		});
+
+		let tempInspections = [];
+		inspections.forEach((inspection) => {
+			if (inspection.Inspector !== '' && inspection.Inspector !== null)
+				tempInspections.push(inspection);
+		});
+		// Check first column exist finish
+
+		const currentProject = stateAssignedProject.find(
+			(project) => project.ProjectID == projectState,
+		);
+
+		// Read, write and save excel
+		await axios({
+			method: 'post',
+			url: '/api/record/excel-export',
+			timeout: 15000, // 15 seconds timeout
+			headers: {},
+			data: {
+				projectName: currentProject.ProjectName,
+				date: formatDate(selectedDate),
+				contractNo: '???',
+				jobNumber: currentProject.JobNumber,
+				taskOrderNo: '???',
+				documentedBy: status.cookies.fullname,
+				contractors: tempContractors,
+				inspectors: tempInspections,
+				note: note ? note.Note : '',
+				userID: status.cookies.employeeid,
+			},
+		});
+
+		// Download excel after 3 seconds
+		setTimeout(() => {
+			document
+				.getElementById('excelExport')
+				.setAttribute(
+					'href',
+					'/record/ToCustomer_' + status.cookies.employeeid + '.xlsx',
+				);
+			document.getElementById('excelExport').click();
+
+			// Finish spinner
+			setCheckDownload(0);
+			toast.success(
+				<div className={styles['alert__complete']}>
+					<strong>Download Complete</strong>
+				</div>,
+				{
+					position: toast.POSITION.BOTTOM_CENTER,
+					hideProgressBar: true,
+				},
+			);
+		}, 3000);
+	};
+
 	useEffect(() => {
 		if (!router.isReady) return;
 
@@ -676,7 +744,7 @@ const Record = () => {
 						logout={logout}
 						style={{ display: 'none' }}
 					/>
-					{promiseInProgress || !projectState ? (
+					{promiseInProgress || !projectState || checkDownload ? (
 						// || !(data.length >= 0)
 						<div
 							style={{
@@ -698,6 +766,7 @@ const Record = () => {
 									<div className={styles['header']}>
 										<div className={styles['header__left']}>
 											<select
+												id="project_dropdown"
 												value={projectState}
 												onChange={(e) => setProjectState(e.target.value)}
 												style={{
@@ -766,7 +835,7 @@ const Record = () => {
 												size="small"
 												className={styles['header__right__excel-export-btn']}
 												startIcon={<RiFileExcel2Fill />}
-												onClick={() => saveHandler()}
+												onClick={() => exportToCustomerHandler()}
 												style={{ marginRight: '10px' }}
 											>
 												Export
@@ -1703,6 +1772,14 @@ const Record = () => {
 					)}
 				</>
 			)}
+			<a
+				id="excelExport"
+				href="/export.xlsx"
+				download
+				style={{ display: 'none' }}
+			>
+				download
+			</a>
 		</>
 	);
 };
