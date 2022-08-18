@@ -291,7 +291,7 @@ const Record = () => {
 				date: formatDate(selectedDate),
 				contractNo: numbers.ContractNumber,
 				jobNumber: currentProject.JobNumber,
-				taskOrderNo: numbers.TaskOrder,
+				taskOrderNo: numbers.TaskOrder ? numbers.TaskOrder : '',
 				documentedBy: status.cookies.fullname,
 				contractors: tempContractors,
 				inspectors: tempInspections,
