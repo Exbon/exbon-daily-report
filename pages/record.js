@@ -22,6 +22,7 @@ import SaveIcon from '@material-ui/icons/Save';
 import AddBoxIcon from '@material-ui/icons/AddBox';
 import MUIButton from '@material-ui/core/Button';
 import DeleteTwoTone from '@material-ui/icons/DeleteTwoTone';
+import { RiFileExcel2Fill } from 'react-icons/ri';
 
 toast.configure();
 
@@ -72,132 +73,101 @@ const Record = () => {
 		relatedTradeList: [],
 	});
 
-	const validate = () => {
-		// check contractors
+	const validateContractors = () => {
 		for (let i = 0; i < contractors.length; i++) {
-			for (const key in contractors[i]) {
-				if (
-					contractors[i][key] === '' &&
-					key !== 'Contractor' &&
-					contractors[i]['Contractor'].length > 0
-				) {
-					return {
-						status: false,
-						message: `Please fill in all fields. (Contractor, Row: ${
-							i + 1
-						}, Col: ${key})`,
-					};
-				} else if (
-					contractors[i][key] !== '' &&
-					key !== 'Contractor' &&
-					contractors[i]['Contractor'].length === 0
-				) {
-					return {
-						status: false,
-						message: `Please fill in all fields. (Contractor, Row: ${
-							i + 1
-						}, Col: Contractor)`,
-					};
-				}
-			}
-		}
-		console.log(equipments);
-		// check equipments
-		for (let i = 0; i < equipments.length; i++) {
-			for (const key in equipments[i]) {
-				if (
-					equipments[i][key] === '' &&
-					key !== 'Equipment' &&
-					equipments[i]['Equipment'].length > 0
-				) {
-					return {
-						status: false,
-						message: `Please fill in all fields. (Equipment, Row: ${
-							i + 1
-						}, Col: ${key})`,
-					};
-				} else if (
-					equipments[i][key] !== '' &&
-					key !== 'Equipment' &&
-					equipments[i]['Equipment'].length === 0
-				) {
-					return {
-						status: false,
-						message: `Please fill in all fields. (Equipment, Row: ${
-							i + 1
-						}, Col: Equipment)`,
-					};
-				}
-			}
-			if (equipments[i]['Equipment'] === '') {
+			if (contractors[i]['Contractor'].length > 0) {
 				return {
-					status: false,
-					message: `Please fill in all fields. (Equipment, Row: ${
-						i + 1
-					}, Col: Equipment)`,
+					status: true,
+					message: '',
+				};
+			} else if (contractors[i]['Contractor'].length === 0) {
+				for (const key in contractors[i]) {
+					if (contractors[i][key] !== '' && contractors[i][key] !== 0) {
+						return {
+							status: false,
+							message: `Please fill in all fields. Contractor field is empty.`,
+						};
+					}
+				}
+				return {
+					status: true,
+					message: '',
 				};
 			}
 		}
+	};
+	const validateEquipments = () => {
+		// check equipments
+		for (let i = 0; i < equipments.length; i++) {
+			if (equipments[i]['Equipment'].length > 0) {
+				return {
+					status: true,
+					message: '',
+				};
+			} else if (equipments[i]['Equipment'].length === 0) {
+				for (const key in equipments[i]) {
+					if (equipments[i][key] !== '') {
+						return {
+							status: false,
+							message: `Please fill in all fields. Equipment field is empty.`,
+						};
+					}
+				}
+				return {
+					status: true,
+					message: '',
+				};
+			}
+		}
+	};
+
+	const validateInspections = () => {
 		// check inspections
 		for (let i = 0; i < inspections.length; i++) {
-			for (const key in inspections[i]) {
-				if (
-					inspections[i][key] === '' &&
-					key !== 'Inspector' &&
-					inspections[i]['Inspector'].length > 0
-				) {
-					return {
-						status: false,
-						message: `Please fill in all fields. (Inspection, Row: ${
-							i + 1
-						}, Col: ${key})`,
-					};
-				} else if (
-					inspections[i][key] !== '' &&
-					key !== 'Inspector' &&
-					inspections[i]['Inspector'].length === 0
-				) {
-					return {
-						status: false,
-						message: `Please fill in all fields. (Inspector, Row: ${
-							i + 1
-						}, Col: Inspector)`,
-					};
+			if (inspections[i]['Inspector'].length > 0) {
+				return {
+					status: true,
+					message: '',
+				};
+			} else if (inspections[i]['Inspector'].length === 0) {
+				for (const key in inspections[i]) {
+					if (inspections[i][key] !== '') {
+						return {
+							status: false,
+							message: `Please fill in all fields. Inspector field is empty.`,
+						};
+					}
 				}
+				return {
+					status: true,
+					message: '',
+				};
 			}
 		}
+	};
+	const validateCorretionals = () => {
 		// check correctionals
 		for (let i = 0; i < correctionals.length; i++) {
-			for (const key in correctionals[i]) {
-				if (
-					correctionals[i][key] === '' &&
-					key !== 'Deficiency' &&
-					correctionals[i]['Deficiency'].length > 0
-				) {
-					return {
-						status: false,
-						message: `Please fill in all fields. (Correctional, Row: ${
-							i + 1
-						}, Col: ${key})`,
-					};
-				} else if (
-					correctionals[i][key] !== '' &&
-					key !== 'Deficiency' &&
-					correctionals[i]['Deficiency'].length === 0
-				) {
-					return {
-						status: false,
-						message: `Please fill in all fields. (Deficiency, Row: ${
-							i + 1
-						}, Col: Deficiency)`,
-					};
+			if (correctionals[i]['Deficiency'].length > 0) {
+				return {
+					status: true,
+					message: '',
+				};
+			} else if (correctionals[i]['Deficiency'].length === 0) {
+				for (const key in correctionals[i]) {
+					if (correctionals[i][key] !== '') {
+						return {
+							status: false,
+							message: `Please fill in all fields. Deficiency field is empty.`,
+						};
+					}
 				}
+				return {
+					status: true,
+					message: '',
+				};
 			}
 		}
-		return {
-			status: true,
-			message: `All fields are filled in.`,
-		};
 	};
 
 	const save = () => {
@@ -232,6 +202,7 @@ const Record = () => {
 					.catch((err) => alert(err));
 			}
 
+			console.log('post', equipments);
 			for (let i = 0; i < equipments.length; i++) {
 				await axios
 					.post(`/api/record/daily-report/equipment`, {
@@ -277,22 +248,33 @@ const Record = () => {
 	};
 
 	const saveHandler = async () => {
-		const validateResponse = await validate();
-		if (!validateResponse.status) {
-			toast.error(
-				<div className={styles['alert__complete']}>
-					<strong>{validateResponse.message}</strong>
-				</div>,
-				{
-					position: toast.POSITION.BOTTOM_CENTER,
-					hideProgressBar: true,
-				},
-			);
+		const validateResponse = [
+			validateContractors(),
+			validateEquipments(),
+			validateInspections(),
+			validateCorretionals(),
+		];
+
+		const validate = await Promise.all(validateResponse);
+
+		if (validate.every((item) => item.status)) {
+			save();
 		} else {
-			const saveResponse = await save();
+			validate.map((item, index) => {
+				if (item.status === false) {
+					toast.error(
+						<div className={styles['alert__complete']}>
+							<strong>{item.message}</strong>
+						</div>,
+						{
+							position: toast.POSITION.BOTTOM_CENTER,
+							hideProgressBar: true,
+						},
+					);
+				}
+			});
 		}
 	};
-
 	useEffect(() => {
 		if (!router.isReady) return;
 
@@ -769,15 +751,6 @@ const Record = () => {
 														okLabel=""
 													/>
 												</MuiPickersUtilsProvider>
-
-												{/* <Button
-													className="position-absolute save-btn"
-													variant="primary"
-													type="button"
-													onClick={() => saveHandler()}
-												>
-													Save
-												</Button> */}
 											</div>
 										</div>
 										<div className={styles['header__right']}>
@@ -795,8 +768,8 @@ const Record = () => {
 												variant="contained"
 												color="primary"
 												size="small"
-												className={styles['header__right__save-btn']}
-												startIcon={<SaveIcon />}
+												className={styles['header__right__excel-export-btn']}
+												startIcon={<RiFileExcel2Fill />}
 												onClick={() => saveHandler()}
 												style={{ marginRight: '10px' }}
 											>
