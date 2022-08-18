@@ -33,11 +33,12 @@ const exportExcel = async (req, res) => {
 					const contractorsLength = body.contractors.length;
 					const inspectorsLength = body.inspectors.length;
 					const startContractorsLine = 7; // in excel form
+					let endContractorsLine = 14; // in excel form
 					const targetContractorsLine = startContractorsLine + 6; // in excel form
 					const countRowsContractors = 8; // in excel form
 					const countRowsInspectors = 3; // in excel form
 					let startInspectorsLine = 18; // in excel form
-					let targetInspectorsLine = startInspectorsLine + 2; // in excel form
+					let targetInspectorsLine = 19; // in excel form
 					let startNoteLine = 22; // in excel form
 
 					// If needed, add rows for contractors
@@ -47,8 +48,10 @@ const exportExcel = async (req, res) => {
 							contractorsLength - countRowsContractors, // How many lines
 							true, // Insert or not
 						);
-
-						startInspectorsLine += contractorsLength - countRowsContractors;
+							
+						endContractorsLine += contractorsLength - countRowsContractors;
+						startInspectorsLine += contractorsLength - countRowsContractors
+						targetInspectorsLine += contractorsLength - countRowsContractors;
 						startNoteLine += contractorsLength - countRowsContractors;
 					}
 
@@ -74,14 +77,18 @@ const exportExcel = async (req, res) => {
 					row4.getCell(2).value = body.taskOrderNo;
 					row4.getCell(6).value = body.documentedBy;
 
+					const rowTotalContractorsLine = worksheet.getRow(endContractorsLine + 1);
+					rowTotalContractorsLine.getCell(3).value = {formula: '=SUM(C' + startContractorsLine + ':C' + endContractorsLine + ')'};
+					rowTotalContractorsLine.getCell(4).value = {formula: '=SUM(D' + startContractorsLine + ':D' + endContractorsLine + ')'};
+
 					const contractors = body.contractors;
 					
 					for(let i = 0; i < contractorsLength; i++)
 					{
 						worksheet.getRow(startContractorsLine + i).getCell(1).value = contractors[i].Contractor;
 						worksheet.getRow(startContractorsLine + i).getCell(2).value = contractors[i].Location;
-						worksheet.getRow(startContractorsLine + i).getCell(3).value = contractors[i].NumSuper;
-						worksheet.getRow(startContractorsLine + i).getCell(4).value = contractors[i].NumWorker;
+						worksheet.getRow(startContractorsLine + i).getCell(3).value = parseInt(contractors[i].NumSuper);
+						worksheet.getRow(startContractorsLine + i).getCell(4).value = parseInt(contractors[i].NumWorker);
 						worksheet.getRow(startContractorsLine + i).getCell(5).value = contractors[i].Task;
 					}
 
