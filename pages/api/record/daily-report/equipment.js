@@ -39,13 +39,14 @@ const getEquipment = (req, res) => {
 					const request = new mssql.Request();
 
 					const sqlquery = `EXEC [Exbon].[dbo].[usp_dailyreport_Insert_DailyReportEquipment]
-										@reportID = ${body.ReportID},
-										@equipment = '${sqlEscape(body.Equipment)}',
-										@vendor = '${sqlEscape(body.Vendor)}',
-										@moveIn = '${body.MoveIn}',
-										@moveOut = '${body.MoveOut}',
-										@note = '${sqlEscape(body.Note)}'
-										`;
+                            @reportID = ${body.ReportID},
+                            @equipment = '${sqlEscape(body.Equipment)}',
+                            @vendor = '${sqlEscape(body.Vendor)}',
+                            @moveIn = '${body.MoveIn}',
+                            @moveOut = '${body.MoveOut}',
+                            @note = '${sqlEscape(body.Note)}'
+                            `;
+					console.log(sqlquery);
 
 					request.query(sqlquery, (err, recordset) => {
 						if (err) {
