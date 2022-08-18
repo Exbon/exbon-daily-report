@@ -76,9 +76,18 @@ const Record = () => {
 
 	const validateContractors = () => {
 		for (let i = 0; i < contractors.length; i++) {
-			if (contractors[i].Contractors === '') {
-				if (contractors[i].Location !== '' || contractors[i].No !== '') {
-					return false;
+			if (contractors[i].Contractor === '') {
+				if (
+					contractors[i].Location !== '' ||
+					contractors[i].NumSuper !== '' ||
+					contractors[i].NumWorker !== '' ||
+					contractors[i].WorkHours !== '' ||
+					contractors[i].Task !== ''
+				) {
+					return {
+						status: false,
+						message: `Please fill in all fields. Contractor field is empty.`,
+					};
 				}
 			}
 		}
@@ -89,94 +98,69 @@ const Record = () => {
 	};
 	const validateEquipments = () => {
 		// check equipments
-		if (equipments.length === 0) {
-			return {
-				status: true,
-				message: '',
-			};
-		}
 		for (let i = 0; i < equipments.length; i++) {
-			if (equipments[i]['Equipment'].length > 0) {
-				return {
-					status: true,
-					message: '',
-				};
-			} else if (equipments[i]['Equipment'].length === 0) {
-				for (const key in equipments[i]) {
-					if (equipments[i][key] !== '') {
-						return {
-							status: false,
-							message: `Please fill in all fields. Equipment field is empty.`,
-						};
-					}
+			if (equipments[i].Equipment === '') {
+				if (
+					equipments[i].MoveIn !== '' ||
+					equipments[i].MoveOut !== '' ||
+					equipments[i].Vendor !== '' ||
+					equipments[i].Note !== ''
+				) {
+					return {
+						status: false,
+						message: `Please fill in all fields. Equipment field is empty.`,
+					};
 				}
-				return {
-					status: true,
-					message: '',
-				};
 			}
 		}
+		return {
+			status: true,
+			message: '',
+		};
 	};
 
 	const validateInspections = () => {
 		// check inspections
-		if (inspections.length === 0) {
-			return {
-				status: true,
-				message: '',
-			};
-		}
 		for (let i = 0; i < inspections.length; i++) {
-			if (inspections[i]['Inspector'].length > 0) {
-				return {
-					status: true,
-					message: '',
-				};
-			} else if (inspections[i]['Inspector'].length === 0) {
-				for (const key in inspections[i]) {
-					if (inspections[i][key] !== '') {
-						return {
-							status: false,
-							message: `Please fill in all fields. Inspector field is empty.`,
-						};
-					}
+			if (inspections[i].Inspector === '') {
+				if (
+					inspections[i].Agency !== '' ||
+					inspections[i].Location !== '' ||
+					inspections[i].Task !== '' ||
+					inspections[i].Result !== ''
+				) {
+					return {
+						status: false,
+						message: `Please fill in all fields. Inspector field is empty.`,
+					};
 				}
-				return {
-					status: true,
-					message: '',
-				};
 			}
 		}
+		return {
+			status: true,
+			message: '',
+		};
 	};
 	const validateCorretionals = () => {
 		// check correctionals
-		if (correctionals.length === 0) {
-			return {
-				status: true,
-				message: '',
-			};
-		}
 		for (let i = 0; i < correctionals.length; i++) {
-			if (correctionals[i]['Deficiency'].length > 0) {
-				return {
-					status: true,
-					message: '',
-				};
-			} else if (correctionals[i]['Deficiency'].length === 0) {
-				for (const key in correctionals[i]) {
-					if (correctionals[i][key] !== '') {
-						return {
-							status: false,
-							message: `Please fill in all fields. Deficiency field is empty.`,
-						};
-					}
+			if (correctionals[i].Deficiency === '') {
+				if (
+					correctionals[i].Type !== '' ||
+					correctionals[i].Trade !== '' ||
+					correctionals[i].Description !== ''
+				) {
+					return {
+						status: false,
+						message: `Please fill in all fields. Deficiency field is empty.`,
+					};
 				}
-				return {
-					status: true,
-					message: '',
-				};
 			}
 		}
+		return {
+			status: true,
+			message: '',
+		};
 	};
 
 	const save = () => {
