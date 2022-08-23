@@ -201,7 +201,6 @@ const Record = () => {
 			}
 
 			if (equipments.length > 0) {
-				console.log('equipments', equipments);
 				for (let i = 0; i < equipments.length; i++) {
 					if (equipments[i].Equipment !== '') {
 						await axios
@@ -266,7 +265,6 @@ const Record = () => {
 		];
 
 		const validate = await Promise.all(validateResponse);
-		console.log(validate);
 
 		if (validate.every((item) => item.status)) {
 			save();
@@ -971,7 +969,6 @@ const Record = () => {
 															const isSelected =
 																isInCurrentMonth &&
 																coloredDate.includes(formatDate(day));
-															console.log('sel', coloredDate);
 															// You can also use our internal <Day /> component
 															return (
 																// <Badge badgeContent={isSelected ? "🌚" : undefined}>
