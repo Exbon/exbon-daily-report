@@ -3,7 +3,7 @@ const dbserver = require('../../../dbConfig.js');
 import { sqlEscape } from '../../../lib/utils';
 
 // prettier-ignore
-const exportExcel = async (req, res) => {
+const exportPDF = async (req, res) => {
 	const { method, query, body } = req;
 	return new Promise(async (resolve) => {
 		switch (method) {
@@ -105,9 +105,9 @@ const exportExcel = async (req, res) => {
 					worksheet.getRow(startNoteLine).getCell(1).value = body.note;
 
 					// write file
-					// await workbook.xlsx.writeFile(
-					// 	__dirname + '/ToCustomer_' + body.userID + '.xlsx',
-					// );
+					await workbook.xlsx.writeFile(
+						__dirname + '/ToCustomer_' + body.userID + '.xlsx',
+					);
 
 					var converter = require('office-converter')();
 
@@ -134,4 +134,4 @@ const exportExcel = async (req, res) => {
 	});
 };
 
-export default exportExcel;
+export default exportPDF;
