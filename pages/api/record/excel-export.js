@@ -92,6 +92,8 @@ const exportExcel = async (req, res) => {
 						worksheet.getRow(startContractorsLine + i).getCell(5).value = contractors[i].Task;
 					}
 
+					if(contractors.length === 0) worksheet.getRow(endContractorsLine + 1).getCell(5).value = 'No on-site work';
+
 					const inspectors = body.inspectors;
 					for(let i = 0; i < inspectorsLength; i++)
 					{
