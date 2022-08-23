@@ -87,8 +87,8 @@ const exportExcel = async (req, res) => {
 					{
 						worksheet.getRow(startContractorsLine + i).getCell(1).value = contractors[i].Contractor;
 						worksheet.getRow(startContractorsLine + i).getCell(2).value = contractors[i].Location;
-						worksheet.getRow(startContractorsLine + i).getCell(3).value = parseInt(contractors[i].NumSuper);
-						worksheet.getRow(startContractorsLine + i).getCell(4).value = parseInt(contractors[i].NumWorker);
+						worksheet.getRow(startContractorsLine + i).getCell(3).value = contractors[i].NumSuper !== '' ? parseInt(contractors[i].NumSuper) : 0;
+						worksheet.getRow(startContractorsLine + i).getCell(4).value = contractors[i].NumWorker !== '' ? parseInt(contractors[i].NumWorker) : 0;
 						worksheet.getRow(startContractorsLine + i).getCell(5).value = contractors[i].Task;
 					}
 
