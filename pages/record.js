@@ -158,11 +158,8 @@ const Record = () => {
 						message: `Please fill in all fields. Deficiency field is empty.`,
 					};
 				}
-			} else {
-				sorted.push(correctionals[i]);
 			}
 		}
-		// setCorrectionals(sorted);
 		return {
 			status: true,
 			message: '',
