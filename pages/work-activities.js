@@ -1068,7 +1068,7 @@ const workActivities = () => {
 												const isSelected =
 													isInCurrentMonth &&
 													selectedDays.includes(formatDate(day));
-
+												console.log('sel', selectedDays);
 												// You can also use our internal <Day /> component
 												return (
 													// <Badge badgeContent={isSelected ? "🌚" : undefined}>

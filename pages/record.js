@@ -74,6 +74,7 @@ const Record = () => {
 		relatedTradeList: [],
 	});
 	const [checkDownload, setCheckDownload] = useState(0);
+	const [coloredDate, setColoredDate] = useState([]);
 
 	const validateContractors = () => {
 		for (let i = 0; i < contractors.length; i++) {
@@ -544,6 +545,12 @@ const Record = () => {
 						  ],
 				);
 				setNumbers(res.data.result[5][0]);
+				let SelectedDays = [];
+				res.data.result[6].forEach((element) => {
+					SelectedDays.push(formatDate(element.Date));
+				});
+
+				setColoredDate(SelectedDays);
 			} else {
 				setData('');
 			}
@@ -859,6 +866,35 @@ const Record = () => {
 														className={styles['header__right__date-picker']}
 														autoOk={true}
 														okLabel=""
+														renderDay={(
+															day,
+															selectedDate,
+															isInCurrentMonth,
+															dayComponent,
+														) => {
+															const isSelected =
+																isInCurrentMonth &&
+																coloredDate.includes(formatDate(day));
+															console.log('sel', coloredDate);
+															// You can also use our internal <Day /> component
+															return (
+																// <Badge badgeContent={isSelected ? "🌚" : undefined}>
+																//   {dayComponent}
+																// </Badge>
+																<div
+																	style={
+																		isSelected
+																			? {
+																					backgroundColor: '#ffbb00',
+																					borderRadius: '100%',
+																			  }
+																			: undefined
+																	}
+																>
+																	{dayComponent}
+																</div>
+															);
+														}}
 													/>
 												</MuiPickersUtilsProvider>
 											</div>
