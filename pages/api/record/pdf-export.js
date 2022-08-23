@@ -24,7 +24,7 @@ const exportExcel = async (req, res) => {
 					// Read file
 					const __dirname = 'public/record';
 					const Excel = require('exceljs');
-					const filename = '/ToCustomer_Form.xlsx';
+					const filename = '/ToCustomer_PDFForm.xlsx';
 					const workbook = new Excel.Workbook();
 					await workbook.xlsx.readFile(__dirname + filename);
 					const worksheet = workbook.getWorksheet('To Customer');
