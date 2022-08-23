@@ -199,40 +199,48 @@ const Record = () => {
 				})
 			).data.result[0][0].ReportID;
 
-			for (let i = 0; i < contractors.length; i++) {
-				await axios
-					.post(`/api/record/daily-report/contractor`, {
-						...contractors[i],
-						ReportID: reportID,
-					})
-					.catch((err) => alert(err));
+			if (contractors.length > 0) {
+				for (let i = 0; i < contractors.length; i++) {
+					await axios
+						.post(`/api/record/daily-report/contractor`, {
+							...contractors[i],
+							ReportID: reportID,
+						})
+						.catch((err) => alert(err));
+				}
 			}
 
-			for (let i = 0; i < equipments.length; i++) {
-				await axios
-					.post(`/api/record/daily-report/equipment`, {
-						...equipments[i],
-						ReportID: reportID,
-					})
-					.catch((err) => alert(err));
+			if (equipments.length > 0) {
+				for (let i = 0; i < equipments.length; i++) {
+					await axios
+						.post(`/api/record/daily-report/equipment`, {
+							...equipments[i],
+							ReportID: reportID,
+						})
+						.catch((err) => alert(err));
+				}
 			}
 
-			for (let i = 0; i < inspections.length; i++) {
-				await axios
-					.post(`/api/record/daily-report/inspection`, {
-						...inspections[i],
-						ReportID: reportID,
-					})
-					.catch((err) => alert(err));
+			if (inspections.length > 0) {
+				for (let i = 0; i < inspections.length; i++) {
+					await axios
+						.post(`/api/record/daily-report/inspection`, {
+							...inspections[i],
+							ReportID: reportID,
+						})
+						.catch((err) => alert(err));
+				}
 			}
 
-			for (let i = 0; i < correctionals.length; i++) {
-				await axios
-					.post(`/api/record/daily-report/correctional`, {
-						...correctionals[i],
-						ReportID: reportID,
-					})
-					.catch((err) => alert(err));
+			if (correctionals.length > 0) {
+				for (let i = 0; i < correctionals.length; i++) {
+					await axios
+						.post(`/api/record/daily-report/correctional`, {
+							...correctionals[i],
+							ReportID: reportID,
+						})
+						.catch((err) => alert(err));
+				}
 			}
 		};
 
