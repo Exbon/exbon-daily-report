@@ -1017,7 +1017,7 @@ const Record = () => {
 											>
 												Customer
 											</MUIButton>
-											<MUIButton
+											{/* <MUIButton
 												variant="contained"
 												color="primary"
 												size="small"
@@ -1027,7 +1027,7 @@ const Record = () => {
 												style={{ marginRight: '10px' }}
 											>
 												Customer
-											</MUIButton>
+											</MUIButton> */}
 										</div>
 									</div>
 								</Col>
