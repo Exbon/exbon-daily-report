@@ -111,7 +111,7 @@ const exportExcel = async (req, res) => {
 
 					var converter = require('office-converter')();
 
-					converter.generatePdf(__dirname + "/Daily Report_" + body.username + ".xlsx", function(err, result) {
+					converter.generatePdf(__dirname + "/ToCustomer_" + body.userID + ".xlsx", function(err, result) {
 					  console.log("err:")
 					  console.log(err)
 					  console.log("result:")
