@@ -167,6 +167,15 @@ const Record = () => {
 		};
 	};
 
+	const showNoWork = () => {
+		for (let i = 0; i < contractors.length; i++) {
+			if (contractors[i].Contractor !== '') {
+				return false;
+			}
+		}
+		return true;
+	};
+
 	const save = (validate) => {
 		let promises = [];
 		const fetchData = async () => {
@@ -1154,7 +1163,9 @@ const Record = () => {
 															style={{ minWidth: '100px', width: '100px' }}
 														/>
 													</td>
-													<td className="text-center border border-gray align-middle border border-gray"></td>
+													<td className="text-center border border-gray align-middle border border-gray">
+														{showNoWork() ? 'No on-site work' : ''}
+													</td>
 													<td className="border-0 fit bg-transparent"></td>
 												</tr>
 											</tfoot>
