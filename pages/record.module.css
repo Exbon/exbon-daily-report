@@ -15,7 +15,8 @@
 }
 .header {
 	display: flex;
-	justify-content: space-between;
+	justify-content: left;
+	width: 900px;
 }
 
 .header__left {
@@ -54,16 +55,23 @@
 	cursor: pointer;
 }
 .header__right__excel-export-btn {
-  background: #1cc26f !important;
-  color: #ffffff !important;
+	background: #1cc26f !important;
+	color: #ffffff !important;
 }
+
+.header__right__pdf-export-btn {
+	background: #db5a76 !important;
+	color: #ffffff !important;
+}
+
 .header__right {
 	display: flex;
 	align-items: center;
 	flex-direction: row-reverse;
 	align-content: center;
 	flex-grow: 1;
-	margin-right: 100px;
+
+	/* margin-right: 100px !important; */
 }
 .header__right__label-date-picker {
 	margin-bottom: 17px;
@@ -80,11 +88,6 @@
 .header__right__date-picker input {
 	text-align: center;
 	padding-bottom: 4px;
-}
-
-.header__right__no-work-btn {
-	margin-right: 20px !important;
-	white-space: nowrap;
 }
 
 .alert__complete {

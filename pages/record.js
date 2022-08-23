@@ -23,6 +23,7 @@ import AddBoxIcon from '@material-ui/icons/AddBox';
 import MUIButton from '@material-ui/core/Button';
 import DeleteTwoTone from '@material-ui/icons/DeleteTwoTone';
 import { RiFileExcel2Fill } from 'react-icons/ri';
+import { FaFilePdf } from 'react-icons/fa';
 
 toast.configure();
 
@@ -355,6 +356,72 @@ const Record = () => {
 		}, 3000);
 	};
 
+	const exportPDF = async () => {
+		// Start spinner
+		setCheckDownload(1);
+
+		// Check first column exist start
+		let tempContractors = [];
+		contractors.forEach((contractor) => {
+			if (contractor.Contractor !== '' && contractor.Contractor !== null)
+				tempContractors.push(contractor);
+		});
+
+		let tempInspections = [];
+		inspections.forEach((inspection) => {
+			if (inspection.Inspector !== '' && inspection.Inspector !== null)
+				tempInspections.push(inspection);
+		});
+		// Check first column exist finish
+
+		const currentProject = stateAssignedProject.find(
+			(project) => project.ProjectID == projectState,
+		);
+
+		// Read, write and save excel
+		await axios({
+			method: 'post',
+			url: '/api/record/pdf-export',
+			timeout: 15000, // 15 seconds timeout
+			headers: {},
+			data: {
+				projectName: currentProject.ProjectName,
+				date: formatDate(selectedDate),
+				contractNo: numbers.ContractNumber,
+				jobNumber: currentProject.JobNumber,
+				taskOrderNo: numbers.TaskOrder ? numbers.TaskOrder : '',
+				documentedBy: status.cookies.fullname,
+				contractors: tempContractors,
+				inspectors: tempInspections,
+				note: notes ? notes[0].Note : '',
+				userID: status.cookies.employeeid,
+			},
+		});
+
+		// Download excel after 3 seconds
+		setTimeout(() => {
+			document
+				.getElementById('excelExport')
+				.setAttribute(
+					'href',
+					'/record/ToCustomer_' + status.cookies.employeeid + '.pdf',
+				);
+			document.getElementById('excelExport').click();
+
+			// Finish spinner
+			setCheckDownload(0);
+			toast.success(
+				<div className={styles['alert__complete']}>
+					<strong>Download Complete</strong>
+				</div>,
+				{
+					position: toast.POSITION.BOTTOM_CENTER,
+					hideProgressBar: true,
+				},
+			);
+		}, 3000);
+	};
+
 	const exportToCustomerHandler = async () => {
 		const validateResponse = [
 			validateContractors(),
@@ -367,6 +434,35 @@ const Record = () => {
 
 		if (validate.every((item) => item.status)) {
 			exportToCustomer();
+		} else {
+			validate.map((item, index) => {
+				if (item.status === false) {
+					toast.error(
+						<div className={styles['alert__complete']}>
+							<strong>{item.message}</strong>
+						</div>,
+						{
+							position: toast.POSITION.BOTTOM_CENTER,
+							hideProgressBar: true,
+						},
+					);
+				}
+			});
+		}
+	};
+
+	const exportPDFHandler = async () => {
+		const validateResponse = [
+			validateContractors(),
+			validateEquipments(),
+			validateInspections(),
+			validateCorretionals(),
+		];
+
+		const validate = await Promise.all(validateResponse);
+
+		if (validate.every((item) => item.status)) {
+			exportPDF();
 		} else {
 			validate.map((item, index) => {
 				if (item.status === false) {
@@ -919,7 +1015,18 @@ const Record = () => {
 												onClick={() => exportToCustomerHandler()}
 												style={{ marginRight: '10px' }}
 											>
-												To Customer
+												Customer
+											</MUIButton>
+											<MUIButton
+												variant="contained"
+												color="primary"
+												size="small"
+												className={styles['header__right__pdf-export-btn']}
+												startIcon={<FaFilePdf />}
+												onClick={() => exportPDFHandler()}
+												style={{ marginRight: '10px' }}
+											>
+												Customer
 											</MUIButton>
 										</div>
 									</div>
