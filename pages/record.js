@@ -76,7 +76,6 @@ const Record = () => {
 	const [checkDownload, setCheckDownload] = useState(0);
 
 	const validateContractors = () => {
-		let sorted = [];
 		for (let i = 0; i < contractors.length; i++) {
 			if (contractors[i].Contractor === '') {
 				if (
@@ -86,17 +85,13 @@ const Record = () => {
 					(contractors[i].WorkHours !== 0 && contractors[i].NumSuper !== '') ||
 					contractors[i].Task !== ''
 				) {
-					sorted.push(contractors[i]);
 					return {
 						status: false,
 						message: `Please fill in all fields. Contractor field is empty.`,
 					};
 				}
-			} else {
-				sorted.push(contractors[i]);
 			}
 		}
-		setContractors(sorted);
 		return {
 			status: true,
 			message: '',
@@ -104,7 +99,6 @@ const Record = () => {
 	};
 	const validateEquipments = () => {
 		// check equipments
-		let sorted = [];
 		for (let i = 0; i < equipments.length; i++) {
 			if (equipments[i].Equipment === '') {
 				if (
@@ -113,17 +107,13 @@ const Record = () => {
 					equipments[i].Vendor !== '' ||
 					equipments[i].Note !== ''
 				) {
-					sorted.push(equipments[i]);
 					return {
 						status: false,
 						message: `Please fill in all fields. Equipment field is empty.`,
 					};
 				}
-			} else {
-				sorted.push(equipments[i]);
 			}
 		}
-		setEquipments(sorted);
 		return {
 			status: true,
 			message: '',
@@ -132,7 +122,6 @@ const Record = () => {
 
 	const validateInspections = () => {
 		// check inspections
-		let sorted = [];
 		for (let i = 0; i < inspections.length; i++) {
 			if (inspections[i].Inspector === '') {
 				if (
@@ -141,17 +130,13 @@ const Record = () => {
 					inspections[i].Task !== '' ||
 					inspections[i].Result !== ''
 				) {
-					sorted.push(inspections[i]);
 					return {
 						status: false,
 						message: `Please fill in all fields. Inspector field is empty.`,
 					};
 				}
-			} else {
-				sorted.push(inspections[i]);
 			}
 		}
-		setInspections(sorted);
 		return {
 			status: true,
 			message: '',
@@ -159,8 +144,6 @@ const Record = () => {
 	};
 	const validateCorretionals = () => {
 		// check correctionals
-		let sorted = [];
-
 		for (let i = 0; i < correctionals.length; i++) {
 			if (correctionals[i].Deficiency === '') {
 				if (
@@ -168,26 +151,23 @@ const Record = () => {
 					correctionals[i].Trade !== '' ||
 					correctionals[i].Description !== ''
 				) {
-					sorted.push(correctionals[i]);
 					return {
 						status: false,
 						message: `Please fill in all fields. Deficiency field is empty.`,
 					};
-				} else {
-					console.log('hi', i);
 				}
 			} else {
 				sorted.push(correctionals[i]);
 			}
 		}
-		setCorrectionals(sorted);
+		// setCorrectionals(sorted);
 		return {
 			status: true,
 			message: '',
 		};
 	};
 
-	const save = () => {
+	const save = (validate) => {
 		let promises = [];
 		const fetchData = async () => {
 			const reportID = (
@@ -201,45 +181,54 @@ const Record = () => {
 
 			if (contractors.length > 0) {
 				for (let i = 0; i < contractors.length; i++) {
-					await axios
-						.post(`/api/record/daily-report/contractor`, {
-							...contractors[i],
-							ReportID: reportID,
-						})
-						.catch((err) => alert(err));
+					if (contractors[i].Contractor !== '') {
+						await axios
+							.post(`/api/record/daily-report/contractor`, {
+								...contractors[i],
+								ReportID: reportID,
+							})
+							.catch((err) => alert(err));
+					}
 				}
 			}
 
 			if (equipments.length > 0) {
+				console.log('equipments', equipments);
 				for (let i = 0; i < equipments.length; i++) {
-					await axios
-						.post(`/api/record/daily-report/equipment`, {
-							...equipments[i],
-							ReportID: reportID,
-						})
-						.catch((err) => alert(err));
+					if (equipments[i].Equipment !== '') {
+						await axios
+							.post(`/api/record/daily-report/equipment`, {
+								...equipments[i],
+								ReportID: reportID,
+							})
+							.catch((err) => alert(err));
+					}
 				}
 			}
 
 			if (inspections.length > 0) {
 				for (let i = 0; i < inspections.length; i++) {
-					await axios
-						.post(`/api/record/daily-report/inspection`, {
-							...inspections[i],
-							ReportID: reportID,
-						})
-						.catch((err) => alert(err));
+					if (inspections[i].Inspector !== '') {
+						await axios
+							.post(`/api/record/daily-report/inspection`, {
+								...inspections[i],
+								ReportID: reportID,
+							})
+							.catch((err) => alert(err));
+					}
 				}
 			}
 
 			if (correctionals.length > 0) {
 				for (let i = 0; i < correctionals.length; i++) {
-					await axios
-						.post(`/api/record/daily-report/correctional`, {
-							...correctionals[i],
-							ReportID: reportID,
-						})
-						.catch((err) => alert(err));
+					if (correctionals[i].Deficiency !== '') {
+						await axios
+							.post(`/api/record/daily-report/correctional`, {
+								...correctionals[i],
+								ReportID: reportID,
+							})
+							.catch((err) => alert(err));
+					}
 				}
 			}
 		};
@@ -269,6 +258,7 @@ const Record = () => {
 		];
 
 		const validate = await Promise.all(validateResponse);
+		console.log(validate);
 
 		if (validate.every((item) => item.status)) {
 			save();
