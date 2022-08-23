@@ -175,7 +175,7 @@ const Record = () => {
 		return true;
 	};
 
-	const save = (validate) => {
+	const save = () => {
 		let promises = [];
 		const fetchData = async () => {
 			const reportID = (
