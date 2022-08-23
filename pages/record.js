@@ -934,7 +934,7 @@ const Record = () => {
 														? '450px'
 														: resolution1008
 														? '500px'
-														: '800px',
+														: '700px',
 												}}
 											>
 												{stateAssignedProject.map((item) => {
@@ -951,7 +951,10 @@ const Record = () => {
 													);
 												})}
 											</select>
-											<div className="position-relative w-100">
+											<div
+												className="position-relative"
+												style={{ width: '165px' }}
+											>
 												<MuiPickersUtilsProvider utils={DateFnsUtils}>
 													<DatePicker
 														margin="normal"
