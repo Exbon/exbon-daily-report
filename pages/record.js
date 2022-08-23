@@ -83,8 +83,8 @@ const Record = () => {
 				if (
 					contractors[i].Location !== '' ||
 					(contractors[i].NumSuper !== 0 && contractors[i].NumSuper !== '') ||
-					(contractors[i].NumWorker !== 0 && contractors[i].NumSuper !== '') ||
-					(contractors[i].WorkHours !== 0 && contractors[i].NumSuper !== '') ||
+					(contractors[i].NumWorker !== 0 && contractors[i].NumWorker !== '') ||
+					(contractors[i].WorkHours !== 0 && contractors[i].WorkHours !== '') ||
 					contractors[i].Task !== ''
 				) {
 					return {
