@@ -1,0 +1,779 @@
+@import url("https://fonts.googleapis.com/css2?family=Roboto&display=swap");
+
+#mainDiv {
+  width: 1397px;
+  margin: auto;
+}
+
+.title {
+  font-family: "Roboto";
+  color: darkblue;
+  margin-right: 20px;
+  margin-bottom: 0;
+  margin-left: 5px;
+  visibility: hidden;
+}
+.header {
+  display: flex;
+  justify-content: space-between;
+}
+
+.header__left {
+  display: flex;
+  align-items: center;
+  align-content: center;
+  flex-grow: 1;
+  margin-left: 5px;
+}
+
+.header__left__project-id {
+  font-family: "Roboto";
+  color: black;
+  margin-right: 10px;
+}
+
+.header__left__project-id__value {
+  text-decoration: underline;
+}
+
+.header__left__project-group {
+  font-family: "Roboto";
+  color: #50474c;
+  white-space: nowrap;
+}
+
+.header__left__project-name {
+  font-family: "Roboto";
+  color: #50474c;
+  margin-left: 10px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.header__left__project-id__value:hover {
+  color: #a79da3;
+  cursor: pointer;
+}
+
+.header__right {
+  display: flex;
+  align-items: center;
+  flex-direction: row-reverse;
+  align-content: center;
+  flex-grow: 1;
+  margin-bottom: 5px;
+}
+.header__right__label-date-picker {
+  margin-bottom: 17px;
+  font-family: "Roboto";
+  color: #534f51;
+}
+
+.header__right__date-picker {
+  width: 120px;
+  margin-bottom: 17px !important;
+  margin-left: 20px !important;
+}
+
+.header__right__date-picker input {
+  text-align: center;
+  padding-bottom: 4px;
+}
+
+.header__right__no-work-btn {
+  margin-right: 20px !important;
+  white-space: nowrap;
+}
+
+.table {
+  margin-top: 20px;
+  overflow: auto;
+  margin-left: 4px;
+}
+.table table {
+  font-family: "Roboto", sans-serif;
+  border-collapse: collapse;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.table td {
+  border: 1px solid #ddd;
+}
+
+.table thead tr td {
+  text-align: center;
+}
+
+.table tr:nth-child(even) {
+  background-color: #f2f2f2;
+}
+
+.table tr {
+  background-color: #ffffff;
+}
+
+.table tbody tr:hover {
+  /* background-color: #ddd; */
+  background-color: #e6e8f3;
+  border: 1px solid #647be2;
+  cursor: default;
+}
+
+.table thead td {
+  background-color: #647be2;
+  color: white;
+}
+.table thead td:nth-child(1) {
+  padding-top: 12px;
+}
+.table thead td:nth-child(2) {
+  padding-top: 12px;
+}
+.table thead td:nth-child(3) {
+  padding-top: 12px;
+}
+.table thead td:nth-child(4) {
+  padding-top: 12px;
+}
+.table thead td:nth-child(5) {
+  padding-top: 12px;
+}
+.table thead td:nth-child(6) {
+  padding-top: 12px;
+}
+.table thead td:nth-child(7) {
+  padding-top: 3px;
+  padding-bottom: 3px;
+}
+.table thead td:nth-child(8) {
+  padding-top: 3px;
+  padding-bottom: 3px;
+}
+.table thead td:nth-child(9) {
+  padding-top: 3px;
+  padding-bottom: 3px;
+}
+.table thead td:nth-child(10) {
+  padding-top: 3px;
+  padding-bottom: 3px;
+}
+.table tbody td {
+  padding: 4px;
+}
+
+.table__section-wrapper {
+  display: table;
+  height: 100%;
+  margin-top: auto;
+  margin-left: auto;
+  margin-right: auto;
+  text-align: center;
+}
+
+.table__section-wrapper__data {
+  vertical-align: middle;
+  text-align: right;
+  display: table-cell;
+  color: rgb(116, 100, 110);
+  font-size: 0.95rem;
+}
+
+.table__trade-wrapper {
+  display: table;
+  height: 100%;
+  margin-top: auto;
+}
+
+.table__trade-wrapper__data {
+  vertical-align: middle;
+  text-align: left;
+  display: table-cell;
+  color: rgb(116, 100, 110);
+  font-size: 0.95rem;
+}
+
+.table__company-wrapper {
+  display: table;
+  height: 100%;
+  margin-top: auto;
+}
+
+.table__company-wrapper__data {
+  vertical-align: middle;
+  text-align: left;
+  display: table-cell;
+  color: rgb(116, 100, 110);
+  font-size: 0.95rem;
+}
+
+.table__task-name-wrapper {
+  display: table;
+  height: 100%;
+  margin-top: auto;
+}
+
+.table__task-name-wrapper__data {
+  vertical-align: middle;
+  text-align: left;
+  display: table-cell;
+  color: rgb(116, 100, 110);
+  font-size: 0.95rem;
+}
+
+.table__start-date-wrapper {
+  display: table;
+  height: 100%;
+  margin: auto;
+}
+
+.table__start-date-wrapper__data {
+  font-size: 0.85rem;
+  text-align: center;
+  vertical-align: middle;
+  display: table-cell;
+  color: rgb(116, 100, 110);
+}
+
+.table__finish-date-wrapper {
+  display: table;
+  height: 100%;
+  margin: auto;
+}
+
+.table__finish-date-wrapper__data {
+  font-size: 0.85rem;
+  text-align: center;
+  vertical-align: middle;
+  display: table-cell;
+  color: rgb(116, 100, 110);
+}
+
+.table__req-start-date-wrapper {
+  display: table;
+  height: 100%;
+  margin: auto;
+}
+.table__req-start-date-wrapper div {
+  vertical-align: middle;
+  display: table-cell;
+}
+
+.table__req-start-date-wrapper__date-picker input {
+  text-align: center;
+  color: rgb(116, 100, 110);
+  padding-top: 4px;
+  padding-bottom: 4px;
+  font-size: 14px;
+}
+
+.table__req-start-date-wrapper__date-picker-request input {
+  text-align: center;
+  color: red;
+  font-weight: 500;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  font-size: 14px;
+}
+
+.table__req-finish-date-wrapper {
+  display: table;
+  height: 100%;
+  margin: auto;
+}
+
+.table__req-finish-date-wrapper div {
+  vertical-align: middle;
+  display: table-cell;
+}
+
+.table__req-finish-date-wrapper__date-picker input {
+  text-align: center;
+  color: rgb(116, 100, 110);
+  padding-top: 4px;
+  padding-bottom: 4px;
+  font-size: 14px;
+}
+
+.table__req-finish-date-wrapper__date-picker-request input {
+  text-align: center;
+  color: red;
+  font-weight: 500;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  font-size: 14px;
+}
+
+.table__previous-work-wrapper {
+  display: table;
+  height: 100%;
+  margin-top: auto;
+  margin-left: auto;
+}
+
+.table__previous-work-wrapper__data {
+  text-align: right;
+  vertical-align: middle;
+  display: table-cell;
+  color: rgb(116, 100, 110);
+  font-size: 0.95rem;
+}
+
+.table__current-work-wrapper {
+  display: table;
+  height: 100%;
+  margin-top: auto;
+  margin-left: auto;
+}
+
+.table__current-work-wrapper__data {
+  text-align: right;
+  vertical-align: middle;
+  display: table-cell;
+  color: rgb(116, 100, 110);
+}
+
+.table__current-work-wrapper__input__previous-work {
+  text-align: center;
+  width: 51px !important;
+  color: rgb(168, 164, 167);
+  border: 1px solid rgb(200, 191, 196);
+  border-radius: 4px;
+  box-shadow: rgb(221, 216, 220) 1px 1px 2px inset;
+  background: rgb(255, 255, 255);
+  padding: 4px;
+  font-family: "Roboto";
+  font-size: 0.9rem;
+}
+
+.table__current-work-wrapper__input__current-work {
+  text-align: center;
+  width: 51px !important;
+  font-weight: 700;
+  color: black;
+  border: 1px solid rgb(200, 191, 196);
+  border-radius: 4px;
+  box-shadow: rgb(221, 216, 220) 1px 1px 2px inset;
+  background: rgb(255, 255, 255);
+  padding: 4px;
+  font-family: "Roboto";
+  font-size: 0.93rem;
+}
+
+.alert__table__current-work-wrapper__input {
+  text-align: center;
+}
+
+.alert__table__current-work-input {
+  text-align: center;
+}
+
+.alert__complete {
+  text-align: center;
+}
+
+.table__report-icon {
+  cursor: pointer;
+}
+
+/* no-work */
+
+.modal-no-work__wrapper-title {
+  text-align: center;
+  font-family: "Roboto";
+}
+.modal-no-work__wrapper-title__title {
+  color: #f60057;
+  margin-top: 0;
+}
+.modal-no-work__wrapper-table {
+  max-height: 650px;
+  overflow: auto;
+}
+.modal-no-work__wrapper-table__table__wrapper-btn-new {
+  cursor: pointer;
+}
+.modal-no-work__wrapper-table__table__wrapper-icon-edit {
+  cursor: pointer;
+}
+.modal-no-work__wrapper-table__table__wrapper-icon-delete {
+  cursor: pointer;
+}
+
+.modal-no-work__wrapper-table__table__wrapper-icon-delete__request {
+  cursor: pointer;
+}
+
+.modal-no-work__wrapper-table__table {
+  color: rgb(116, 100, 110);
+  font-size: 0.95rem;
+  font-family: "Roboto", sans-serif;
+  border-collapse: collapse;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.modal-no-work__wrapper-table__table td {
+  border: 1px solid #ddd;
+}
+
+.modal-no-work__wrapper-table__table tr:nth-child(even) {
+  background-color: #f2f2f2;
+}
+
+.modal-no-work__wrapper-table__table tr {
+  background-color: #ffffff;
+}
+
+.modal-no-work__wrapper-table__table thead tr td {
+  text-align: center;
+}
+
+.modal-no-work__wrapper-table__table thead td {
+  background-color: #5dd8b3;
+  color: white;
+}
+
+.modal-no-work__wrapper-table__table tbody td:nth-child(1) {
+  width: 50px;
+  text-align: center;
+}
+
+.modal-no-work__wrapper-table__table tbody td:nth-child(2) {
+  width: 200px;
+  text-align: center;
+}
+
+.modal-no-work__wrapper-table__table tbody td:nth-child(3) {
+  width: 200px;
+  text-align: center;
+}
+.modal-no-work__wrapper-table__table tbody td:nth-child(4) {
+  width: 300px;
+  text-align: left;
+}
+.modal-no-work__wrapper-table__table tbody td:nth-child(5) {
+  width: 50px;
+  text-align: center;
+}
+.modal-no-work__wrapper-table__table tbody td:nth-child(6) {
+  width: 50px;
+  text-align: center;
+}
+
+.modal-no-work__wrapper-btn-close {
+  margin-top: 20px;
+  text-align: center;
+}
+.modal-no-work__wrapper-table__table__approval {
+  color: rgb(80, 160, 80);
+  font-weight: bold;
+}
+.modal-no-work__wrapper-table__table__pending {
+  color: rgb(241, 178, 61);
+  font-weight: bold;
+}
+.modal-no-work__wrapper-table__table__request {
+  color: rgb(48, 20, 204);
+  font-weight: bold;
+}
+.modal-no-work__wrapper-table__table__pending__id {
+  color: rgb(116, 100, 110);
+}
+
+.modal-no-work__wrapper-table__table__wrapper-icon-edit__icon-delete__pending {
+  visibility: hidden;
+}
+
+.modal-no-work__wrapper-table__table__wrapper-icon-edit__icon-delete__request:hover {
+  color: black;
+}
+.modal-no-work__wrapper-table__table__wrapper-icon-edit__icon-edit:hover {
+  color: black;
+}
+.modal-no-work__wrapper-table__table__wrapper-icon-edit__icon-delete:hover {
+  color: black;
+}
+
+/* modal-save-no-work */
+.modal-save-no-work__wrapper-content__title {
+  color: #3ccea7;
+  font-family: "Roboto";
+  margin-top: 0;
+  text-align: center;
+  text-transform: capitalize;
+}
+.modal-save-no-work__wrapper-content__start-date {
+  margin-left: 16% !important;
+  width: 30% !important;
+}
+
+.modal-save-no-work__wrapper-content__end-date {
+  margin-left: 10% !important;
+  width: 30% !important;
+}
+.modal-save-no-work__wrapper-content__bottom__wrapper-note {
+  width: 80%;
+  margin-left: auto;
+  margin-right: auto;
+  margin-top: 5%;
+  margin-bottom: 5%;
+}
+
+.modal-save-no-work__wrapper-content__bottom__btn-save {
+  color: rgb(16, 207, 182) !important;
+  margin-left: 25% !important;
+}
+.modal-save-no-work__wrapper-content__bottom__btn-cancel {
+  color: #fd7c6e !important;
+  margin-left: 5% !important;
+}
+
+/* work-date */
+
+.modal-work-date__wrapper {
+  padding: 30px;
+}
+
+.modal-work-date__wrapper-title {
+  text-align: center;
+  font-family: Arial, Helvetica, sans-serif;
+}
+.modal-work-date__wrapper-title__title {
+  color: #647be2;
+  margin-top: 0;
+}
+
+.modal-work-date__wrapper-date-picker__label {
+  text-align: center;
+  font-family: "Roboto";
+  color: #534f51;
+  margin-bottom: 0;
+}
+.modal-work-date__wrapper-date-picker__wrapper-work-date {
+  display: flex;
+  justify-content: center;
+}
+.modal-work-date__wrapper-date-picker__work-date {
+  width: 120px !important;
+  font-size: medium;
+  margin-top: 0;
+}
+
+.modal-work-date__wrapper-date-picker__work-date input {
+  text-align: center;
+  font-size: medium;
+}
+
+.modal-work-date__wrapper-btn {
+  margin-top: 20%;
+  display: flex;
+  justify-content: center;
+}
+
+.modal-work-date__wrapper-btn__btn-request {
+  background-color: #1cd3a2 !important;
+  color: white !important;
+}
+
+.modal-work-date__wrapper-btn__btn-cancel {
+  background-color: #fd7c6e !important;
+  color: white !important;
+  margin-left: 5% !important;
+}
+
+.modal-work-date__wrapper-title__sub-title-task-name {
+  margin-bottom: 0px;
+  font-family: "Roboto";
+}
+
+.modal-work-date__wrapper-title__sub-title-company-name {
+  margin-top: 5px;
+  font-family: "Roboto";
+  color: grey;
+}
+
+.test {
+  text-align: center;
+  color: gray;
+}
+
+@media screen and (max-width: 1008px) {
+  #mainDiv {
+    width: 950px;
+  }
+
+  .header {
+    /* display: block !important; */
+    display: flex;
+  }
+  .table thead td {
+    font-size: 0.8rem !important;
+    display: block;
+  }
+
+  .table tbody {
+    font-size: 0.8rem !important;
+    display: block;
+  }
+
+  .header {
+    display: flex;
+    justify-content: space-between;
+    margin-top: -3px !important;
+    z-index: 0;
+    position: relative;
+  }
+
+  .table thead td:nth-child(2) {
+    padding-top: 6px;
+  }
+
+  .table__section-wrapper__data {
+    font-size: 0.8rem;
+  }
+
+  .table__task-name-wrapper__data {
+    font-size: 0.8rem;
+  }
+
+  .table__company-wrapper__data {
+    font-size: 0.8rem;
+  }
+  .table__trade-wrapper__data {
+    font-size: 0.8rem;
+  }
+
+  .table__start-date-wrapper__data {
+    font-size: 0.8rem;
+  }
+  .table__finish-date-wrapper__data {
+    font-size: 0.8rem;
+  }
+  .table__req-start-date-wrapper div {
+    font-size: 0.8rem;
+  }
+  .table__req-finish-date-wrapper div {
+    font-size: 0.8rem;
+  }
+  .table__previous-work-wrapper__data {
+    font-size: 0.8rem;
+  }
+
+  .table__current-work-wrapper__data {
+    font-size: 0.8rem;
+  }
+
+  .table__current-work-wrapper__input__previous-work {
+    width: 33px !important;
+  }
+
+  .table__current-work-wrapper__input__current-work {
+    width: 33px !important;
+    font-size: 0.8rem;
+  }
+
+  .modal-no-work__wrapper-table {
+    max-height: 250px;
+    overflow: auto;
+  }
+
+  .table__req-start-date-wrapper__date-picker input {
+    font-size: 0.8rem;
+  }
+
+  .table__req-start-date-wrapper__date-picker-request input {
+    font-size: 0.8rem;
+  }
+}
+
+@media screen and (max-width: 602px) {
+  #mainDiv {
+    width: 580px !important;
+  }
+
+  .header {
+    flex-direction: column;
+    justify-content: space-between;
+  }
+
+  .header__left {
+    margin-top: 20px;
+  }
+
+  .header__left select {
+    width: 510px;
+  }
+
+  .table thead td:nth-child(2) {
+    padding-top: 6px;
+  }
+
+  .table thead td {
+    font-size: 0.8rem !important;
+    display: block;
+  }
+
+  .table tbody {
+    font-size: 0.8rem !important;
+    display: block;
+  }
+
+  .header {
+    display: flex;
+    justify-content: space-between;
+    margin-top: -3px !important;
+    z-index: 0;
+    position: relative;
+  }
+  .table__section-wrapper__data {
+    font-size: 0.8rem;
+  }
+
+  .table__task-name-wrapper__data {
+    font-size: 0.8rem;
+  }
+
+  .table__company-wrapper__data {
+    font-size: 0.8rem;
+  }
+  .table__trade-wrapper__data {
+    font-size: 0.8rem;
+  }
+
+  .table__start-date-wrapper__data {
+    font-size: 0.8rem;
+  }
+  .table__finish-date-wrapper__data {
+    font-size: 0.8rem;
+  }
+  .table__req-start-date-wrapper div {
+    font-size: 0.8rem;
+  }
+  .table__req-finish-date-wrapper div {
+    font-size: 0.8rem;
+  }
+  .table__previous-work-wrapper__data {
+    font-size: 0.8rem;
+  }
+
+  .table__current-work-wrapper__data {
+    font-size: 0.8rem;
+  }
+
+  .table__current-work-wrapper__input__previous-work {
+    width: 33px !important;
+  }
+
+  .table__current-work-wrapper__input__current-work {
+    width: 33px !important;
+    font-size: 0.8rem;
+  }
+  .table__req-start-date-wrapper__date-picker input {
+    font-size: 0.8rem;
+  }
+
+  .table__req-start-date-wrapper__date-picker-request input {
+    font-size: 0.8rem;
+  }
+}

@@ -1,0 +1,114 @@
+@import url('https://fonts.googleapis.com/css2?family=Roboto&display=swap');
+
+#mainDiv {
+	width: 1397px;
+	margin: auto;
+}
+
+.title {
+	font-family: 'Roboto';
+	color: darkblue;
+	margin-right: 20px;
+	margin-bottom: 0;
+	margin-left: 5px;
+	visibility: hidden;
+}
+.header {
+	display: flex;
+	justify-content: space-between;
+	width: 1200px;
+}
+
+.header__left {
+	display: flex;
+	align-items: center;
+	align-content: center;
+	flex-grow: 1;
+}
+
+.header__left__project-id {
+	font-family: 'Roboto';
+	color: black;
+	margin-right: 10px;
+}
+
+.header__left__project-id__value {
+	text-decoration: underline;
+}
+
+.header__left__project-group {
+	font-family: 'Roboto';
+	color: #50474c;
+	white-space: nowrap;
+}
+
+.header__left__project-name {
+	font-family: 'Roboto';
+	color: #50474c;
+	margin-left: 10px;
+	overflow: hidden;
+	text-overflow: ellipsis;
+}
+
+.header__left__project-id__value:hover {
+	color: #a79da3;
+	cursor: pointer;
+}
+.header__right__excel-export-btn {
+	background: #1cc26f !important;
+	color: #ffffff !important;
+}
+
+.header__right__pdf-export-btn {
+	background: #db5a76 !important;
+	color: #ffffff !important;
+}
+
+.header__right {
+	display: flex;
+	align-items: center;
+	flex-direction: row-reverse;
+	align-content: center;
+	flex-grow: 1;
+
+	/* margin-right: 100px !important; */
+}
+.header__right__label-date-picker {
+	margin-bottom: 17px;
+	font-family: 'Roboto';
+	color: #534f51;
+}
+
+.header__right__date-picker {
+	width: 120px;
+	margin-bottom: 17px !important;
+	margin-left: 20px !important;
+}
+
+.header__right__date-picker input {
+	text-align: center;
+	padding-bottom: 4px;
+}
+
+.alert__complete {
+	text-align: center;
+}
+
+.table__is-deleted__icon {
+	color: rgb(125, 119, 119);
+	cursor: pointer;
+	text-align: center !important;
+}
+
+.table__is-deleted__icon:hover {
+	color: rgb(110, 104, 187);
+}
+
+.table__add-icon {
+	color: rgb(125, 119, 119);
+	cursor: pointer;
+}
+
+.table__add-icon:hover {
+	color: rgb(110, 104, 187);
+}

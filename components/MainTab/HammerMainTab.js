@@ -14,14 +14,7 @@ import ExitToAppIcon from '@material-ui/icons/ExitToApp';
 import EventIcon from '@material-ui/icons/Event';
 import Link from 'next/link';
 
-const MainTab = ({
-	tapNo,
-	projectState,
-	main,
-	employeeID,
-	employeeName,
-	logout,
-}) => {
+const MainTab = ({ tapNo, projectState, main, employeeID, employeeName }) => {
 	const [anchorEl, setAnchorEl] = React.useState(null);
 
 	const open = Boolean(anchorEl);
@@ -37,11 +30,8 @@ const MainTab = ({
 			`${location.protocol}//${location.host}/calendar/${employeeID}`,
 		);
 	};
-	const handleLogout = () => {
-		logout();
-	};
 
-	const admin = [5020, 5023, 7219, 7423, 7784, 7869];
+	const admin = [5020, 5023, 7423, 7784, 7869];
 
 	return (
 		<AppBar position="static">
@@ -49,8 +39,8 @@ const MainTab = ({
 				<Link
 					href={
 						projectState
-							? `/task-completion?pid=${projectState}`
-							: '/task-completion'
+							? `/hammer-task-completion?pid=${projectState}`
+							: '/hammer-task-completion'
 					}
 				>
 					<Tab
@@ -86,17 +76,21 @@ const MainTab = ({
           />
         </Link> */}
 				<Link
-					href={projectState ? `/timesheet?pid=${projectState}` : '/timesheet'}
+					href={
+						projectState
+							? `/hammer-record?pid=${projectState}`
+							: '/hammer-record'
+					}
 				>
 					<Tab
-						label={main ? '' : 'Timesheet'}
+						label={main ? '' : 'Record'}
 						// onClick={() => Router.push(`/timesheet/${projectState}`)}
 						disableRipple={true}
 						disabled={main}
 						textColor={tapNo === 1 ? 'inherit' : 'primary'}
 					/>
 				</Link>
-				<Link href={projectState ? `/record?pid=${projectState}` : '/record'}>
+				{/* <Link href={projectState ? `/record?pid=${projectState}` : '/record'}>
 					<Tab
 						label={main ? '' : 'Record'}
 						// onClick={() => Router.push(`/record/${projectState}`)}
@@ -107,7 +101,7 @@ const MainTab = ({
 							!admin.includes(parseInt(employeeID)) ? { display: 'none' } : {}
 						}
 					/>
-				</Link>
+				</Link> */}
 				{/* <Link href={`/deficiency-log/${projectState}`}>
           <Tab
             label={main ? "" : "Deficiency Log"}
@@ -116,50 +110,6 @@ const MainTab = ({
             disabled={main}
           />
         </Link> */}
-				<Tab
-					icon={
-						<div className={styles['wrapper-right-tab']}>
-							<p className={styles['wrapper-right-tab__employee-name']}>
-								{/* {employeeInfo.FullName} */}
-								{employeeName}
-							</p>
-							<AccountCircle
-								className={styles['wrapper-right-tab__account-icon']}
-							/>
-						</div>
-					}
-					className={styles['right-tab']}
-					aria-describedby={id}
-					onClick={handleClick}
-					disableRipple={true}
-				/>
-				<Popover
-					id={id}
-					open={open}
-					anchorEl={anchorEl}
-					onClose={handleClose}
-					anchorOrigin={{
-						vertical: 'bottom',
-						horizontal: 'right',
-					}}
-					transformOrigin={{
-						vertical: 'top',
-						horizontal: 'center',
-					}}
-				>
-					<div className={styles['wrapper-schedule']} onClick={handleSchedule}>
-						<EventIcon />
-						&emsp;
-						<Button className={styles['wrapper-schedule__btn']}>
-							Schedule
-						</Button>
-					</div>
-					<div className={styles['wrapper-logout']} onClick={handleLogout}>
-						<ExitToAppIcon />
-						&emsp;
-						<Button className={styles['wrapper-logout__btn']}>Logout</Button>
-					</div>
-				</Popover>
 			</Tabs>
 		</AppBar>
 	);
