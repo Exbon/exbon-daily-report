@@ -308,6 +308,7 @@ const Record = () => {
 		});
 		// Check first column exist finish
 		// Read, write and save excel
+		debugger;
 		await axios({
 			method: 'post',
 			url: '/api/record/excel-export',
@@ -333,7 +334,7 @@ const Record = () => {
 				.getElementById('excelExport')
 				.setAttribute(
 					'href',
-					'/record/ToCustomer_' + status.cookies.employeeid + '.xlsx',
+					'/record/ToCustomer_' + router.query.eid + '.xlsx',
 				);
 			document.getElementById('excelExport').click();
 
