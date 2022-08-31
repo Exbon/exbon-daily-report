@@ -323,11 +323,11 @@ const Record = () => {
 				contractNo: numbers.ContractNumber,
 				jobNumber: currentProject.JobNumber,
 				taskOrderNo: numbers.TaskOrder ? numbers.TaskOrder : '',
-				documentedBy: cookies.fullname,
+				documentedBy: '',
 				contractors: tempContractors,
 				inspectors: tempInspections,
 				note: notes ? notes[0].Note : '',
-				userID: cookies.employeeid,
+				userID: '',
 			},
 		});
 
