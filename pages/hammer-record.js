@@ -77,6 +77,7 @@ const Record = () => {
 	const [checkDownload, setCheckDownload] = useState(0);
 	const [coloredDate, setColoredDate] = useState([]);
 	const [coloredNoWorkDate, setColoredNoWorkDate] = useState([]);
+	const [currentProject, setCurrentProject] = useState({});
 
 	const validateContractors = () => {
 		for (let i = 0; i < contractors.length; i++) {
@@ -310,10 +311,6 @@ const Record = () => {
 		});
 		// Check first column exist finish
 
-		const currentProject = stateAssignedProject.find(
-			(project) => project.ProjectID == projectState,
-		);
-
 		// Read, write and save excel
 		await axios({
 			method: 'post',
@@ -326,11 +323,11 @@ const Record = () => {
 				contractNo: numbers.ContractNumber,
 				jobNumber: currentProject.JobNumber,
 				taskOrderNo: numbers.TaskOrder ? numbers.TaskOrder : '',
-				documentedBy: status.cookies.fullname,
+				documentedBy: cookies.fullname,
 				contractors: tempContractors,
 				inspectors: tempInspections,
 				note: notes ? notes[0].Note : '',
-				userID: status.cookies.employeeid,
+				userID: cookies.employeeid,
 			},
 		});
 
@@ -592,6 +589,8 @@ const Record = () => {
 				});
 
 				setColoredNoWorkDate(SelectedDays2);
+
+				setCurrentProject(res.data.result[8][0]);
 			} else {
 				setData('');
 			}
@@ -610,60 +609,6 @@ const Record = () => {
 			setStateNoAssigned(false);
 		}
 	}, [stateAssignedProject]);
-
-	const signin = async (username, password) => {
-		await axios({
-			method: 'post',
-			url: `/api/daily-report/signin`,
-			timeout: 1000000,
-			headers: {},
-			data: {
-				Username: username,
-				Password: password,
-			},
-		}).then((response) => {
-			if (response.data.result.recordset[0] !== undefined) {
-				setCookie('username', username, { path: '/', maxAge: 3600 * 24 * 30 });
-				setCookie('password', password, { path: '/', maxAge: 3600 * 24 * 30 });
-				setCookie('fullname', response.data.result.recordset[0].FullName, {
-					path: '/',
-					maxAge: 3600 * 24 * 30,
-				});
-				setCookie('employeeid', response.data.result.recordset[0].EmployeeID, {
-					path: '/',
-					maxAge: 3600 * 24 * 30,
-				});
-				setStatus((prevState) => ({
-					...prevState,
-					cookies: {
-						username: username,
-						password: password,
-						fullname: response.data.result.recordset[0].FullName,
-						employeeid: response.data.result.recordset[0].EmployeeID,
-					},
-				}));
-			} else {
-				alert('Login failed.');
-			}
-		});
-	};
-
-	const logout = () => {
-		// setData([]);
-		removeCookie('username', { path: '/' });
-		removeCookie('password', { path: '/' });
-		removeCookie('fullname', { path: '/' });
-		removeCookie('employeeid', { path: '/' });
-		setStatus((prevState) => ({
-			permission: true,
-			cookies: {
-				username: undefined,
-				password: 0,
-				fullname: '',
-				employeeid: 0,
-			},
-		}));
-	};
 
 	const addRowHandler = (type) => {
 		if (type === 'contractors') {
