@@ -307,7 +307,6 @@ const Record = () => {
 				tempInspections.push(inspection);
 		});
 		// Check first column exist finish
-
 		// Read, write and save excel
 		await axios({
 			method: 'post',
@@ -320,11 +319,11 @@ const Record = () => {
 				contractNo: numbers.ContractNumber,
 				jobNumber: currentProject.JobNumber,
 				taskOrderNo: numbers.TaskOrder ? numbers.TaskOrder : '',
-				documentedBy: '',
+				documentedBy: router.query.fullname,
 				contractors: tempContractors,
 				inspectors: tempInspections,
 				note: notes ? notes[0].Note : '',
-				userID: '',
+				userID: router.query.eid,
 			},
 		});
 
@@ -481,7 +480,6 @@ const Record = () => {
 			setProjectState(router.query.pid);
 
 			if (projectState !== undefined) {
-				router.push(`?pid=${projectState}`);
 				const fetchContractorList = await axios(
 					`/api/record/daily-report/contractor?pid=${projectState}`,
 				);
