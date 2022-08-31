@@ -82,6 +82,7 @@ const Task = () => {
 		{ ProjectID: 0 },
 	]);
 	const [stateNoAssigned, setStateNoAssigned] = useState([]);
+	const [coloredNoWorkDate, setColoredNoWorkDate] = useState([]);
 
 	const columns = useMemo(
 		() => [
@@ -917,7 +918,13 @@ const Task = () => {
 					headers: {},
 				})
 					.then((response) => {
-						setNoWork(response.data);
+						setNoWork(response.data[0]);
+						let SelectedNoWorkDays = [];
+						response.data[1].forEach((element) => {
+							SelectedNoWorkDays.push(formatDate(element.Date));
+						});
+
+						setColoredNoWorkDate(SelectedNoWorkDays);
 					})
 					.catch((err) => {
 						alert(
@@ -1333,6 +1340,34 @@ const Task = () => {
 											className={styles['header__right__date-picker']}
 											autoOk={true}
 											okLabel=""
+											renderDay={(
+												day,
+												selectedDate,
+												isInCurrentMonth,
+												dayComponent,
+											) => {
+												const isSelectedNoWork =
+													isInCurrentMonth &&
+													coloredNoWorkDate.includes(formatDate(day));
+												// You can also use our internal <Day /> component
+												return (
+													// <Badge badgeContent={isSelected ? "🌚" : undefined}>
+													//   {dayComponent}
+													// </Badge>
+													<div
+														style={
+															isSelectedNoWork
+																? {
+																		backgroundColor: '#ff7374',
+																		borderRadius: '40%',
+																  }
+																: undefined
+														}
+													>
+														{dayComponent}
+													</div>
+												);
+											}}
 										/>
 									</MuiPickersUtilsProvider>
 								</div>
