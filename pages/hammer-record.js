@@ -48,10 +48,7 @@ const Record = () => {
 		},
 		permission: true,
 	});
-	const [stateAssignedProject, setStateAssignedProject] = useState([
-		{ ProjectID: 0 },
-	]);
-	const [stateNoAssigned, setStateNoAssigned] = useState([]);
+
 	const { promiseInProgress } = usePromiseTracker();
 	const now = new Date().toLocaleString({
 		timeZone: 'America/Los_Angeles',
@@ -373,10 +370,6 @@ const Record = () => {
 		});
 		// Check first column exist finish
 
-		const currentProject = stateAssignedProject.find(
-			(project) => project.ProjectID == projectState,
-		);
-
 		// Read, write and save excel
 		await axios({
 			method: 'post',
@@ -599,16 +592,6 @@ const Record = () => {
 		promises.push(fetchData());
 		trackPromise(Promise.all(promises).then(() => {}));
 	}, [selectedDate, projectState, status, router.isReady, router.query.pid]);
-
-	useEffect(() => {
-		if (typeof stateAssignedProject[0] == 'undefined') {
-			setTimeout(() => {
-				setStateNoAssigned(true);
-			}, 3000);
-		} else {
-			setStateNoAssigned(false);
-		}
-	}, [stateAssignedProject]);
 
 	const addRowHandler = (type) => {
 		if (type === 'contractors') {
