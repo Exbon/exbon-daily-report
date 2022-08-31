@@ -76,6 +76,7 @@ const Record = () => {
 	});
 	const [checkDownload, setCheckDownload] = useState(0);
 	const [coloredDate, setColoredDate] = useState([]);
+	const [coloredNoWorkDate, setColoredNoWorkDate] = useState([]);
 
 	const validateContractors = () => {
 		for (let i = 0; i < contractors.length; i++) {
@@ -114,6 +115,12 @@ const Record = () => {
 						message: `Please fill in all fields. Equipment field is empty.`,
 					};
 				}
+			} else {
+				if (equipments[i].MoveIn == '')
+					return {
+						status: false,
+						message: `Please fill in all fields. "Move In" in Equipment field is empty.`,
+					};
 			}
 		}
 		return {
@@ -206,7 +213,7 @@ const Record = () => {
 						await axios
 							.post(`/api/record/daily-report/equipment`, {
 								...equipments[i],
-								ReportID: reportID,
+								ProjectID: projectState,
 							})
 							.catch((err) => alert(err));
 					}
@@ -578,6 +585,13 @@ const Record = () => {
 				});
 
 				setColoredDate(SelectedDays);
+
+				let SelectedDays2 = [];
+				res.data.result[7].forEach((element) => {
+					SelectedDays2.push(formatDate(element.Date));
+				});
+
+				setColoredNoWorkDate(SelectedDays2);
 			} else {
 				setData('');
 			}
@@ -862,6 +876,10 @@ const Record = () => {
 														const isSelected =
 															isInCurrentMonth &&
 															coloredDate.includes(formatDate(day));
+
+														const isSelectedNoWork =
+															isInCurrentMonth &&
+															coloredNoWorkDate.includes(formatDate(day));
 														// You can also use our internal <Day /> component
 														return (
 															// <Badge badgeContent={isSelected ? "🌚" : undefined}>
@@ -873,6 +891,11 @@ const Record = () => {
 																		? {
 																				backgroundColor: '#ffbb00',
 																				borderRadius: '100%',
+																		  }
+																		: isSelectedNoWork
+																		? {
+																				backgroundColor: '#ff7374',
+																				borderRadius: '40%',
 																		  }
 																		: undefined
 																}
