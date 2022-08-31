@@ -823,7 +823,7 @@ const Record = () => {
 			</Head>
 
 			<>
-				<SimpleTabs
+				{/* <SimpleTabs
 					tapNo={1}
 					projectState={projectState}
 					main={false}
@@ -831,7 +831,7 @@ const Record = () => {
 					employeeName={status.cookies.fullname}
 					logout={logout}
 					style={{ display: 'none' }}
-				/>
+				/> */}
 				{promiseInProgress || !projectState || checkDownload ? (
 					// || !(data.length >= 0)
 					<div

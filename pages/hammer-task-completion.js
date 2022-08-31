@@ -1309,14 +1309,14 @@ const Task = () => {
 			</Head>
 
 			<>
-				<SimpleTabs
+				{/* <SimpleTabs
 					tapNo={0}
 					projectState={projectState}
 					main={false}
 					employeeID={status.cookies.employeeid}
 					employeeName={status.cookies.fullname}
 					style={{ display: 'none' }}
-				/>
+				/> */}
 
 				{promiseInProgress || !projectState || !(data.length > 0) ? (
 					<div
