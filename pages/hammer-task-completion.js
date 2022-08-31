@@ -83,6 +83,7 @@ const Task = () => {
 	]);
 	const [stateNoAssigned, setStateNoAssigned] = useState([]);
 	const [coloredNoWorkDate, setColoredNoWorkDate] = useState([]);
+	const [coloredWorkingDate, setColoredWorkingDate] = useState([]);
 
 	const columns = useMemo(
 		() => [
@@ -919,12 +920,18 @@ const Task = () => {
 				})
 					.then((response) => {
 						setNoWork(response.data[0]);
+
 						let SelectedNoWorkDays = [];
 						response.data[1].forEach((element) => {
 							SelectedNoWorkDays.push(formatDate(element.Date));
 						});
-
 						setColoredNoWorkDate(SelectedNoWorkDays);
+
+						let SelectedWorkingDays = [];
+						response.data[2].forEach((element) => {
+							SelectedWorkingDays.push(formatDate(element.Date));
+						});
+						setColoredWorkingDate(SelectedWorkingDays);
 					})
 					.catch((err) => {
 						alert(
@@ -1349,6 +1356,10 @@ const Task = () => {
 												const isSelectedNoWork =
 													isInCurrentMonth &&
 													coloredNoWorkDate.includes(formatDate(day));
+
+												const isSelectedWork =
+													isInCurrentMonth &&
+													coloredWorkingDate.includes(formatDate(day));
 												// You can also use our internal <Day /> component
 												return (
 													// <Badge badgeContent={isSelected ? "🌚" : undefined}>
@@ -1356,7 +1367,12 @@ const Task = () => {
 													// </Badge>
 													<div
 														style={
-															isSelectedNoWork
+															isSelectedWork
+																? {
+																		backgroundColor: '#ffbb00',
+																		borderRadius: '40%',
+																  }
+																: isSelectedNoWork
 																? {
 																		backgroundColor: '#ff7374',
 																		borderRadius: '40%',
