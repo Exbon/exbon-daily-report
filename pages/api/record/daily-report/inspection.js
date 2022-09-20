@@ -14,7 +14,7 @@ const getInspection = (req, res) => {
 					}
 					const request = new mssql.Request();
 
-					const sqlquery = `EXEC [Exbon].[dbo].[usp_dailyreport_Insert_DailyReportInspection]
+					const sqlquery = `EXEC [dbo].[usp_dailyreport_Insert_DailyReportInspection]
                               @reportID = ${body.ReportID},
                               @inspector = '${sqlEscape(body.Inspector)}',
                               @agency = '${sqlEscape(body.Agency)}',

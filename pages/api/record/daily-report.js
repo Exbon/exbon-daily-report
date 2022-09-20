@@ -14,7 +14,7 @@ const getDailyReport = (req, res) => {
 					}
 					const request = new mssql.Request();
 
-					const sqlquery = `EXEC [Exbon].[dbo].[usp_dailyreport_Select_DailyReport]
+					const sqlquery = `EXEC [dbo].[usp_dailyreport_Select_DailyReport]
                         @projectID = ${query.pid},
                         @date = '${query.date}'
                         `;
@@ -39,7 +39,7 @@ const getDailyReport = (req, res) => {
 						return resolve();
 					}
 					const request = new mssql.Request();
-					const sqlquery = `EXEC [Exbon].[dbo].[usp_dailyreport_DeleteAndInsert_DailyReport]
+					const sqlquery = `EXEC [dbo].[usp_dailyreport_DeleteAndInsert_DailyReport]
                         @projectID = ${body.ProjectID},
                         @date = '${body.Date}',
 						@userID = ${body.EmployeeID},

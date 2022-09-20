@@ -14,7 +14,7 @@ const getContractor = (req, res) => {
 					}
 					const request = new mssql.Request();
 
-					const sqlquery = `EXEC [Exbon].[dbo].[usp_dailyreport_Select_DailyReportContractor_Dropdown]
+					const sqlquery = `EXEC [dbo].[usp_dailyreport_Select_DailyReportContractor_Dropdown]
                             @projectID = ${query.pid}
                             `;
 
@@ -40,7 +40,7 @@ const getContractor = (req, res) => {
 					}
 					const request = new mssql.Request();
 
-					const sqlquery = `EXEC [Exbon].[dbo].[usp_dailyreport_Insert_DailyReportContractor]
+					const sqlquery = `EXEC [dbo].[usp_dailyreport_Insert_DailyReportContractor]
                             @reportID = ${body.ReportID},
                             @contractor = '${sqlEscape(body.Contractor || '')}',
                             @location = '${sqlEscape(body.Location)}',

@@ -14,7 +14,7 @@ const getCorrectional = (req, res) => {
 					}
 					const request = new mssql.Request();
 
-					const sqlquery = `EXEC [Exbon].[dbo].[usp_dailyreport_Select_DailyReportCorrectional_Dropdown]`;
+					const sqlquery = `EXEC [dbo].[usp_dailyreport_Select_DailyReportCorrectional_Dropdown]`;
 
 					request.query(sqlquery, (err, recordset) => {
 						if (err) {
@@ -38,7 +38,7 @@ const getCorrectional = (req, res) => {
 					}
 					const request = new mssql.Request();
 
-					const sqlquery = `EXEC [Exbon].[dbo].[usp_dailyreport_Insert_DailyReportCorrectional]
+					const sqlquery = `EXEC [dbo].[usp_dailyreport_Insert_DailyReportCorrectional]
                             @reportID = ${body.ReportID},
                             @deficiency = '${sqlEscape(body.Deficiency)}',
                             @type = '${sqlEscape(body.Type)}',
