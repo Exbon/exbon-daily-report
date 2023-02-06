@@ -893,7 +893,7 @@ const Record = () => {
 			) : (
 				<>
 					<SimpleTabs
-						tapNo={2}
+						tapNo={1}
 						projectState={projectState}
 						main={false}
 						employeeID={status.cookies.employeeid}

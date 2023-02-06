@@ -85,7 +85,7 @@ const MainTab = ({
             textColor={tapNo === 2 ? "inherit" : "primary"}
           />
         </Link> */}
-				<Link
+				{/* <Link
 					href={projectState ? `/timesheet?pid=${projectState}` : '/timesheet'}
 				>
 					<Tab
@@ -95,14 +95,14 @@ const MainTab = ({
 						disabled={main}
 						textColor={tapNo === 1 ? 'inherit' : 'primary'}
 					/>
-				</Link>
+				</Link> */}
 				<Link href={projectState ? `/record?pid=${projectState}` : '/record'}>
 					<Tab
-						label={main ? '' : 'Record'}
+						label={main ? '' : 'Daily Report'}
 						// onClick={() => Router.push(`/record/${projectState}`)}
 						disableRipple={true}
 						disabled={main}
-						textColor={tapNo === 2 ? 'inherit' : 'primary'}
+						textColor={tapNo === 1 ? 'inherit' : 'primary'}
 						style={
 							!admin.includes(parseInt(employeeID)) ? { display: 'none' } : {}
 						}
