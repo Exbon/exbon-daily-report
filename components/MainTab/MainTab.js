@@ -103,9 +103,6 @@ const MainTab = ({
 						disableRipple={true}
 						disabled={main}
 						textColor={tapNo === 1 ? 'inherit' : 'primary'}
-						style={
-							!admin.includes(parseInt(employeeID)) ? { display: 'none' } : {}
-						}
 					/>
 				</Link>
 				{/* <Link href={`/deficiency-log/${projectState}`}>
