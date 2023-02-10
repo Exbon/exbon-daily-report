@@ -1155,7 +1155,7 @@ const Record = () => {
 																		fontSize: '90%',
 																		position: 'fixed',
 																		overflow: 'auto',
-																		maxHeight: '15%',
+																		maxHeight: '50%',
 																	}}
 																></Autocomplete>
 															</td>
@@ -1244,7 +1244,7 @@ const Record = () => {
 																		fontSize: '90%',
 																		position: 'fixed',
 																		overflow: 'auto',
-																		maxHeight: '15%',
+																		maxHeight: '50%',
 																	}}
 																></Autocomplete>
 															</td>
@@ -1438,7 +1438,7 @@ const Record = () => {
 																		fontSize: '90%',
 																		position: 'fixed',
 																		overflow: 'auto',
-																		maxHeight: '15%',
+																		maxHeight: '50%',
 																	}}
 																></Autocomplete>
 															</td>
@@ -1483,7 +1483,7 @@ const Record = () => {
 																		fontSize: '90%',
 																		position: 'fixed',
 																		overflow: 'auto',
-																		maxHeight: '15%',
+																		maxHeight: '50%',
 																	}}
 																></Autocomplete>
 															</td>
@@ -1844,7 +1844,7 @@ const Record = () => {
 																		fontSize: '90%',
 																		position: 'fixed',
 																		overflow: 'auto',
-																		maxHeight: '15%',
+																		maxHeight: '50%',
 																	}}
 																></Autocomplete>
 															</td>
@@ -1889,7 +1889,7 @@ const Record = () => {
 																		fontSize: '90%',
 																		position: 'fixed',
 																		overflow: 'auto',
-																		maxHeight: '15%',
+																		maxHeight: '50%',
 																	}}
 																></Autocomplete>
 															</td>
