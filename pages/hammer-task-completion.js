@@ -691,7 +691,7 @@ const Task = () => {
 							timeout: 1000000, // 3 seconds timeout
 							headers: {},
 							data: {
-								EmployeeID: status.cookies.employeeid,
+								EmployeeID: router.query.eid,
 								ProjectID: projectState,
 								RequestType: 'Task',
 								RequestID: data[i].TaskID,
@@ -734,7 +734,7 @@ const Task = () => {
 								timeout: 1000000, // 3 seconds timeout
 								headers: {},
 								data: {
-									EmployeeID: status.cookies.employeeid,
+									EmployeeID: router.query.eid,
 									ProjectID: projectState,
 									RequestType: 'No Work',
 									RequestID: null,
@@ -752,7 +752,7 @@ const Task = () => {
 								timeout: 1000000, // 3 seconds timeout
 								headers: {},
 								data: {
-									EmployeeID: status.cookies.employeeid,
+									EmployeeID: router.query.eid,
 									ProjectID: projectState,
 									RequestType: 'No Work Modify',
 									RequestID: item.RecordID,
@@ -770,7 +770,7 @@ const Task = () => {
 								timeout: 1000000, // 3 seconds timeout
 								headers: {},
 								data: {
-									EmployeeID: status.cookies.employeeid,
+									EmployeeID: router.query.eid,
 									ProjectID: projectState,
 									RequestType: 'No Work Delete',
 									RequestID: item.RecordID,

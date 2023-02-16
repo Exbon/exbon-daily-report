@@ -187,7 +187,7 @@ const Record = () => {
 				await axios.post(`/api/record/daily-report`, {
 					ProjectID: router.query.pid,
 					Date: formatDate(selectedDate),
-					EmployeeID: status.cookies.employeeid,
+					EmployeeID: router.query.eid,
 					Note: notes ? notes[0].Note : '',
 				})
 			).data.result[0][0].ReportID;
@@ -308,7 +308,6 @@ const Record = () => {
 		});
 		// Check first column exist finish
 		// Read, write and save excel
-		debugger;
 		await axios({
 			method: 'post',
 			url: '/api/record/excel-export',
