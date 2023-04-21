@@ -62,6 +62,33 @@ const getEquipment = (req, res) => {
 				});
 				break;
 
+			case 'DELETE':
+				mssql.connect(dbserver.dbConfig, (err) => {
+					if (err) {
+						console.error(err);
+						return resolve();
+					}
+					const request = new mssql.Request();
+
+					const sqlquery = `EXEC [dbo].[usp_dailyreport_Delete_DailyReportEquipment]
+								@recordID = ${body.RecordID},
+								`;
+					console.log(sqlquery);
+
+					request.query(sqlquery, (err, recordset) => {
+						if (err) {
+							console.error(err);
+							return resolve();
+						}
+						res.status(200).json({
+							message: 'Success',
+							result: recordset.recordsets,
+						});
+						return resolve();
+					});
+				});
+				break;
+
 			default:
 				res.setHeader('Allow', ['GET', 'POST']);
 				res.status(405).end(`Method ${method} Not Allowed`);
