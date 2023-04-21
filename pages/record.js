@@ -59,6 +59,7 @@ const Record = () => {
 	const [selectedDate, setSelectedDate] = useState(now);
 	const [contractors, setContractors] = useState([]);
 	const [equipments, setEquipments] = useState([]);
+	const [equipmentDeleteList, setEquipmentDeleteList] = useState([]);
 	const [inspections, setInspections] = useState([]);
 	const [correctionals, setCorrectionals] = useState([]);
 	const [notes, setNotes] = useState();
@@ -182,8 +183,7 @@ const Record = () => {
 		return true;
 	};
 
-	const save = () => {
-		console.log('employeeid:', status.cookies.employeeid);
+	const save = async () => {
 		let promises = [];
 		const fetchData = async () => {
 			const reportID = (
@@ -208,17 +208,24 @@ const Record = () => {
 				}
 			}
 
+			for (let i = 0; i < equipmentDeleteList.length; i++) {
+				await axios.delete(`/api/record/daily-report/equipment`, {
+					data: { RecordID: equipmentDeleteList[i] },
+				});
+			}
 			if (equipments.length > 0) {
 				for (let i = 0; i < equipments.length; i++) {
 					if (equipments[i].Equipment !== '') {
+						if (equipments[i].hasOwnProperty('exist')) {
+							await axios.delete(`/api/record/daily-report/equipment`, {
+								data: { RecordID: equipments[i].RecordID },
+							});
+						}
 						await axios
 							.post(`/api/record/daily-report/equipment`, {
 								...equipments[i],
 								ProjectID: projectState,
 							})
-							// .delete(`/api/record/daily-report/equipment`, {
-							// 	data: { RecordID: equipments[i].RecordID },
-							// })
 							.catch((err) => alert(err));
 					}
 				}
@@ -238,7 +245,6 @@ const Record = () => {
 			}
 
 			if (correctionals.length > 0) {
-				console.log(correctionals);
 				for (let i = 0; i < correctionals.length; i++) {
 					if (correctionals[i].Deficiency !== '') {
 						await axios
@@ -248,23 +254,37 @@ const Record = () => {
 							})
 							.catch((err) => alert(err));
 					}
-					// if (correctionals[i].exist != true) {
-					// 	await axios
-					// 		.post(`/api/record/deficiency-log`, {
-					// 			...correctionals[i],
-					// 			ProjectID: projectState,
-					// 			EmployeeID: status.cookies.employeeid,
-					// 		})
-					// 		.then((res) => alert('hi'))
-					// 		.catch((err) => alert(err));
-					// }
+					if (
+						correctionals[i].Deficiency !== '' &&
+						!correctionals[i].hasOwnProperty('exist')
+					) {
+						console.log('correctionals[i]', correctionals);
+						await axios
+							.post(`/api/record/deficiency-log`, {
+								...correctionals[i],
+								ProjectID: projectState,
+								EmployeeID: status.cookies.employeeid,
+							})
+							.then((res) =>
+								toast.success(
+									<div className={styles['alert__complete']}>
+										<strong>Deficiency Log Created</strong>
+									</div>,
+									{
+										position: toast.POSITION.BOTTOM_CENTER,
+										hideProgressBar: true,
+									},
+								),
+							)
+							.catch((err) => alert(err));
+					}
 				}
 			}
 		};
-
 		promises.push(fetchData());
 		trackPromise(
-			Promise.all(promises).then(() => {
+			Promise.all(promises).then(async () => {
+				await fetchAllData();
 				toast.success(
 					<div className={styles['alert__complete']}>
 						<strong>Save Complete</strong>
@@ -590,93 +610,7 @@ const Record = () => {
 				});
 
 				// setContractorList(fetchContractorList);
-				const res = await axios.get(
-					`/api/record/daily-report?pid=${router.query.pid}&date=${formatDate(
-						selectedDate,
-					)}`,
-				);
-				setContractors(
-					res.data.result[0].length > 0
-						? res.data.result[0]
-						: [
-								{
-									Contractor: '',
-									Location: '',
-									NumSuper: '',
-									NumWorker: '',
-									WorkHours: '',
-									Task: '',
-								},
-						  ],
-				);
-				console.log('equipments', res.data.result[1]);
-				setEquipments(
-					res.data.result[1].length > 0
-						? res.data.result[1]
-						: [
-								{
-									Equipment: '',
-									MoveIn: '',
-									MoveOut: '',
-									Vendor: '',
-									Note: '',
-								},
-						  ],
-				);
-
-				setInspections(
-					res.data.result[2].length > 0
-						? res.data.result[2]
-						: [
-								{
-									Inspector: '',
-									Agency: '',
-									Location: '',
-									Task: '',
-									Result: '',
-								},
-						  ],
-				);
-				console.log('query correctionals', res.data.result[3]);
-				setCorrectionals(
-					res.data.result[3].length > 0
-						? res.data.result[3].map((item) => {
-								return { ...item, exist: true };
-						  })
-						: [
-								{
-									Deficiency: '',
-									OpenedBy: '',
-									Type: '',
-									Trade: '',
-									Description: '',
-								},
-						  ],
-				);
-				setNotes(
-					res.data.result[4].length > 0
-						? res.data.result[4]
-						: [
-								{
-									NoteID: '',
-									Note: '',
-								},
-						  ],
-				);
-				setNumbers(res.data.result[5][0]);
-				let SelectedDays = [];
-				res.data.result[6].forEach((element) => {
-					SelectedDays.push(formatDate(element.Date));
-				});
-
-				setColoredDate(SelectedDays);
-
-				let SelectedDays2 = [];
-				res.data.result[7].forEach((element) => {
-					SelectedDays2.push(formatDate(element.Date));
-				});
-
-				setColoredNoWorkDate(SelectedDays2);
+				await fetchAllData();
 			} else {
 				setData('');
 			}
@@ -686,6 +620,95 @@ const Record = () => {
 		trackPromise(Promise.all(promises).then(() => {}));
 	}, [selectedDate, projectState, status, router.isReady, router.query.pid]);
 
+	const fetchAllData = async () => {
+		const res = await axios.get(
+			`/api/record/daily-report?pid=${router.query.pid}&date=${formatDate(
+				selectedDate,
+			)}`,
+		);
+		setContractors(
+			res.data.result[0].length > 0
+				? res.data.result[0]
+				: [
+						{
+							Contractor: '',
+							Location: '',
+							NumSuper: '',
+							NumWorker: '',
+							WorkHours: '',
+							Task: '',
+						},
+				  ],
+		);
+		setEquipments(
+			res.data.result[1].length > 0
+				? res.data.result[1].map((item) => {
+						return { ...item, exist: true };
+				  })
+				: [
+						{
+							Equipment: '',
+							MoveIn: '',
+							MoveOut: '',
+							Vendor: '',
+							Note: '',
+						},
+				  ],
+		);
+
+		setInspections(
+			res.data.result[2].length > 0
+				? res.data.result[2]
+				: [
+						{
+							Inspector: '',
+							Agency: '',
+							Location: '',
+							Task: '',
+							Result: '',
+						},
+				  ],
+		);
+		setCorrectionals(
+			res.data.result[3].length > 0
+				? res.data.result[3].map((item) => {
+						return { ...item, exist: true };
+				  })
+				: [
+						{
+							Deficiency: '',
+							OpenedBy: '',
+							Type: '',
+							Trade: '',
+							Description: '',
+						},
+				  ],
+		);
+		setNotes(
+			res.data.result[4].length > 0
+				? res.data.result[4]
+				: [
+						{
+							NoteID: '',
+							Note: '',
+						},
+				  ],
+		);
+		setNumbers(res.data.result[5][0]);
+		let SelectedDays = [];
+		res.data.result[6].forEach((element) => {
+			SelectedDays.push(formatDate(element.Date));
+		});
+
+		setColoredDate(SelectedDays);
+
+		let SelectedDays2 = [];
+		res.data.result[7].forEach((element) => {
+			SelectedDays2.push(formatDate(element.Date));
+		});
+
+		setColoredNoWorkDate(SelectedDays2);
+	};
 	useEffect(() => {
 		if (typeof stateAssignedProject[0] == 'undefined') {
 			setTimeout(() => {
@@ -872,6 +895,13 @@ const Record = () => {
 				return newState;
 			});
 		} else if (type === 'equipments') {
+			if (equipments[index].hasOwnProperty('RecordID')) {
+				setEquipmentDeleteList((prevState) => {
+					const newState = [...prevState];
+					newState.push(equipments[index].RecordID);
+					return newState;
+				});
+			}
 			setEquipments((prevState) => {
 				const newState = [...prevState];
 				newState.splice(index, 1);
@@ -898,7 +928,6 @@ const Record = () => {
 		}
 	};
 
-	console.log('correctionals', correctionals);
 	return (
 		<>
 			<Head>
@@ -1764,7 +1793,7 @@ const Record = () => {
 											<thead>
 												<tr>
 													<th className="border border-gray" colSpan={5}>
-														Correctional Items
+														Correctional Items (Check details in Deficiency Log)
 													</th>
 													<th className="bg-transparent border-0"></th>
 												</tr>

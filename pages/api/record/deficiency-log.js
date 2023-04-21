@@ -24,7 +24,6 @@ const addDeficiencyLog = (req, res) => {
 														}',
                             @userEmployeeID = ${req.body.EmployeeID}
                         `;
-					console.log(sqlquery);
 					request.query(sqlquery, (err, recordset) => {
 						if (err) {
 							console.error(err);

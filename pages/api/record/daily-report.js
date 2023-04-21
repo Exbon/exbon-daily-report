@@ -18,7 +18,6 @@ const getDailyReport = (req, res) => {
                         @projectID = ${query.pid},
                         @date = '${query.date}'
                         `;
-					console.log(sqlquery);
 					request.query(sqlquery, (err, recordset) => {
 						if (err) {
 							console.error(err);
