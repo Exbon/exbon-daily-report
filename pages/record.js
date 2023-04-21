@@ -183,7 +183,7 @@ const Record = () => {
 	};
 
 	const save = () => {
-		console.log(status.cookies.employeeid);
+		console.log('employeeid:', status.cookies.employeeid);
 		let promises = [];
 		const fetchData = async () => {
 			const reportID = (
@@ -216,6 +216,9 @@ const Record = () => {
 								...equipments[i],
 								ProjectID: projectState,
 							})
+							// .delete(`/api/record/daily-report/equipment`, {
+							// 	data: { RecordID: equipments[i].RecordID },
+							// })
 							.catch((err) => alert(err));
 					}
 				}
@@ -245,18 +248,16 @@ const Record = () => {
 							})
 							.catch((err) => alert(err));
 					}
-					if (correctionals[i].exist != true) {
-						console.log('hello');
-
-						await axios
-							.post(`/api/record/deficiency-log`, {
-								...correctionals[i],
-								ProjectID: projectState,
-								EmployeeID: status.cookies.employeeid,
-							})
-							.then((res) => alert('hi'))
-							.catch((err) => alert(err));
-					}
+					// if (correctionals[i].exist != true) {
+					// 	await axios
+					// 		.post(`/api/record/deficiency-log`, {
+					// 			...correctionals[i],
+					// 			ProjectID: projectState,
+					// 			EmployeeID: status.cookies.employeeid,
+					// 		})
+					// 		.then((res) => alert('hi'))
+					// 		.catch((err) => alert(err));
+					// }
 				}
 			}
 		};
@@ -608,6 +609,7 @@ const Record = () => {
 								},
 						  ],
 				);
+				console.log('equipments', res.data.result[1]);
 				setEquipments(
 					res.data.result[1].length > 0
 						? res.data.result[1]
@@ -621,6 +623,7 @@ const Record = () => {
 								},
 						  ],
 				);
+
 				setInspections(
 					res.data.result[2].length > 0
 						? res.data.result[2]
@@ -634,6 +637,7 @@ const Record = () => {
 								},
 						  ],
 				);
+				console.log('query correctionals', res.data.result[3]);
 				setCorrectionals(
 					res.data.result[3].length > 0
 						? res.data.result[3].map((item) => {
@@ -893,7 +897,8 @@ const Record = () => {
 			});
 		}
 	};
-	console.log(status.cookies);
+
+	console.log('correctionals', correctionals);
 	return (
 		<>
 			<Head>
