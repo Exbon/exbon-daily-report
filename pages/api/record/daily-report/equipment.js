@@ -71,7 +71,7 @@ const getEquipment = (req, res) => {
 					const request = new mssql.Request();
 
 					const sqlquery = `EXEC [dbo].[usp_dailyreport_Delete_DailyReportEquipment]
-								@projectID = ${body.ProjectID},
+								@recordID = ${body.RecordID},
 								`;
 					console.log(sqlquery);
 
