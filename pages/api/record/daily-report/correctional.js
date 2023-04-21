@@ -41,6 +41,7 @@ const getCorrectional = (req, res) => {
 					const sqlquery = `EXEC [dbo].[usp_dailyreport_Insert_DailyReportCorrectional]
                             @reportID = ${body.ReportID},
                             @deficiency = '${sqlEscape(body.Deficiency)}',
+                            @openedBy = '${body.OpenedBy}',
                             @type = '${sqlEscape(body.Type)}',
                             @trade = '${sqlEscape(body.Trade)}',
                             @description = '${sqlEscape(body.Description)}'
