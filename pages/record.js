@@ -183,6 +183,7 @@ const Record = () => {
 	};
 
 	const save = () => {
+		console.log(status.cookies.employeeid);
 		let promises = [];
 		const fetchData = async () => {
 			const reportID = (
@@ -234,6 +235,7 @@ const Record = () => {
 			}
 
 			if (correctionals.length > 0) {
+				console.log(correctionals);
 				for (let i = 0; i < correctionals.length; i++) {
 					if (correctionals[i].Deficiency !== '') {
 						await axios
@@ -241,6 +243,18 @@ const Record = () => {
 								...correctionals[i],
 								ReportID: reportID,
 							})
+							.catch((err) => alert(err));
+					}
+					if (correctionals[i].exist != true) {
+						console.log('hello');
+
+						await axios
+							.post(`/api/record/deficiency-log`, {
+								...correctionals[i],
+								ProjectID: projectState,
+								EmployeeID: status.cookies.employeeid,
+							})
+							.then((res) => alert('hi'))
 							.catch((err) => alert(err));
 					}
 				}
@@ -622,10 +636,13 @@ const Record = () => {
 				);
 				setCorrectionals(
 					res.data.result[3].length > 0
-						? res.data.result[3]
+						? res.data.result[3].map((item) => {
+								return { ...item, exist: true };
+						  })
 						: [
 								{
 									Deficiency: '',
+									OpenedBy: '',
 									Type: '',
 									Trade: '',
 									Description: '',
@@ -769,6 +786,7 @@ const Record = () => {
 				...prevState,
 				{
 					Deficiency: '',
+					OpenedBy: '',
 					Type: '',
 					Trade: '',
 					Description: '',
@@ -875,6 +893,7 @@ const Record = () => {
 			});
 		}
 	};
+	console.log(status.cookies);
 	return (
 		<>
 			<Head>
@@ -1739,7 +1758,7 @@ const Record = () => {
 										<Table>
 											<thead>
 												<tr>
-													<th className="border border-gray" colSpan={4}>
+													<th className="border border-gray" colSpan={5}>
 														Correctional Items
 													</th>
 													<th className="bg-transparent border-0"></th>
@@ -1754,6 +1773,16 @@ const Record = () => {
 														}}
 													>
 														Deficiency Name
+													</th>
+													<th
+														className="text-center border border-gray align-middle"
+														style={{
+															minWidth: '20%',
+															width: '20%',
+															maxWidth: '20%',
+														}}
+													>
+														Opened By
 													</th>
 													<th
 														className="text-center border border-gray align-middle"
@@ -1798,6 +1827,17 @@ const Record = () => {
 																	type="text"
 																	value={correctional.Deficiency || ''}
 																	name="Deficiency"
+																	onChange={(e) =>
+																		handleChange(e, 'correctionals', i)
+																	}
+																/>
+															</td>
+															<td className="text-left border border-gray align-middle">
+																<input
+																	className="w-100"
+																	type="text"
+																	value={correctional.OpenedBy || ''}
+																	name="OpenedBy"
 																	onChange={(e) =>
 																		handleChange(e, 'correctionals', i)
 																	}
@@ -1925,7 +1965,7 @@ const Record = () => {
 													style={{ backgroundColor: 'transparent' }}
 												>
 													<td
-														colSpan={4}
+														colSpan={5}
 														className="border border-gray text-center py-2"
 													>
 														<AddBoxIcon

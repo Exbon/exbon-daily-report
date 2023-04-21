@@ -15,13 +15,16 @@ const addDeficiencyLog = (req, res) => {
 					const request = new mssql.Request();
 					const sqlquery = `EXEC [usp_dailyreport_Insert_Project_DeficiencyLog]
                             @projectID = '${req.body.ProjectID}',
-                            @name = '${sqlEscape(req.body.DeficiencyName)}',
+                            @name = '${sqlEscape(req.body.Deficiency)}',
                             @openedBy = '${req.body.OpenedBy}',
                             @type = '${req.body.Type}',
                             @trade = '${req.body.Trade || ''}',
-                            @problem = '${sqlEscape(req.body.Problem) || ''}',
-                            @userEmployeeID = ${EmployeeID}
+                            @problem = '${
+															sqlEscape(req.body.Description) || ''
+														}',
+                            @userEmployeeID = ${req.body.EmployeeID}
                         `;
+					console.log(sqlquery);
 					request.query(sqlquery, (err, recordset) => {
 						if (err) {
 							console.error(err);
