@@ -173,144 +173,23 @@ const Task = () => {
 		const onChangePercent = (e) => {
 			//e.nativeEvent.data => User input data (On Firefox, in case of arrow, next value)
 			//e.target.value => future value
-			if (e.nativeEvent.data) {
-				if (e.nativeEvent.data.length > 1) {
-					//For Firefox
-					setValue(e.target.value);
-					updateMyData(index, id, e.target.value);
-				} else if (
-					e.nativeEvent.data !== '0' &&
-					e.nativeEvent.data !== '1' &&
-					e.nativeEvent.data !== '2' &&
-					e.nativeEvent.data !== '3' &&
-					e.nativeEvent.data !== '4' &&
-					e.nativeEvent.data !== '5' &&
-					e.nativeEvent.data !== '6' &&
-					e.nativeEvent.data !== '7' &&
-					e.nativeEvent.data !== '8' &&
-					e.nativeEvent.data !== '9'
-				) {
-					setValue('0');
-					updateMyData(index, id, '0');
-				} else if (e.nativeEvent.data === '0') {
-					if (e.target.value === '100') {
-						setValue('100');
-						updateMyData(index, id, '100');
-					} else if (
-						e.target.value.length > 2 &&
-						e.target.value.includes('50')
-					) {
-						setValue('0');
-						updateMyData(index, id, '0');
-					} else if (e.target.value.includes('2')) {
-						setValue('20');
-						updateMyData(index, id, '20');
-					} else if (e.target.value.includes('3')) {
-						setValue('30');
-						updateMyData(index, id, '30');
-					} else if (e.target.value.includes('4')) {
-						setValue('40');
-						updateMyData(index, id, '40');
-					} else if (e.target.value.includes('5')) {
-						setValue('50');
-						updateMyData(index, id, '50');
-					} else if (e.target.value.includes('6')) {
-						setValue('60');
-						updateMyData(index, id, '60');
-					} else if (e.target.value.includes('7')) {
-						setValue('70');
-						updateMyData(index, id, '70');
-					} else if (e.target.value.includes('8')) {
-						setValue('80');
-						updateMyData(index, id, '80');
-					} else if (e.target.value.includes('9')) {
-						setValue('90');
-						updateMyData(index, id, '90');
-					} else {
-						setValue('0');
-						updateMyData(index, id, '0');
-					}
-				} else if (e.nativeEvent.data === '1') {
-					setValue('10');
-					updateMyData(index, id, '10');
-				} else if (e.nativeEvent.data === '2') {
-					setValue('20');
-					updateMyData(index, id, '20');
-				} else if (e.nativeEvent.data === '3') {
-					setValue('30');
-					updateMyData(index, id, '30');
-				} else if (e.nativeEvent.data === '4') {
-					setValue('40');
-					updateMyData(index, id, '40');
-				} else if (e.nativeEvent.data === '5') {
-					if (e.target.value === '5') {
-						setValue('5');
-						updateMyData(index, id, '5');
-					} else if (e.target.value === '05') {
-						setValue('5');
-						updateMyData(index, id, '5');
-					} else if (e.target.value === '55') {
-						setValue('55');
-						updateMyData(index, id, '55');
-					} else if (
-						e.target.value.length > 2 &&
-						e.target.value.includes('55')
-					) {
-						setValue('5');
-						updateMyData(index, id, '5');
-					} else if (e.target.value.includes('1')) {
-						setValue('15');
-						updateMyData(index, id, '15');
-					} else if (e.target.value.includes('2')) {
-						setValue('25');
-						updateMyData(index, id, '25');
-					} else if (e.target.value.includes('3')) {
-						setValue('35');
-						updateMyData(index, id, '35');
-					} else if (e.target.value.includes('4')) {
-						setValue('45');
-						updateMyData(index, id, '45');
-					} else if (e.target.value.includes('6')) {
-						setValue('65');
-						updateMyData(index, id, '65');
-					} else if (e.target.value.includes('7')) {
-						setValue('75');
-						updateMyData(index, id, '75');
-					} else if (e.target.value.includes('8')) {
-						setValue('85');
-						updateMyData(index, id, '85');
-					} else if (e.target.value.includes('9')) {
-						setValue('95');
-						updateMyData(index, id, '95');
-					} else {
-						setValue('0');
-						updateMyData(index, id, '0');
-					}
-				} else if (e.nativeEvent.data === '6') {
-					setValue('60');
-					updateMyData(index, id, '60');
-				} else if (e.nativeEvent.data === '7') {
-					setValue('70');
-					updateMyData(index, id, '70');
-				} else if (e.nativeEvent.data === '8') {
-					setValue('80');
-					updateMyData(index, id, '80');
-				} else if (e.nativeEvent.data === '9') {
-					setValue('90');
-					updateMyData(index, id, '90');
-				} else if (e.nativeEvent.data === '.') {
-					setValue('0');
-					updateMyData(index, id, '0');
-				}
-			} else {
-				if (e.nativeEvent.data === undefined) {
-					setValue(e.target.value);
-					updateMyData(index, id, e.target.value);
-				} else {
-					setValue('0');
-					updateMyData(index, id, '0');
-				}
-			}
+			setValue(e.target.value);
+			updateMyData(index, id, e.target.value);
+			// if (e.nativeEvent.data) {
+			// 	if (e.nativeEvent.data.length > 1) {
+			// 		//For Firefox
+			// 		setValue(e.target.value);
+			// 		updateMyData(index, id, e.target.value);
+			// 	}
+			// } else {
+			// 	if (e.nativeEvent.data === undefined) {
+			// 		setValue(e.target.value);
+			// 		updateMyData(index, id, e.target.value);
+			// 	} else {
+			// 		setValue('0');
+			// 		updateMyData(index, id, '0');
+			// 	}
+			// }
 		};
 
 		const onChangeDatePicker = (e) => {
@@ -505,7 +384,7 @@ const Task = () => {
 								onBlur={onBlurForCurrentWork}
 								min="0"
 								max="100"
-								step="5"
+								step="1"
 								onKeyDown={preventNegativeNumber}
 							></input>
 						) : (
@@ -519,7 +398,7 @@ const Task = () => {
 								onBlur={onBlurForCurrentWork}
 								min="0"
 								max="100"
-								step="5"
+								step="1"
 								onKeyDown={preventNegativeNumber}
 							></input>
 						)}
