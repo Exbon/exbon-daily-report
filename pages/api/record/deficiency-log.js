@@ -6,6 +6,29 @@ const addDeficiencyLog = (req, res) => {
 	const { method, query, body } = req;
 	return new Promise((resolve) => {
 		switch (method) {
+			case 'GET':
+				mssql.connect(dbserver.dbConfig, (err) => {
+					if (err) {
+						console.error(err);
+						return resolve();
+					}
+					const request = new mssql.Request();
+					const sqlquery = `EXEC [usp_dailyreport_Select_Project_DeficiencyLog_By_RecordID]
+									@recordID = ${req.query.logID}`;
+					request.query(sqlquery, (err, recordset) => {
+						if (err) {
+							console.error(err);
+							return resolve();
+						}
+						res.status(200).json({
+							message: 'Success',
+							result: recordset.recordsets,
+						});
+						return resolve();
+					});
+				});
+				break;
+
 			case 'POST':
 				mssql.connect(dbserver.dbConfig, (err) => {
 					if (err) {
@@ -39,7 +62,7 @@ const addDeficiencyLog = (req, res) => {
 				break;
 
 			default:
-				res.setHeader('Allow', ['POST']);
+				res.setHeader('Allow', ['POST', 'GET']);
 				res.status(405).end(`Method ${method} Not Allowed`);
 				res.status(404).end(`Failed`);
 				resolve();
