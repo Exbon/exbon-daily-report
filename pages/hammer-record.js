@@ -24,7 +24,21 @@ import MUIButton from '@material-ui/core/Button';
 import DeleteTwoTone from '@material-ui/icons/DeleteTwoTone';
 import { RiFileExcel2Fill } from 'react-icons/ri';
 import { FaFilePdf } from 'react-icons/fa';
+import { wrikeConfig } from '../wrikeConfig';
 
+// const { publicRuntimeConfig } = getConfig();
+// const {
+// 	NODE_ENV,
+// 	WRIKE_API_KEY,
+// 	DEV_WRIKE_USER_ID,
+// 	DEV_SANGBIN_WRIKE_API_KEY,
+// 	DEV_WRIKE_USER_ID_2,
+// } = publicRuntimeConfig;
+
+Object.keys(wrikeConfig).forEach((key) => {
+	let value = wrikeConfig[key];
+	global[key] = value;
+});
 toast.configure();
 
 const Record = () => {
@@ -180,6 +194,44 @@ const Record = () => {
 			}
 		}
 		return true;
+	};
+
+	const createWrikeTask = async (
+		wrikeUserIDs,
+		folderID,
+		deficiencyID,
+		deficiencyName,
+	) => {
+		const url = `https://www.wrike.com/api/v4/folders/${folderID}/tasks`;
+		const data = {
+			title: `Project ${
+				stateAssignedProject.find(
+					(project) => project.ProjectID == projectState,
+				).JobNumber
+			} ${deficiencyID} ${deficiencyName}`,
+			responsibles:
+				NODE_ENV === 'development'
+					? [DEV_WRIKE_USER_ID, DEV_WRIKE_USER_ID_2]
+					: wrikeUserIDs,
+			customStatus: 'IEACA7BEJMBXOWV4',
+		};
+		return await axios
+			.post(url, data, {
+				headers: {
+					Authorization: `${
+						NODE_ENV === 'development'
+							? DEV_SANGBIN_WRIKE_API_KEY
+							: WRIKE_API_KEY
+					}`,
+					'Content-Type': 'application/json',
+				},
+			})
+			.then(async (res) => {
+				const wrikeTaskID = res.data.data[0].id;
+				const wrikeURL = res.data.data[0].permalink;
+
+				return wrikeTaskID;
+			});
 	};
 
 	const save = async () => {
