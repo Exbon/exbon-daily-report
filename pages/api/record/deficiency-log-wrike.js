@@ -14,7 +14,7 @@ const handleDeficiencyWrike = (req, res) => {
 					}
 					const request = new mssql.Request();
 					const sqlquery = `EXEC [usp_dailyreport_Select_DeficiencyLog_Wrike_By_ProjectID]
-                            @projectID = ${req.query.ProjectID}
+                            @projectID = ${req.query.pid}
                         `;
 					request.query(sqlquery, (err, recordset) => {
 						if (err) {

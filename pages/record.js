@@ -24,7 +24,21 @@ import MUIButton from '@material-ui/core/Button';
 import DeleteTwoTone from '@material-ui/icons/DeleteTwoTone';
 import { RiFileExcel2Fill } from 'react-icons/ri';
 import { FaFilePdf } from 'react-icons/fa';
+import { wrikeConfig } from '../wrikeConfig';
 
+// const { publicRuntimeConfig } = getConfig();
+// const {
+// 	NODE_ENV,
+// 	WRIKE_API_KEY,
+// 	DEV_WRIKE_USER_ID,
+// 	DEV_SANGBIN_WRIKE_API_KEY,
+// 	DEV_WRIKE_USER_ID_2,
+// } = publicRuntimeConfig;
+
+Object.keys(wrikeConfig).forEach((key) => {
+	let value = wrikeConfig[key];
+	global[key] = value;
+});
 toast.configure();
 
 const Record = () => {
@@ -184,10 +198,19 @@ const Record = () => {
 		return true;
 	};
 
-	const createWrikeTask = async () => {
+	const createWrikeTask = async (
+		wrikeUserIDs,
+		folderID,
+		deficiencyID,
+		deficiencyName,
+	) => {
 		const url = `https://www.wrike.com/api/v4/folders/${folderID}/tasks`;
 		const data = {
-			title: `Project ${project.JobNumber} ${deficiencyID} ${deficiencyName}`,
+			title: `Project ${
+				stateAssignedProject.find(
+					(project) => project.ProjectID == projectState,
+				).JobNumber
+			} ${deficiencyID} ${deficiencyName}`,
 			responsibles:
 				NODE_ENV === 'development'
 					? [DEV_WRIKE_USER_ID, DEV_WRIKE_USER_ID_2]
@@ -282,13 +305,40 @@ const Record = () => {
 								...correctionals[i],
 								ReportID: reportID,
 							})
-							.catch((err) => alert(err));
+							.catch((err) => alert('correctionals:', err));
 					}
 					if (
 						correctionals[i].Deficiency !== '' &&
 						!correctionals[i].hasOwnProperty('exist')
 					) {
-						await saveDeficiency(correctionals[i]);
+						const saveData = await saveDeficiency(correctionals[i]);
+						const wrikeData = await fetchWrikeData();
+
+						const wrikeTaskID = await createWrikeTask(
+							wrikeData[0],
+							wrikeData[1][0].WrikeFolder,
+							saveData.DeficiencyID,
+							saveData.DeficiencyName,
+						);
+
+						const deficiencyData = {
+							...correctionals[i],
+							DeficiencyID: saveData.DeficiencyID,
+							DeficiencyName: saveData.DeficiencyName,
+							ProjectName: stateAssignedProject.find(
+								(project) => project.ProjectID == projectState,
+							).ProjectName,
+						};
+
+						const taskData = await updateWrikeTask(wrikeTaskID, deficiencyData);
+
+						const deficiencyLogData = await updateDeficiencyLog({
+							...taskData,
+							...saveData,
+							...stateAssignedProject.find(
+								(project) => project.ProjectID == projectState,
+							),
+						});
 					}
 				}
 			}
@@ -310,16 +360,30 @@ const Record = () => {
 		);
 	};
 
+	const updateDeficiencyLog = async (taskData) => {
+		return await axios
+			.put('/api/record/deficiency-log-wrike', {
+				logID: taskData.RecordID,
+				projectID: taskData.ProjectID,
+				wrikeTaskID: taskData.wrikeTaskID,
+				wrikeURL: taskData.wrikeURL,
+			})
+			.then(async (res) => {
+				return res.data.result;
+			})
+			.catch((err) => {
+				console.log(err);
+			});
+	};
+
 	const saveDeficiency = async (correctional) => {
-		await axios
+		return await axios
 			.post(`/api/record/deficiency-log`, {
 				...correctional,
 				ProjectID: projectState,
 				EmployeeID: status.cookies.employeeid,
 			})
 			.then((res) => {
-				console.log('saveDeficiency', res.data[0][0]); // RecordID
-
 				toast.success(
 					<div className={styles['alert__complete']}>
 						<strong>Deficiency Log Created</strong>
@@ -329,8 +393,68 @@ const Record = () => {
 						hideProgressBar: true,
 					},
 				);
+				return fetchDeficiencyLog(res.data.result[0][0].RecordID);
 			})
 			.catch((err) => alert(err));
+	};
+
+	const fetchDeficiencyLog = async (logID) => {
+		return await axios
+			.get(`/api/record/deficiency-log?logID=${logID}`)
+			.then((res) => {
+				return res.data.result[0][0];
+			})
+			.catch((err) => {
+				console.log(err);
+				toast.error('Log not added');
+			});
+	};
+
+	const fetchWrikeData = async () => {
+		return await axios
+			.get(`/api/record/deficiency-log-wrike?pid=${router.query.pid}`)
+			.then((res) => {
+				return res.data.result;
+			})
+			.catch((err) => {
+				console.log(err);
+			});
+	};
+
+	const updateWrikeTask = async (wrikeTaskID, deficiencyData) => {
+		const url = `https://www.wrike.com/api/v4/tasks/${wrikeTaskID}`;
+		const data = {
+			description: `<b>WARNING:</b> Do not enter anything important in the task's description, as it can get overwritten.
+			<br><br><b>Project Name:</b> ${deficiencyData.ProjectName} 
+			<br><br><b>Deficiency ID:</b> ${deficiencyData.DeficiencyID || ''} 
+			<br><b>Deficiency Name:</b> ${deficiencyData.DeficiencyName || ''} 
+			<br><b>Opened By:</b> ${deficiencyData.OpenedBy || ''} 
+			<br><b>Type:</b> ${deficiencyData.Type || ''} 
+			<br><b>Related Trade:</b> ${deficiencyData.Trade || ''} 
+			<br><br>${
+				(deficiencyData.Problem &&
+					deficiencyData.Problem.split('\n').join('<br>')) ||
+				''
+			}`,
+		};
+
+		return await axios
+			.put(url, data, {
+				headers: {
+					Authorization: `${
+						NODE_ENV === 'development'
+							? DEV_SANGBIN_WRIKE_API_KEY
+							: WRIKE_API_KEY
+					}`,
+					'Content-Type': 'application/json',
+				},
+			})
+			.then(async (res) => {
+				const wrikeTaskID = res.data.data[0].id;
+				const wrikeURL = res.data.data[0].permalink;
+
+				return { wrikeTaskID, wrikeURL };
+			});
 	};
 
 	const saveHandler = async () => {
@@ -1959,7 +2083,6 @@ const Record = () => {
 																	}}
 																></Autocomplete>
 															</td>
-															{console.log(dropdownList)}
 															<td className="text-left border border-gray align-middle">
 																<Autocomplete
 																	getItemValue={(item) => item.Type}
