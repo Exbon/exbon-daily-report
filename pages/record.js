@@ -157,6 +157,7 @@ const Record = () => {
 		for (let i = 0; i < correctionals.length; i++) {
 			if (correctionals[i].Deficiency === '') {
 				if (
+					correctionals[i].OpenedBy !== '' ||
 					correctionals[i].Type !== '' ||
 					correctionals[i].Trade !== '' ||
 					correctionals[i].Description !== ''
@@ -181,6 +182,35 @@ const Record = () => {
 			}
 		}
 		return true;
+	};
+
+	const createWrikeTask = async () => {
+		const url = `https://www.wrike.com/api/v4/folders/${folderID}/tasks`;
+		const data = {
+			title: `Project ${project.JobNumber} ${deficiencyID} ${deficiencyName}`,
+			responsibles:
+				NODE_ENV === 'development'
+					? [DEV_WRIKE_USER_ID, DEV_WRIKE_USER_ID_2]
+					: wrikeUserIDs,
+			customStatus: 'IEACA7BEJMBXOWV4',
+		};
+		return await axios
+			.post(url, data, {
+				headers: {
+					Authorization: `${
+						NODE_ENV === 'development'
+							? DEV_SANGBIN_WRIKE_API_KEY
+							: WRIKE_API_KEY
+					}`,
+					'Content-Type': 'application/json',
+				},
+			})
+			.then(async (res) => {
+				const wrikeTaskID = res.data.data[0].id;
+				const wrikeURL = res.data.data[0].permalink;
+
+				return wrikeTaskID;
+			});
 	};
 
 	const save = async () => {
@@ -258,25 +288,7 @@ const Record = () => {
 						correctionals[i].Deficiency !== '' &&
 						!correctionals[i].hasOwnProperty('exist')
 					) {
-						console.log('correctionals[i]', correctionals);
-						await axios
-							.post(`/api/record/deficiency-log`, {
-								...correctionals[i],
-								ProjectID: projectState,
-								EmployeeID: status.cookies.employeeid,
-							})
-							.then((res) =>
-								toast.success(
-									<div className={styles['alert__complete']}>
-										<strong>Deficiency Log Created</strong>
-									</div>,
-									{
-										position: toast.POSITION.BOTTOM_CENTER,
-										hideProgressBar: true,
-									},
-								),
-							)
-							.catch((err) => alert(err));
+						await saveDeficiency(correctionals[i]);
 					}
 				}
 			}
@@ -296,6 +308,29 @@ const Record = () => {
 				);
 			}),
 		);
+	};
+
+	const saveDeficiency = async (correctional) => {
+		await axios
+			.post(`/api/record/deficiency-log`, {
+				...correctional,
+				ProjectID: projectState,
+				EmployeeID: status.cookies.employeeid,
+			})
+			.then((res) => {
+				console.log('saveDeficiency', res.data[0][0]); // RecordID
+
+				toast.success(
+					<div className={styles['alert__complete']}>
+						<strong>Deficiency Log Created</strong>
+					</div>,
+					{
+						position: toast.POSITION.BOTTOM_CENTER,
+						hideProgressBar: true,
+					},
+				);
+			})
+			.catch((err) => alert(err));
 	};
 
 	const saveHandler = async () => {
@@ -1867,16 +1902,64 @@ const Record = () => {
 																/>
 															</td>
 															<td className="text-left border border-gray align-middle">
-																<input
-																	className="w-100"
-																	type="text"
-																	value={correctional.OpenedBy || ''}
-																	name="OpenedBy"
+																<Autocomplete
+																	getItemValue={(item) => item.OpenedBy}
+																	items={[
+																		{
+																			OpenedBy: 'PIC',
+																		},
+																		{
+																			OpenedBy: 'Customer',
+																		},
+																		{
+																			OpenedBy: 'Subcontractor',
+																		},
+																		{
+																			OpenedBy: 'Project Control',
+																		},
+																	]}
+																	renderItem={(item, isHighlighted) => (
+																		<div
+																			style={{
+																				background: isHighlighted
+																					? 'lightgray'
+																					: 'white',
+																				paddingLeft: '8px',
+																			}}
+																		>
+																			{item.OpenedBy}
+																		</div>
+																	)}
+																	value={correctional.OpenedBy}
 																	onChange={(e) =>
-																		handleChange(e, 'correctionals', i)
+																		handleAutoComplete(
+																			e.target.value,
+																			'correctionals',
+																			'OpenedBy',
+																			i,
+																		)
 																	}
-																/>
+																	onSelect={(val) =>
+																		handleAutoComplete(
+																			val,
+																			'correctionals',
+																			'OpenedBy',
+																			i,
+																		)
+																	}
+																	menuStyle={{
+																		borderRadius: '3px',
+																		boxShadow: '0 2px 12px rgba(0, 0, 0, 0.1)',
+																		background: 'rgba(255, 255, 255, 0.9)',
+																		padding: '2px 0',
+																		fontSize: '90%',
+																		position: 'fixed',
+																		overflow: 'auto',
+																		maxHeight: '50%',
+																	}}
+																></Autocomplete>
 															</td>
+															{console.log(dropdownList)}
 															<td className="text-left border border-gray align-middle">
 																<Autocomplete
 																	getItemValue={(item) => item.Type}

@@ -155,6 +155,7 @@ const Record = () => {
 		for (let i = 0; i < correctionals.length; i++) {
 			if (correctionals[i].Deficiency === '') {
 				if (
+					correctionals[i].OpenedBy !== '' ||
 					correctionals[i].Type !== '' ||
 					correctionals[i].Trade !== '' ||
 					correctionals[i].Description !== ''
