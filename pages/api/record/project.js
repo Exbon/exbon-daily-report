@@ -15,7 +15,7 @@ const handleProject = (req, res) => {
 					const request = new mssql.Request();
 
 					const sqlquery = `EXEC [dbo].[usp_dailyreport_Select_Project_By_ProjectID]
-                        @projectID = ${query.pid}
+                        @pid = ${query.pid}
                         `;
 					request.query(sqlquery, (err, recordset) => {
 						if (err) {

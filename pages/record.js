@@ -266,6 +266,7 @@ const Record = () => {
 					data: { RecordID: equipmentDeleteList[i] },
 				});
 			}
+
 			if (equipments.length > 0) {
 				for (let i = 0; i < equipments.length; i++) {
 					if (equipments[i].Equipment !== '') {
@@ -305,7 +306,7 @@ const Record = () => {
 								...correctionals[i],
 								ReportID: reportID,
 							})
-							.catch((err) => alert('correctionals:', err));
+							.catch((err) => alert(err));
 					}
 					if (
 						correctionals[i].Deficiency !== '' &&

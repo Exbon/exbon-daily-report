@@ -43,6 +43,7 @@ const handleDeficiencyWrike = (req, res) => {
                                 @wrikeID = '${req.body.wrikeTaskID}',
                                 @wrikeURL = '${req.body.wrikeURL}'
                             `;
+					console.log(sqlquery);
 					request.query(sqlquery, (err, recordset) => {
 						if (err) {
 							console.error(err);
