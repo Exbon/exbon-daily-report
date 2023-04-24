@@ -854,7 +854,7 @@ const Record = () => {
 					content="minimum-scale=1, initial-scale=1, width=device-width"
 				/>
 			</Head>
-
+			{console.log('test', currentProject)}
 			<>
 				{/* <SimpleTabs
 					tapNo={1}
