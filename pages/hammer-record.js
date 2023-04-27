@@ -26,15 +26,6 @@ import { RiFileExcel2Fill } from 'react-icons/ri';
 import { FaFilePdf } from 'react-icons/fa';
 import { wrikeConfig } from '../wrikeConfig';
 
-// const { publicRuntimeConfig } = getConfig();
-// const {
-// 	NODE_ENV,
-// 	WRIKE_API_KEY,
-// 	DEV_WRIKE_USER_ID,
-// 	DEV_SANGBIN_WRIKE_API_KEY,
-// 	DEV_WRIKE_USER_ID_2,
-// } = publicRuntimeConfig;
-
 Object.keys(wrikeConfig).forEach((key) => {
 	let value = wrikeConfig[key];
 	global[key] = value;
@@ -319,6 +310,8 @@ const Record = () => {
 						const saveData = await saveDeficiency(correctionals[i]);
 						const wrikeData = await fetchWrikeData();
 
+						console.log('wrikeData', wrikeData[1][0]);
+
 						const wrikeTaskID = await createWrikeTask(
 							wrikeData[0],
 							wrikeData[1][0].WrikeFolder,
@@ -361,13 +354,6 @@ const Record = () => {
 		);
 	};
 
-	const fetchProject = async () => {
-		return await axios
-			.get(`/api/record/project?pid=${router.query.pid}`)
-			.then((res) => {
-				return res.data.result;
-			});
-	};
 	const updateDeficiencyLog = async (taskData) => {
 		return await axios
 			.put('/api/record/deficiency-log-wrike', {
@@ -389,7 +375,7 @@ const Record = () => {
 			.post(`/api/record/deficiency-log`, {
 				...correctional,
 				ProjectID: projectState,
-				EmployeeID: status.cookies.employeeid,
+				EmployeeID: router.query.eid,
 			})
 			.then((res) => {
 				toast.success(
@@ -589,7 +575,7 @@ const Record = () => {
 				contractors: tempContractors,
 				inspectors: tempInspections,
 				note: notes ? notes[0].Note : '',
-				userID: status.cookies.employeeid,
+				userID: router.query.eid,
 			},
 		});
 
@@ -599,7 +585,7 @@ const Record = () => {
 				.getElementById('excelExport')
 				.setAttribute(
 					'href',
-					'/record/ToCustomer_' + status.cookies.employeeid + '.pdf',
+					'/record/ToCustomer_' + router.query.eid + '.pdf',
 				);
 			document.getElementById('excelExport').click();
 
@@ -972,7 +958,7 @@ const Record = () => {
 					tapNo={1}
 					projectState={projectState}
 					main={false}
-					employeeID={status.cookies.employeeid}
+					employeeID={router.query.eid}
 					employeeName={status.cookies.fullname}
 					logout={logout}
 					style={{ display: 'none' }}
