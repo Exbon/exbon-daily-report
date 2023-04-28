@@ -106,13 +106,13 @@ export const test = () => {
 	}
 
 	return (
-		<div>
+		<>
 			<Gantt
 				tasks={tasks}
 				TooltipContent={() => {
 					return '';
 				}}
-				viewMode="Day"
+				viewMode="Week"
 				listCellWidth=""
 				columnWidth={60}
 				TaskListHeader={() => {
@@ -123,7 +123,11 @@ export const test = () => {
 				}}
 				className="gantt"
 			/>
-		</div>
+			<div>
+				<button>Day</button>
+				<button>Week</button>
+			</div>
+		</>
 	);
 };
 export default test;
