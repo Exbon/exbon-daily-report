@@ -13,21 +13,25 @@ export const test = () => {
 	const [view, setView] = useState('Day');
 
 	useEffect(() => {
-		let elementsOfGridBody = document.getElementsByClassName('gridBody');
+		if (view === 'Day') {
+			let elementsOfGridBody = document.getElementsByClassName('gridBody');
 
-		const test = getWeekendDays(
-			tasks[0].start,
-			tasks[tasks.length - 1].end,
-		).map((day) => {
-			return `<g class="weekend"><rect x=${
-				day.index * 60
-			} y="0" width="60" height="200" fill="rgba(210, 215, 211, 0.5)"></rect></g>`;
-		});
+			const test = getWeekendDays(
+				tasks[0].start,
+				tasks[tasks.length - 1].end,
+			).map((day) => {
+				return `<g class="weekend"><rect x=${
+					day.index * 60
+				} y="0" width="60" height="200" fill="rgba(210, 215, 211, 0.5)"></rect></g>`;
+			});
 
-		elementsOfGridBody[0].innerHTML += test;
+			elementsOfGridBody[0].innerHTML += test;
 
-		console.log(elementsOfGridBody[0].innerHTML);
-	}, []);
+			console.log(elementsOfGridBody[0].innerHTML);
+		} else {
+			document.querySelectorAll('.weekend').forEach((el) => el.remove());
+		}
+	}, [view]);
 
 	useEffect(() => {
 		let elementsOfCalendar = document.getElementsByClassName('calendar');
