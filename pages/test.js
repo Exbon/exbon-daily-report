@@ -56,6 +56,12 @@ export const test = () => {
 		},
 	];
 
+	useEffect(() => {
+		let elementsOfGridBody = document.getElementsByClassName('gridBody');
+		elementsOfGridBody[0].innerHTML +=
+			'<g class="weekend"><rect x="1320" y="0" width="60" height="200" fill="rgba(210, 215, 211, 0.5)"></rect></g>';
+	}, []);
+
 	return (
 		<Gantt
 			tasks={tasks}
