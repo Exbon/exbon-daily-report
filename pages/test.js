@@ -14,8 +14,8 @@ export const test = () => {
 
 	useEffect(() => {
 		if (view === 'Day') {
+			/* 1. Highlight only weekends */
 			let elementsOfGridBody = document.getElementsByClassName('gridBody');
-
 			const test = getWeekendDays(
 				tasks[0].start,
 				tasks[tasks.length - 1].end,
@@ -24,28 +24,23 @@ export const test = () => {
 					day.index * 60
 				} y="0" width="60" height="200" fill="rgba(210, 215, 211, 0.5)"></rect></g>`;
 			});
-
 			elementsOfGridBody[0].innerHTML += test;
 
-			console.log(elementsOfGridBody[0].innerHTML);
+			/* 2. Change column header text. ex) Sat, 15 -> 15 */
+			let elementsOfCalendar = document.getElementsByClassName('calendar');
+			elementsOfCalendar[0].innerHTML = elementsOfCalendar[0].innerHTML
+				.replace(/Mon, /g, '')
+				.replace(/Tue, /g, '')
+				.replace(/Wed, /g, '')
+				.replace(/Thu, /g, '')
+				.replace(/Fri, /g, '')
+				.replace(/Sat, /g, '')
+				.replace(/Sun, /g, '');
 		} else {
+			/* remove highlights for weekends */
 			document.querySelectorAll('.weekend').forEach((el) => el.remove());
 		}
 	}, [view]);
-
-	useEffect(() => {
-		let elementsOfCalendar = document.getElementsByClassName('calendar');
-
-		// ! Sat, 15 -> 15
-		// elementsOfCalendar[0].innerHTML = elementsOfCalendar[0].innerHTML
-		// 	.replace(/Mon, /g, '')
-		// 	.replace(/Tue, /g, '')
-		// 	.replace(/Wed, /g, '')
-		// 	.replace(/Thu, /g, '')
-		// 	.replace(/Fri, /g, '')
-		// 	.replace(/Sat, /g, '')
-		// 	.replace(/Sun, /g, '');
-	}, []);
 
 	let tasks = [
 		{
