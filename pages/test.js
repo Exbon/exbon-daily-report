@@ -70,6 +70,7 @@ export const test = () => {
 		},
 	];
 
+<<<<<<< HEAD
 	function getWeekendDays(startDate) {
 		const year = startDate.getFullYear();
 		const month = startDate.getMonth();
@@ -98,6 +99,13 @@ export const test = () => {
 
 		return weekendDays;
 	}
+=======
+	useEffect(() => {
+		let elementsOfGridBody = document.getElementsByClassName('gridBody');
+		elementsOfGridBody[0].innerHTML +=
+			'<g class="weekend"><rect x="1320" y="0" width="60" height="200" fill="rgba(210, 215, 211, 0.5)"></rect></g>';
+	}, []);
+>>>>>>> 9a4ebc969e8eef18632d069f2b0b6d18750920f7
 
 	return (
 		<div>
