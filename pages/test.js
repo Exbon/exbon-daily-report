@@ -13,7 +13,10 @@ export const test = () => {
 	useEffect(() => {
 		let elementsOfGridBody = document.getElementsByClassName('gridBody');
 
-		const test = getWeekendDays(new Date(2023, 3, 1)).map((day) => {
+		const test = getWeekendDays(
+			tasks[0].start,
+			tasks[tasks.length - 1].end,
+		).map((day) => {
 			return `<g class="weekend"><rect x=${
 				day.index * 60
 			} y="0" width="60" height="200" fill="rgba(210, 215, 211, 0.5)"></rect></g>`;
@@ -59,7 +62,7 @@ export const test = () => {
 		},
 		{
 			start: new Date(2023, 3, 17),
-			end: new Date(2023, 3, 22),
+			end: new Date(2023, 5, 22),
 			name: 'Task 4',
 			id: 'Task 4',
 			type: 'task',
@@ -70,12 +73,15 @@ export const test = () => {
 		},
 	];
 
-	function getWeekendDays(startDate) {
-		const year = startDate.getFullYear();
-		const month = startDate.getMonth();
-		const date = startDate.getDate();
-		const firstDayOfMonth = new Date(year, month, date);
-		const lastDayOfMonth = new Date(year, month + 2, 0);
+	function getWeekendDays(startDate, endDate) {
+		const startOfYear = startDate.getFullYear();
+		const startOfMonth = startDate.getMonth();
+		const startOfDate = startDate.getDate();
+		const firstDayOfMonth = new Date(startOfYear, startOfMonth, startOfDate);
+		const endOfYear = endDate.getFullYear();
+		const endOfMonth = endDate.getMonth();
+		const endOfDate = endDate.getDate();
+		const lastDayOfMonth = new Date(endOfYear, endOfMonth + 1, endOfDate);
 
 		const weekendDays = [];
 		let currentDate = firstDayOfMonth;
