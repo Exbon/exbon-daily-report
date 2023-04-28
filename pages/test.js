@@ -10,6 +10,20 @@ import {
 import 'gantt-task-react/dist/index.css';
 
 export const test = () => {
+	useEffect(() => {
+		let elementsOfGridBody = document.getElementsByClassName('gridBody');
+
+		const test = getWeekendDays(new Date(2023, 3, 1)).map((day) => {
+			return `<g class="weekend"><rect x=${
+				day.index * 60
+			} y="0" width="60" height="200" fill="rgba(210, 215, 211, 0.5)"></rect></g>`;
+		});
+
+		elementsOfGridBody[0].innerHTML += test;
+
+		console.log(elementsOfGridBody[0].innerHTML);
+	}, []);
+
 	let tasks = [
 		{
 			start: new Date(2023, 3, 1),
@@ -56,19 +70,54 @@ export const test = () => {
 		},
 	];
 
+	function getWeekendDays(startDate) {
+		const year = startDate.getFullYear();
+		const month = startDate.getMonth();
+		const date = startDate.getDate();
+		const firstDayOfMonth = new Date(year, month, date);
+		const lastDayOfMonth = new Date(year, month + 2, 0);
+
+		const weekendDays = [];
+		let currentDate = firstDayOfMonth;
+
+		while (currentDate <= lastDayOfMonth) {
+			const dayOfWeek = currentDate.getDay();
+			if (dayOfWeek === 0 || dayOfWeek === 6) {
+				const daysSinceStartDate = Math.floor(
+					(currentDate - startDate) / (1000 * 60 * 60 * 24),
+				);
+				const weekendDay = {
+					date: currentDate.toLocaleDateString('en-US'),
+					dayOfWeek: dayOfWeek === 0 ? 'Sunday' : 'Saturday',
+					index: daysSinceStartDate + 1,
+				};
+				weekendDays.push(weekendDay);
+			}
+			currentDate.setDate(currentDate.getDate() + 1);
+		}
+
+		return weekendDays;
+	}
+
 	return (
-		<Gantt
-			tasks={tasks}
-			TooltipContent={() => {
-				return '';
-			}}
-			viewMode="Day"
-			listCellWidth=""
-			columnWidth={60}
-			TaskListHeader={() => {
-				return '';
-			}}
-		/>
+		<div>
+			<Gantt
+				tasks={tasks}
+				TooltipContent={() => {
+					return '';
+				}}
+				viewMode="Day"
+				listCellWidth=""
+				columnWidth={60}
+				TaskListHeader={() => {
+					return '';
+				}}
+				style={{
+					display: 'relative',
+				}}
+				className="gantt"
+			/>
+		</div>
 	);
 };
 export default test;
