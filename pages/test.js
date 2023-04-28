@@ -10,6 +10,8 @@ import {
 import 'gantt-task-react/dist/index.css';
 
 export const test = () => {
+	const [view, setView] = useState('Day');
+
 	useEffect(() => {
 		let elementsOfGridBody = document.getElementsByClassName('gridBody');
 
@@ -30,14 +32,15 @@ export const test = () => {
 	useEffect(() => {
 		let elementsOfCalendar = document.getElementsByClassName('calendar');
 
-		elementsOfCalendar[0].innerHTML = elementsOfCalendar[0].innerHTML
-			.replace(/Mon, /g, '')
-			.replace(/Tue, /g, '')
-			.replace(/Wed, /g, '')
-			.replace(/Thu, /g, '')
-			.replace(/Fri, /g, '')
-			.replace(/Sat, /g, '')
-			.replace(/Sun, /g, '');
+		// ! Sat, 15 -> 15
+		// elementsOfCalendar[0].innerHTML = elementsOfCalendar[0].innerHTML
+		// 	.replace(/Mon, /g, '')
+		// 	.replace(/Tue, /g, '')
+		// 	.replace(/Wed, /g, '')
+		// 	.replace(/Thu, /g, '')
+		// 	.replace(/Fri, /g, '')
+		// 	.replace(/Sat, /g, '')
+		// 	.replace(/Sun, /g, '');
 	}, []);
 
 	let tasks = [
@@ -125,7 +128,7 @@ export const test = () => {
 				TooltipContent={() => {
 					return '';
 				}}
-				viewMode="Week"
+				viewMode={view}
 				listCellWidth=""
 				columnWidth={60}
 				TaskListHeader={() => {
@@ -137,8 +140,18 @@ export const test = () => {
 				className="gantt"
 			/>
 			<div>
-				<button>Day</button>
-				<button>Week</button>
+				<button
+					onClick={() => setView('Day')}
+					disabled={view === 'Day' ? true : false}
+				>
+					Day
+				</button>
+				<button
+					onClick={() => setView('Week')}
+					disabled={view === 'Week' ? true : false}
+				>
+					Week
+				</button>
 			</div>
 		</>
 	);
