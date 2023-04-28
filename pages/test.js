@@ -27,6 +27,19 @@ export const test = () => {
 		console.log(elementsOfGridBody[0].innerHTML);
 	}, []);
 
+	useEffect(() => {
+		let elementsOfCalendar = document.getElementsByClassName('calendar');
+
+		elementsOfCalendar[0].innerHTML = elementsOfCalendar[0].innerHTML
+			.replace(/Mon, /g, '')
+			.replace(/Tue, /g, '')
+			.replace(/Wed, /g, '')
+			.replace(/Thu, /g, '')
+			.replace(/Fri, /g, '')
+			.replace(/Sat, /g, '')
+			.replace(/Sun, /g, '');
+	}, []);
+
 	let tasks = [
 		{
 			start: new Date(2023, 3, 1),
