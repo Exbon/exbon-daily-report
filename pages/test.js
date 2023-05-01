@@ -10,44 +10,6 @@ import {
 import 'gantt-task-react/dist/index.css';
 
 export const test = () => {
-	const [view, setView] = useState('Day');
-
-	useEffect(() => {
-		try {
-			if (view === 'Day') {
-				/* 1. Highlight only weekends */
-				let elementsOfGridBody = document.getElementsByClassName('gridBody');
-				const test = getWeekendDays(
-					tasks[0].start,
-					tasks[tasks.length - 1].end,
-				).map((day) => {
-					return `<g class="weekend"><rect x=${
-						day.index * 60
-					} y="0" width="60" height="200" fill="rgba(210, 215, 211, 0.5)"></rect></g>`;
-				});
-				elementsOfGridBody[0].innerHTML += test;
-
-				/* 2. Change column header text. ex) Sat, 15 -> 15 */
-				console.log('hi');
-				let elementsOfCalendar = document.getElementsByClassName('calendar');
-				let calendarInnerHTML = elementsOfCalendar[0].innerHTML; // Store the innerHTML in a variable
-				elementsOfCalendar[0].innerHTML = calendarInnerHTML
-					.replace(/Mon, /g, '')
-					.replace(/Tue, /g, '')
-					.replace(/Wed, /g, '')
-					.replace(/Thu, /g, '')
-					.replace(/Fri, /g, '')
-					.replace(/Sat, /g, '')
-					.replace(/Sun, /g, '');
-			} else {
-				/* remove highlights for weekends */
-				document.querySelectorAll('.weekend').forEach((el) => el.remove());
-			}
-		} catch (error) {
-			console.log(error);
-		}
-	}, [view]);
-
 	let tasks = [
 		{
 			start: new Date(2023, 3, 1),
@@ -83,7 +45,7 @@ export const test = () => {
 		},
 		{
 			start: new Date(2023, 3, 17),
-			end: new Date(2023, 5, 22),
+			end: new Date(2023, 3, 22),
 			name: 'Task 4',
 			id: 'Task 4',
 			type: 'task',
@@ -94,71 +56,19 @@ export const test = () => {
 		},
 	];
 
-	function getWeekendDays(startDate, endDate) {
-		const startOfYear = startDate.getFullYear();
-		const startOfMonth = startDate.getMonth();
-		const startOfDate = startDate.getDate();
-		const firstDayOfMonth = new Date(startOfYear, startOfMonth, startOfDate);
-		const endOfYear = endDate.getFullYear();
-		const endOfMonth = endDate.getMonth();
-		const endOfDate = endDate.getDate();
-		const lastDayOfMonth = new Date(endOfYear, endOfMonth + 1, endOfDate);
-
-		const weekendDays = [];
-		let currentDate = firstDayOfMonth;
-
-		while (currentDate <= lastDayOfMonth) {
-			const dayOfWeek = currentDate.getDay();
-			if (dayOfWeek === 0 || dayOfWeek === 6) {
-				const daysSinceStartDate = Math.floor(
-					(currentDate - startDate) / (1000 * 60 * 60 * 24),
-				);
-				const weekendDay = {
-					date: currentDate.toLocaleDateString('en-US'),
-					dayOfWeek: dayOfWeek === 0 ? 'Sunday' : 'Saturday',
-					index: daysSinceStartDate + 1,
-				};
-				weekendDays.push(weekendDay);
-			}
-			currentDate.setDate(currentDate.getDate() + 1);
-		}
-
-		return weekendDays;
-	}
-
 	return (
-		<>
-			<Gantt
-				tasks={tasks}
-				TooltipContent={() => {
-					return '';
-				}}
-				viewMode={view}
-				listCellWidth=""
-				columnWidth={60}
-				TaskListHeader={() => {
-					return '';
-				}}
-				style={{
-					display: 'relative',
-				}}
-				className="gantt"
-			/>
-			<div>
-				<button
-					onClick={() => setView('Day')}
-					disabled={view === 'Day' ? true : false}
-				>
-					Day
-				</button>
-				<button
-					onClick={() => setView('Week')}
-					disabled={view === 'Week' ? true : false}
-				>
-					Week
-				</button>
-			</div>
-		</>
+		<Gantt
+			tasks={tasks}
+			TooltipContent={() => {
+				return '';
+			}}
+			viewMode="Day"
+			listCellWidth=""
+			columnWidth={60}
+			TaskListHeader={() => {
+				return '';
+			}}
+		/>
 	);
 };
 export default test;
