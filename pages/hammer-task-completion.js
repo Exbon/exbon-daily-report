@@ -171,8 +171,13 @@ const Task = () => {
 		};
 
 		const onChangePercent = (e) => {
-			setValue(e.target.value);
-			updateMyData(index, id, e.target.value);
+			if (parseFloat(e.target.value) > 100) {
+				setValue(0);
+				updateMyData(index, id, 0);
+			} else {
+				setValue(e.target.value);
+				updateMyData(index, id, e.target.value);
+			}
 			//e.nativeEvent.data => User input data (On Firefox, in case of arrow, next value)
 			//e.target.value => future value
 			// if (e.nativeEvent.data) {

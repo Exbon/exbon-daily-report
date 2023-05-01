@@ -26,15 +26,6 @@ import { RiFileExcel2Fill } from 'react-icons/ri';
 import { FaFilePdf } from 'react-icons/fa';
 import { wrikeConfig } from '../wrikeConfig';
 
-// const { publicRuntimeConfig } = getConfig();
-// const {
-// 	NODE_ENV,
-// 	WRIKE_API_KEY,
-// 	DEV_WRIKE_USER_ID,
-// 	DEV_SANGBIN_WRIKE_API_KEY,
-// 	DEV_WRIKE_USER_ID_2,
-// } = publicRuntimeConfig;
-
 Object.keys(wrikeConfig).forEach((key) => {
 	let value = wrikeConfig[key];
 	global[key] = value;
