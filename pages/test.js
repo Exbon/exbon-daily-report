@@ -13,32 +13,38 @@ export const test = () => {
 	const [view, setView] = useState('Day');
 
 	useEffect(() => {
-		if (view === 'Day') {
-			/* 1. Highlight only weekends */
-			let elementsOfGridBody = document.getElementsByClassName('gridBody');
-			const test = getWeekendDays(
-				tasks[0].start,
-				tasks[tasks.length - 1].end,
-			).map((day) => {
-				return `<g class="weekend"><rect x=${
-					day.index * 60
-				} y="0" width="60" height="200" fill="rgba(210, 215, 211, 0.5)"></rect></g>`;
-			});
-			elementsOfGridBody[0].innerHTML += test;
+		try {
+			if (view === 'Day') {
+				/* 1. Highlight only weekends */
+				let elementsOfGridBody = document.getElementsByClassName('gridBody');
+				const test = getWeekendDays(
+					tasks[0].start,
+					tasks[tasks.length - 1].end,
+				).map((day) => {
+					return `<g class="weekend"><rect x=${
+						day.index * 60
+					} y="0" width="60" height="200" fill="rgba(210, 215, 211, 0.5)"></rect></g>`;
+				});
+				elementsOfGridBody[0].innerHTML += test;
 
-			/* 2. Change column header text. ex) Sat, 15 -> 15 */
-			let elementsOfCalendar = document.getElementsByClassName('calendar');
-			elementsOfCalendar[0].innerHTML = elementsOfCalendar[0].innerHTML
-				.replace(/Mon, /g, '')
-				.replace(/Tue, /g, '')
-				.replace(/Wed, /g, '')
-				.replace(/Thu, /g, '')
-				.replace(/Fri, /g, '')
-				.replace(/Sat, /g, '')
-				.replace(/Sun, /g, '');
-		} else {
-			/* remove highlights for weekends */
-			document.querySelectorAll('.weekend').forEach((el) => el.remove());
+				/* 2. Change column header text. ex) Sat, 15 -> 15 */
+				console.log('hi');
+				let elementsOfCalendar = document.getElementsByClassName('calendar');
+				let calendarInnerHTML = elementsOfCalendar[0].innerHTML; // Store the innerHTML in a variable
+				elementsOfCalendar[0].innerHTML = calendarInnerHTML
+					.replace(/Mon, /g, '')
+					.replace(/Tue, /g, '')
+					.replace(/Wed, /g, '')
+					.replace(/Thu, /g, '')
+					.replace(/Fri, /g, '')
+					.replace(/Sat, /g, '')
+					.replace(/Sun, /g, '');
+			} else {
+				/* remove highlights for weekends */
+				document.querySelectorAll('.weekend').forEach((el) => el.remove());
+			}
+		} catch (error) {
+			console.log(error);
 		}
 	}, [view]);
 
