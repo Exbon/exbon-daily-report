@@ -64,7 +64,7 @@ export const test = () => {
 								) - 8,
 							);
 
-							// The y value should be increased by dividing the reduced height by 2. ex: height -= 8 , then y += 4
+							// The y value should be increased by the reduced height devided by 2. ex: height -= 8 , then y += 4
 							barClass[i].childNodes[0].children[j].setAttribute(
 								'y',
 								parseInt(
