@@ -429,7 +429,7 @@ const Record = () => {
 				(deficiencyData.Problem &&
 					deficiencyData.Problem.split('\n').join('<br>')) ||
 				''
-			}`,
+			}<br><br><b>Loss Provision:</b><br>No items recorded`,
 		};
 
 		return await axios
