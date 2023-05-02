@@ -51,7 +51,11 @@ export const test = () => {
 			type: 'task',
 			progress: 0,
 			isDisabled: true,
-			styles: { progressColor: '#ffbb54', progressSelectedColor: '#ff9e0d' },
+			styles: {
+				progressColor: '#ffbb54',
+				progressSelectedColor: '#ff9e0d',
+				barCornerRadius: 1,
+			},
 			dependencies: ['Task 3'],
 		},
 	];
