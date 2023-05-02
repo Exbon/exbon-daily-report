@@ -11,6 +11,7 @@ import 'gantt-task-react/dist/index.css';
 
 export const test = () => {
 	const [view, setView] = useState('Day');
+	const [isInitialized, setIsInitialized] = useState(false);
 
 	useEffect(() => {
 		if (view === 'Day') {
@@ -35,6 +36,34 @@ export const test = () => {
 			// 			.trim();
 			// 	}
 			// }, 1);
+
+			/* 3. Change bar thickness */
+			if (!isInitialized) {
+				let barClass = document.getElementsByClassName('_KxSXS');
+				setTimeout(() => {
+					for (let i = 0; i < barClass.length; i++) {
+						for (
+							let j = 0;
+							j < barClass[i].childNodes[0].children.length;
+							j++
+						) {
+							barClass[i].childNodes[0].children[j].setAttribute(
+								'height',
+								parseInt(
+									barClass[i].childNodes[0].children[j].getAttribute('height'),
+								) - 8,
+							);
+							barClass[i].childNodes[0].children[j].setAttribute(
+								'y',
+								parseInt(
+									barClass[i].childNodes[0].children[j].getAttribute('y'),
+								) + 4,
+							);
+						}
+					}
+				}, 1);
+				setIsInitialized(true);
+			}
 		} else {
 			/* remove highlights for weekends */
 			document.querySelectorAll('.weekend').forEach((el) => el.remove());
@@ -135,7 +164,7 @@ export const test = () => {
 				style={{
 					display: 'relative',
 				}}
-				barCornerRadius={15}
+				barCornerRadius={10}
 				rowHeight={40}
 			/>
 			<div>
