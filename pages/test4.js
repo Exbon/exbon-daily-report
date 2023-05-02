@@ -27,14 +27,14 @@ export const test = () => {
 			elementsOfGridBody[0].innerHTML += test;
 
 			/* 2. Change column header text. ex) Sat, 15 -> 15 */
-			setTimeout(() => {
-				let elementsOfCalendar = document.getElementsByClassName('_9w8d5');
-				for (let i = 0; i < elementsOfCalendar.length; i++) {
-					elementsOfCalendar[i].innerHTML = elementsOfCalendar[i].innerHTML
-						.substring(4)
-						.trim();
-				}
-			}, 1);
+			// setTimeout(() => {
+			// 	let elementsOfCalendar = document.getElementsByClassName('_9w8d5');
+			// 	for (let i = 0; i < elementsOfCalendar.length; i++) {
+			// 		elementsOfCalendar[i].innerHTML = elementsOfCalendar[i].innerHTML
+			// 			.substring(4)
+			// 			.trim();
+			// 	}
+			// }, 1);
 		} else {
 			/* remove highlights for weekends */
 			document.querySelectorAll('.weekend').forEach((el) => el.remove());
@@ -135,7 +135,8 @@ export const test = () => {
 				style={{
 					display: 'relative',
 				}}
-				className="gantt"
+				barCornerRadius={15}
+				rowHeight={40}
 			/>
 			<div>
 				<button
