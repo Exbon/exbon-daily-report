@@ -39,7 +39,17 @@ export const test = () => {
 
 			/* 3. Change bar thickness */
 			if (!isInitialized) {
+				// tags structure
+				// .....
+				// <g class="_KxSXS">
+				// 	<g>
+				// 		<rect></rect> (total)
+				// 		<rect></rect> (filled)
+				// 	</g>
+				// 	<g></g> (useless)
+				// </g>;
 				let barClass = document.getElementsByClassName('_KxSXS');
+
 				setTimeout(() => {
 					for (let i = 0; i < barClass.length; i++) {
 						for (
@@ -53,6 +63,8 @@ export const test = () => {
 									barClass[i].childNodes[0].children[j].getAttribute('height'),
 								) - 8,
 							);
+
+							// The y value should be increased by the reduced height devided by 2. ex: height -= 8 , then y += 4
 							barClass[i].childNodes[0].children[j].setAttribute(
 								'y',
 								parseInt(

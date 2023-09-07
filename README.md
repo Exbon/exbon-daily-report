@@ -16,3 +16,5 @@ Work Activities
 - apt-get install unoconv (only linux)
 
 test again
+
+"gantt-task-react": "^0.3.9",
