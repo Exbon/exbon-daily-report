@@ -1979,7 +1979,7 @@ const Record = () => {
 																	fontSize: '90%',
 																	position: 'fixed',
 																	overflow: 'auto',
-																	maxHeight: '50%',
+																	maxHeight: '150px',
 																}}
 															></Autocomplete>
 														</td>
