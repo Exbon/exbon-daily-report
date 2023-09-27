@@ -14,7 +14,9 @@ const calendarHandler = (req, res) => {
 					const request = new mssql.Request();
 
 					const sqlQuery = `EXEC [dbo].[Calendar_SelectByEmployeeID]
-                            ${query.id}`;
+                            		  @employeeID`;
+
+					request.input('employeeID', mssql.Int, query.id);
 
 					request.query(sqlQuery, (err, recordset) => {
 						if (err) {
