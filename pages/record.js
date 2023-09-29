@@ -376,16 +376,26 @@ const Record = () => {
 				EmployeeID: status.cookies.employeeid,
 			})
 			.then((res) => {
-				toast.success(
-					<div className={styles['alert__complete']}>
-						<strong>Deficiency Log Created</strong>
-					</div>,
-					{
-						position: toast.POSITION.BOTTOM_CENTER,
-						hideProgressBar: true,
-					},
-				);
-				return fetchDeficiencyLog(res.data.result[0][0].RecordID);
+				if (
+					res.data.result[0][0].Message !== undefined &&
+					res.data.result[0][0].Message === 'Cannot find PIC'
+				) {
+					toast.error(
+						'PIC does not exist for this project! Please ask Project Control to enter PIC before entering Deficiency Logs',
+					);
+					return null;
+				} else {
+					toast.success(
+						<div className={styles['alert__complete']}>
+							<strong>Deficiency Log Created</strong>
+						</div>,
+						{
+							position: toast.POSITION.BOTTOM_CENTER,
+							hideProgressBar: true,
+						},
+					);
+					return fetchDeficiencyLog(res.data.result[0][0].RecordID);
+				}
 			})
 			.catch((err) => alert(err));
 	};
@@ -397,6 +407,11 @@ const Record = () => {
 				return res.data.result[0][0];
 			})
 			.catch((err) => {
+				alert(
+					'err: ' +
+						err +
+						', Please Contact IT team. api/record/deficiency-log?logID=',
+				);
 				console.log(err);
 				toast.error('Log not added');
 			});

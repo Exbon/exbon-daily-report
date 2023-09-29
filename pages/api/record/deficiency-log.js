@@ -1,6 +1,5 @@
 const mssql = require('mssql');
 const dbserver = require('../../../dbConfig.js');
-import { sqlEscape } from '../../../lib/utils';
 
 const addDeficiencyLog = (req, res) => {
 	const { method, query, body } = req;
@@ -13,8 +12,12 @@ const addDeficiencyLog = (req, res) => {
 						return resolve();
 					}
 					const request = new mssql.Request();
-					const sqlquery = `EXEC [usp_dailyreport_Select_Project_DeficiencyLog_By_RecordID]
-									@recordID = ${req.query.logID}`;
+					const sqlquery = `
+					EXEC [usp_dailyreport_Select_Project_DeficiencyLog_By_RecordID]
+					@recordID`;
+
+					request.input('recordID', mssql.Int, req.query.logID);
+
 					request.query(sqlquery, (err, recordset) => {
 						if (err) {
 							console.error(err);
@@ -36,17 +39,24 @@ const addDeficiencyLog = (req, res) => {
 						return resolve();
 					}
 					const request = new mssql.Request();
-					const sqlquery = `EXEC [usp_dailyreport_Insert_Project_DeficiencyLog]
-                            @projectID = '${req.body.ProjectID}',
-                            @name = '${sqlEscape(req.body.Deficiency)}',
-                            @openedBy = '${req.body.OpenedBy}',
-                            @type = '${req.body.Type}',
-                            @trade = '${req.body.Trade || ''}',
-                            @problem = '${
-															sqlEscape(req.body.Description) || ''
-														}',
-                            @userEmployeeID = ${req.body.EmployeeID}
-                        `;
+					const sqlquery = `
+					EXEC [usp_dailyreport_Insert_Project_DeficiencyLog]
+                    @projectID,
+                    @name,
+                    @openedBy,
+                    @type,
+                    @trade,
+                    @problem,
+                    @userEmployeeID`;
+
+					request.input('projectID', mssql.Int, req.body.ProjectID);
+					request.input('name', mssql.VarChar, req.body.Deficiency);
+					request.input('openedBy', mssql.NVarChar, req.body.OpenedBy);
+					request.input('type', mssql.NVarChar, req.body.Type);
+					request.input('trade', mssql.NVarChar, req.body.Trade || '');
+					request.input('problem', mssql.NVarChar, req.body.Description || '');
+					request.input('userEmployeeID', mssql.Int, req.body.EmployeeID);
+
 					request.query(sqlquery, (err, recordset) => {
 						if (err) {
 							console.error(err);

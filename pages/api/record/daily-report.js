@@ -14,10 +14,14 @@ const getDailyReport = (req, res) => {
 					}
 					const request = new mssql.Request();
 
-					const sqlquery = `EXEC [dbo].[usp_dailyreport_Select_DailyReport]
-                        @projectID = ${query.pid},
-                        @date = '${query.date}'
-                        `;
+					const sqlquery = `
+					EXEC [dbo].[usp_dailyreport_Select_DailyReport]
+                    @projectID,
+                    @date`;
+
+					request.input('projectID', mssql.Int, query.pid);
+					request.input('date', mssql.Date, query.date);
+
 					request.query(sqlquery, (err, recordset) => {
 						if (err) {
 							console.error(err);
@@ -39,12 +43,18 @@ const getDailyReport = (req, res) => {
 						return resolve();
 					}
 					const request = new mssql.Request();
-					const sqlquery = `EXEC [dbo].[usp_dailyreport_DeleteAndInsert_DailyReport]
-                        @projectID = ${body.ProjectID},
-                        @date = '${body.Date}',
-						@userID = ${body.EmployeeID},
-						@note = '${body.Note ? sqlEscape(body.Note) : ''}'
-                        `;
+					const sqlquery = `
+					EXEC [dbo].[usp_dailyreport_DeleteAndInsert_DailyReport]
+                    @projectID,
+                    @date,
+					@userID,
+					@note`;
+
+					request.input('projectID', mssql.Int, body.ProjectID);
+					request.input('date', mssql.Date, body.Date);
+					request.input('userID', mssql.Int, body.EmployeeID);
+					request.input('note', mssql.NVarChar, body.Note ? body.Note : '');
+
 					request.query(sqlquery, (err, recordset) => {
 						if (err) {
 							console.error(err);

@@ -18,12 +18,13 @@ const RecordIDHandler = (req, res) => {
 					}
 					const request = new mssql.Request();
 
-					const query = `EXEC [dbo].[ProjectTaskProgress_Update]
-            ${RecordID}, ${body.WorkCompleted}`;
-					/* --Params--
-            @recordID int,
-	        @workCompleted float
-          */
+					const query = `
+					EXEC [dbo].[ProjectTaskProgress_Update]
+            		@recordID,
+					@workCompleted`;
+
+					request.input('recordID', mssql.Int, RecordID);
+					request.input('workCompleted', mssql.Float, body.WorkCompleted);
 
 					request.query(query, (err, recordset) => {
 						if (err) {
