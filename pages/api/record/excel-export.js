@@ -1,7 +1,3 @@
-const mssql = require('mssql');
-const dbserver = require('../../../dbConfig.js');
-import { sqlEscape } from '../../../lib/utils';
-
 // prettier-ignore
 const exportExcel = async (req, res) => {
 	const { method, query, body } = req;

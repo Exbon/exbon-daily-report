@@ -1,6 +1,5 @@
 const mssql = require('mssql');
 const dbserver = require('../../../dbConfig.js');
-import { sqlEscape } from '../../../lib/utils';
 
 const handleDeficiencyWrike = (req, res) => {
 	const { method, query, body } = req;
@@ -13,9 +12,12 @@ const handleDeficiencyWrike = (req, res) => {
 						return resolve();
 					}
 					const request = new mssql.Request();
-					const sqlquery = `EXEC [usp_dailyreport_Select_DeficiencyLog_Wrike_By_ProjectID]
-                            @projectID = ${req.query.pid}
-                        `;
+					const sqlquery = `
+					EXEC [usp_dailyreport_Select_DeficiencyLog_Wrike_By_ProjectID]
+                    @projectID`;
+
+					request.input('projectID', mssql.Int, req.query.pid);
+
 					request.query(sqlquery, (err, recordset) => {
 						if (err) {
 							console.error(err);
@@ -37,13 +39,18 @@ const handleDeficiencyWrike = (req, res) => {
 						return resolve();
 					}
 					const request = new mssql.Request();
-					const sqlquery = `EXEC [usp_dailyreport_Update_Project_DeficiencyLog_Wrike]
-                                @recordID = ${req.body.logID},
-                                @projectID = ${req.body.projectID},
-                                @wrikeID = '${req.body.wrikeTaskID}',
-                                @wrikeURL = '${req.body.wrikeURL}'
-                            `;
-					console.log(sqlquery);
+					const sqlquery = `
+					EXEC [usp_dailyreport_Update_Project_DeficiencyLog_Wrike]
+                    @recordID,
+                    @projectID,
+                    @wrikeID,
+                    @wrikeURL`;
+
+					request.input('recordID', mssql.Int, req.body.logID);
+					request.input('projectID', mssql.Int, req.body.projectID);
+					request.input('wrikeID', mssql.NVarChar, req.body.wrikeTaskID);
+					request.input('wrikeURL', mssql.NVarChar, req.body.wrikeURL);
+
 					request.query(sqlquery, (err, recordset) => {
 						if (err) {
 							console.error(err);

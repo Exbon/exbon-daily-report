@@ -1,6 +1,5 @@
 const mssql = require('mssql');
 const dbserver = require('../../../../dbConfig.js');
-import { sqlEscape } from '../../../../lib/utils';
 
 const getInspection = (req, res) => {
 	const { method, query, body } = req;
@@ -14,14 +13,21 @@ const getInspection = (req, res) => {
 					}
 					const request = new mssql.Request();
 
-					const sqlquery = `EXEC [dbo].[usp_dailyreport_Insert_DailyReportInspection]
-                              @reportID = ${body.ReportID},
-                              @inspector = '${sqlEscape(body.Inspector)}',
-                              @agency = '${sqlEscape(body.Agency)}',
-                              @location = '${sqlEscape(body.Location)}',
-                              @task = '${sqlEscape(body.Task)}',
-                              @result = '${sqlEscape(body.Result)}'
-                              `;
+					const sqlquery = `
+					EXEC [dbo].[usp_dailyreport_Insert_DailyReportInspection]
+                    @reportID,
+                    @inspector,
+                    @agency,
+                    @location,
+                    @task,
+                    @result`;
+
+					request.input('reportID', mssql.Int, body.ReportID);
+					request.input('inspector', mssql.NVarChar, body.Inspector);
+					request.input('agency', mssql.NVarChar, body.Agency);
+					request.input('location', mssql.NVarChar, body.Location);
+					request.input('task', mssql.NVarChar, body.Task);
+					request.input('result', mssql.NVarChar, body.Result);
 
 					request.query(sqlquery, (err, recordset) => {
 						if (err) {

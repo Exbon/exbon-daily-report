@@ -1,6 +1,5 @@
 const mssql = require('mssql');
 const dbserver = require('../../../../dbConfig.js');
-import { sqlEscape } from '../../../../lib/utils';
 
 const getCorrectional = (req, res) => {
 	const { method, query, body } = req;
@@ -38,14 +37,21 @@ const getCorrectional = (req, res) => {
 					}
 					const request = new mssql.Request();
 
-					const sqlquery = `EXEC [dbo].[usp_dailyreport_Insert_DailyReportCorrectional]
-                            @reportID = ${body.ReportID},
-                            @deficiency = '${sqlEscape(body.Deficiency)}',
-                            @openedBy = '${body.OpenedBy}',
-                            @type = '${sqlEscape(body.Type)}',
-                            @trade = '${sqlEscape(body.Trade)}',
-                            @description = '${sqlEscape(body.Description)}'
-                            `;
+					const sqlquery = `
+					EXEC [dbo].[usp_dailyreport_Insert_DailyReportCorrectional]
+                    @reportID,
+                    @deficiency,
+                    @openedBy,
+                    @type,
+                    @trade,
+                    @description`;
+
+					request.input('reportID', mssql.Int, body.ReportID);
+					request.input('deficiency', mssql.NVarChar, body.Deficiency);
+					request.input('openedBy', mssql.NVarChar, body.OpenedBy);
+					request.input('type', mssql.NVarChar, body.Type);
+					request.input('trade', mssql.NVarChar, body.Trade);
+					request.input('description', mssql.NVarChar, body.Description);
 
 					request.query(sqlquery, (err, recordset) => {
 						if (err) {

@@ -1,6 +1,5 @@
 const mssql = require('mssql');
 const dbserver = require('../../../../dbConfig.js');
-import { sqlEscape } from '../../../../lib/utils';
 
 const getEquipment = (req, res) => {
 	const { method, query, body } = req;
@@ -38,14 +37,21 @@ const getEquipment = (req, res) => {
 					}
 					const request = new mssql.Request();
 
-					const sqlquery = `EXEC [dbo].[usp_dailyreport_Insert_DailyReportEquipment]
-                            @projectID = ${body.ProjectID},
-                            @equipment = '${sqlEscape(body.Equipment)}',
-                            @vendor = '${sqlEscape(body.Vendor)}',
-                            @moveIn = '${body.MoveIn}',
-                            @moveOut = '${body.MoveOut}',
-                            @note = '${sqlEscape(body.Note)}'
-                            `;
+					const sqlquery = `
+					EXEC [dbo].[usp_dailyreport_Insert_DailyReportEquipment]
+                    @projectID,
+                    @equipment,
+                    @vendor,
+                    @moveIn,
+                    @moveOut,
+                    @note`;
+
+					request.input('projectID', mssql.Int, body.ProjectID);
+					request.input('equipment', mssql.NVarChar, body.Equipment);
+					request.input('vendor', mssql.NVarChar, body.Vendor);
+					request.input('moveIn', mssql.Date, body.MoveIn);
+					request.input('moveOut', mssql.Date, body.MoveOut);
+					request.input('note', mssql.NVarChar, body.Note);
 
 					request.query(sqlquery, (err, recordset) => {
 						if (err) {
@@ -69,10 +75,11 @@ const getEquipment = (req, res) => {
 					}
 					const request = new mssql.Request();
 
-					const sqlquery = `EXEC [dbo].[usp_dailyreport_Delete_DailyReportEquipment]
-								@recordID = ${body.RecordID}
-								`;
-					console.log(sqlquery);
+					const sqlquery = `
+					EXEC [dbo].[usp_dailyreport_Delete_DailyReportEquipment]
+					@recordID`;
+
+					request.input('recordID', mssql.Int, body.RecordID);
 
 					request.query(sqlquery, (err, recordset) => {
 						if (err) {

@@ -13,14 +13,17 @@ const problemAndActionTakenHandler = (req, res) => {
 					}
 					const request = new mssql.Request();
 
-					const query = `EXEC [dbo].[ProjectDeficiencyLog_ProblemAndActionTaken_Insert]
-          ${body.ProjectID}, '${body.Date}', '${body.Problem}', '${body.ActionTaken}'`;
-					/* --Params--
-          	@projectID	int,
-            @date	date,
-            @problem nvarchar(1000),
-            @actionTaken nvarchar(1000)
-          */
+					const query = `
+					EXEC [dbo].[ProjectDeficiencyLog_ProblemAndActionTaken_Insert]
+					@projectID,
+					@date,
+					@problem,
+					@actionTaken`;
+
+					request.input('projectID', mssql.Int, body.ProjectID);
+					request.input('date', mssql.Date, body.Date);
+					request.input('problem', mssql.NVarChar, body.Problem);
+					request.input('actionTaken', mssql.NVarChar, body.ActionTaken);
 
 					request.query(query, (err, recordset) => {
 						if (err) {
