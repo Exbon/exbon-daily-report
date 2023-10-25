@@ -14,14 +14,25 @@ const logDailyReportsHandler = (req, res) => {
 					const request = new mssql.Request();
 
 					const query = `EXEC [dbo].[LogDailyReport_Insert]
-          ${body.EmployeeID}, ${body.ProjectID}, "${body.Date}", "${body.Category}", "${body.Action}"`;
+          						   @employeeID,
+								   @projectID,
+								   @date,
+								   @category,
+								   @action`;
+
+					request.input('employeeID', mssql.Int, body.EmployeeID);
+					request.input('projectID', mssql.Int, body.ProjectID);
+					request.input('date', mssql.Date, body.Date);
+					request.input('category', mssql.NVarChar, body.Category);
+					request.input('action', mssql.NVarChar, body.Action);
+
 					/* --Params--
-          	@employeeID int,
-            @projectID int,
-            @date date,
-            @category nvarchar(50),
-            @action nvarchar(50)
-          */
+						@employeeID int,
+						@projectID int,
+						@date date,
+						@category nvarchar(50),
+						@action nvarchar(50)
+					*/
 
 					request.query(query, (err, recordset) => {
 						if (err) {
