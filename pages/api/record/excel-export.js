@@ -20,7 +20,7 @@ const exportExcel = async (req, res) => {
 					// Read file
 					const __dirname = 'public/record';
 					const Excel = require('exceljs');
-					const filename = '/ToCustomer_Form.xlsx';
+					const filename = '/ToCustomer_Form_New.xlsx';
 					const workbook = new Excel.Workbook();
 					await workbook.xlsx.readFile(__dirname + filename);
 					const worksheet = workbook.getWorksheet('To Customer');
@@ -63,19 +63,20 @@ const exportExcel = async (req, res) => {
 
 					const row2 = worksheet.getRow(2);
 					row2.getCell(2).value = body.projectName;
-					row2.getCell(6).value = body.date;
+					row2.getCell(7).value = body.date;
 
 					const row3 = worksheet.getRow(3);
 					row3.getCell(2).value = body.contractNo;
-					row3.getCell(6).value = body.jobNumber;
+					row3.getCell(7).value = body.jobNumber;
 
 					const row4 = worksheet.getRow(4);
 					row4.getCell(2).value = body.taskOrderNo;
-					row4.getCell(6).value = body.documentedBy;
+					row4.getCell(7).value = body.documentedBy;
 
 					const rowTotalContractorsLine = worksheet.getRow(endContractorsLine + 1);
 					rowTotalContractorsLine.getCell(3).value = {formula: '=SUM(C' + startContractorsLine + ':C' + endContractorsLine + ')'};
 					rowTotalContractorsLine.getCell(4).value = {formula: '=SUM(D' + startContractorsLine + ':D' + endContractorsLine + ')'};
+					rowTotalContractorsLine.getCell(5).value = {formula: '=SUM(E' + startContractorsLine + ':E' + endContractorsLine + ')'};
 
 					const contractors = body.contractors;
 					
@@ -85,7 +86,8 @@ const exportExcel = async (req, res) => {
 						worksheet.getRow(startContractorsLine + i).getCell(2).value = contractors[i].Location;
 						worksheet.getRow(startContractorsLine + i).getCell(3).value = contractors[i].NumSuper !== '' ? parseInt(contractors[i].NumSuper) : 0;
 						worksheet.getRow(startContractorsLine + i).getCell(4).value = contractors[i].NumWorker !== '' ? parseInt(contractors[i].NumWorker) : 0;
-						worksheet.getRow(startContractorsLine + i).getCell(5).value = contractors[i].Task;
+						worksheet.getRow(startContractorsLine + i).getCell(5).value = contractors[i].WorkHours !== '' ? parseInt(contractors[i].WorkHours) : 0;
+						worksheet.getRow(startContractorsLine + i).getCell(6).value = contractors[i].Task;
 					}
 
 					if(contractors.length === 0) worksheet.getRow(endContractorsLine + 1).getCell(5).value = 'No on-site work';
@@ -96,8 +98,8 @@ const exportExcel = async (req, res) => {
 						worksheet.getRow(startInspectorsLine + i).getCell(1).value = inspectors[i].Inspector;
 						worksheet.getRow(startInspectorsLine + i).getCell(2).value = inspectors[i].Agency;
 						worksheet.getRow(startInspectorsLine + i).getCell(3).value = inspectors[i].Location;
-						worksheet.getRow(startInspectorsLine + i).getCell(5).value = inspectors[i].Task;
-						worksheet.getRow(startInspectorsLine + i).getCell(7).value = inspectors[i].Result;
+						worksheet.getRow(startInspectorsLine + i).getCell(6).value = inspectors[i].Task;
+						worksheet.getRow(startInspectorsLine + i).getCell(8).value = inspectors[i].Result;
 					}
 
 					worksheet.getRow(startNoteLine).getCell(1).value = body.note;
